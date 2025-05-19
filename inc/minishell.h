@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 00:46:20 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/20 01:07:51 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ typedef enum {
 
 /* parsing */
 
-void	handle_line(char *line, char **envp);
+void	handle_line(char *line, char **av, char **env);
 
 /* minishell */
 
-void	read_input_loop(char **envp);
+void	read_input_loop(char **av, char **env);
 
 #endif
