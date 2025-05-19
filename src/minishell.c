@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/18 17:26:14 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/19 04:35:21 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	read_input_loop(void)
+void	read_input_loop(char **envp)
 {
 	char	*line;
 
@@ -22,19 +22,24 @@ void	read_input_loop(void)
 		if (!line)
 		{
 			printf("\n");
-			break;
+			break ;
 		}
-		if (ft_strcmp(line, "exit") == 0)
+		if (*line)
+			add_history(line);
+		if (strcmp(line, "exit") == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
+		handle_line(line, envp);
 		free(line);
 	}
 }
 
-int main(int ac, char **av, char **env)
+int	main(int argc, char **argv, char **envp)
 {
-	read_input_loop();
-	return EXIT_SUCCESS;
+	(void)argc;
+	(void)argv;
+	read_input_loop(envp);
+	return (EXIT_SUCCESS);
 }

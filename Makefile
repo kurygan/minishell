@@ -1,7 +1,20 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
+#    Updated: 2025/05/19 04:27:44 by emetel           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = cc
 FLAGS = -Wall -Wextra -Werror -g3 -lreadline
 
-SRCS = minishell.c
+SRCS =	minishell.c \
+		parsing.c
 SRCS_DIR = src/
 OBJS_DIR = build/
 SRCS_PREF = $(addprefix $(SRCS_DIR), $(SRCS))
