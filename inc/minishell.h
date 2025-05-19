@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/19 04:34:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/20 00:46:20 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../lib/libft.h"
+
+typedef enum {
+	TOK_CMD,
+	TOK_ARGS,
+	TOK_PIPE,
+	TOK_IN,
+	TOK_OUT
+}	t_token;
 
 /* parsing */
 

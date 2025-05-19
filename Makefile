@@ -3,18 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
+#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/05/19 04:27:44 by emetel           ###   ########.fr        #
+#    Updated: 2025/05/20 00:50:10 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g3 -lreadline
+FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
 		parsing.c
+
 SRCS_DIR = src/
 OBJS_DIR = build/
 SRCS_PREF = $(addprefix $(SRCS_DIR), $(SRCS))
@@ -30,7 +31,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 
 $(NAME): $(OBJS_PREF)
 	@make all -C lib
-	@$(CC) $(FLAGS) $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
+	@$(CC) $(FLAGS) -lreadline $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
 	@echo "|🛠️| Program compiled"
 
 all: $(NAME)

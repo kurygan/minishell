@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 03:51:04 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/20 00:31:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/20 00:52:53 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	free_argv(char **argv)
 	free(argv);
 }
 
-static char	*find_executable(char *cmd, char **envp)
+static char	*find_executable(char *cmd)
 {
 	char	*path_env;
 	char	**paths;
@@ -69,8 +69,7 @@ void	handle_line(char *line, char **envp)
 	pid_t	pid;
 	char	*path;
 
-	if (!argv || !*argv)
-		exit(EXIT_FAILURE);
+	path = NULL;
 	argv = split_line(line);
 	if (!argv[0])
 	{
@@ -83,7 +82,7 @@ void	handle_line(char *line, char **envp)
 		if (ft_strchr(argv[0], '/'))
 			path = argv[0];
 		else
-			path = find_executable(argv[0], envp);
+			path = find_executable(argv[0]);
 		if (path)
 			execve(path, argv, envp);
 		perror("execve");
