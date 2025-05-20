@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
+#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/05/20 00:50:10 by mkettab          ###   ########.fr        #
+#    Updated: 2025/05/20 23:59:24 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ CC = cc
 FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
-		parsing.c
+		parsing.c \
+		token.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/

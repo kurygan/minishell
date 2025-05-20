@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 23:06:02 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/21 01:05:14 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <readline/history.h>
 # include "../lib/libft.h"
 
-typedef enum
+typedef enum e_token
 {
 	CMD,
 	ARGS,
@@ -44,8 +44,8 @@ typedef enum
 
 typedef struct s_type
 {
-	char	*str;
-	t_token	token;
+	char			*str;
+	t_token			token;
 	struct s_type	*next;
 	struct s_type	*prev;
 }	t_type;
@@ -54,8 +54,9 @@ typedef struct s_type
 
 t_type	*handle_line(char *line, char **env);
 
-/* minishell */
+/* token */
 
-void	read_input_loop(char **av, char **env);
+t_type	*tokenize(char *line);
+t_type	*add_token(t_type *list, char *str, t_token token);
 
 #endif

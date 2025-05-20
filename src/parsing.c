@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:01:33 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 23:06:11 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/21 00:06:56 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,6 @@
 
 t_type	*handle_line(char *line, char **env)
 {
-	t_type	*command;
-	t_type	*temp;
-	
-	command = ft_calloc(1, sizeof(t_type));
-	temp = command;
-	if (*line == '<')
-	{
-		if (line[1] == '<')
-			command->token = HEREDOC;
-		if (line[1] == ' ')
-			command->token = IN;
-		else
-			command->token = ERROR;
-	}
+	(void)env;
+	return (tokensize(line));
 }
