@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 16:09:22 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:04:02 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ typedef enum
 	IN,
 	TRUNCATE,
 	APPEND,
-	HEREDOC
+	HEREDOC,
+	ERROR
 }	t_token;
 
 typedef struct s_type
@@ -51,7 +52,7 @@ typedef struct s_type
 
 /* parsing */
 
-t_type	*handle_line(char *line, int ac, char **av, char **env);
+t_type	*handle_line(char *line, char **env);
 
 /* minishell */
 

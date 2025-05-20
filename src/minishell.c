@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 16:11:14 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:03:46 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,9 @@ int	main(int ac, char **av, char **env)
 	t_type	*command;
 	char	*line;
 
+	(void)ac;
+	(void)av;
 	line = NULL;
-	if (ac >= 1)
-	{
-		av++;
-		while (*av)
-		{
-			line = ft_strjoin(line, *av);
-			av++;
-		}
-		command = handle_line(line, ac, av, env);
-	}
 	while (1)
 	{
 		line = readline("[petitcoquillage]$ ");
@@ -43,7 +35,7 @@ int	main(int ac, char **av, char **env)
 			free(line);
 			break ;
 		}
-		command = handle_line(line, ac, av, env);
+		command = handle_line(line, env);
 		free(line);
 	}
 	return (EXIT_SUCCESS);
