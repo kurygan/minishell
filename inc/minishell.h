@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 01:07:51 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:09:22 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,28 @@
 # include <readline/history.h>
 # include "../lib/libft.h"
 
-typedef enum {
-	TOK_CMD,
-	TOK_ARGS,
-	TOK_PIPE,
-	TOK_IN,
-	TOK_OUT
+typedef enum
+{
+	CMD,
+	ARGS,
+	PIPE,
+	IN,
+	TRUNCATE,
+	APPEND,
+	HEREDOC
 }	t_token;
+
+typedef struct s_type
+{
+	char	*str;
+	t_token	token;
+	t_type	*next;
+	t_type	*prev;
+}	t_type;
 
 /* parsing */
 
-void	handle_line(char *line, char **av, char **env);
+t_type	*handle_line(char *line, int ac, char **av, char **env);
 
 /* minishell */
 

@@ -3,19 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 01:07:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:11:14 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	read_input_loop(char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
+	t_type	*command;
 	char	*line;
 
+	line = NULL;
+	if (ac >= 1)
+	{
+		av++;
+		while (*av)
+		{
+			line = ft_strjoin(line, *av);
+			av++;
+		}
+		command = handle_line(line, ac, av, env);
+	}
 	while (1)
 	{
 		line = readline("[petitcoquillage]$ ");
@@ -31,15 +43,8 @@ void	read_input_loop(char **av, char **env)
 			free(line);
 			break ;
 		}
-		handle_line(line, av, env);
+		command = handle_line(line, ac, av, env);
 		free(line);
 	}
-}
-
-int	main(int ac, char **av, char **env)
-{
-	(void)ac;
-	(void)av;
-	read_input_loop(av, env);
 	return (EXIT_SUCCESS);
 }
