@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:01:33 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/20 23:03:54 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:06:11 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ t_type	*handle_line(char *line, char **env)
 		if (line[1] == ' ')
 			command->token = IN;
 		else
-			command->token == ERROR;
+			command->token = ERROR;
 	}
 }
