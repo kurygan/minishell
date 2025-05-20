@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 03:51:04 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/20 01:12:26 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/20 02:49:12 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	handle_line(char *line, char **av, char **env)
 	char	*path;
 
 	path = NULL;
-	(void)line;
+	printf("LIGNE=%s\n", line);
 	if (!av[0])
 	{
 		free_argv(av);
