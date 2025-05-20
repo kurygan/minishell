@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 03:51:04 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/20 23:11:57 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:12:56 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	handle_line(char *line, char **av, char **env)
 	char	*path;
 
 	path = NULL;
-	(void)line;
+	printf("LIGNE=%s\n", line);
 	if (!av[0])
 	{
 		free_argv(av);
