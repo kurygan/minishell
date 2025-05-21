@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 01:05:14 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/21 02:16:40 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,5 @@ t_type	*handle_line(char *line, char **env);
 /* token */
 
 t_type	*tokenize(char *line);
-t_type	*add_token(t_type *list, char *str, t_token token);
 
 #endif
