@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 02:04:37 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/21 23:41:07 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef struct s_type
 	struct s_type	*next;
 	struct s_type	*prev;
 }	t_type;
+
+typedef struct s_sys
+{
+	t_gc	*gc;
+	t_type	*type;
+}	t_sys;
 
 /* parsing */
 

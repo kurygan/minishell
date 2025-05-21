@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 02:40:21 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/21 23:41:57 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_type	*command;
 	char	*line;
+	t_sys	*sys;
 
 	(void)ac;
 	(void)av;
 	line = NULL;
+	sys = malloc(sizeof(t_sys));
+	if (!sys)
+		return (1);
 	while (1)
 	{
 		line = readline("[petitcoquillage]$ ");
