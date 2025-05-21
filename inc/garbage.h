@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   garbage.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 02:40:21 by mkettab          ###   ########.fr       */
+/*   Created: 2025/05/21 02:04:46 by mkettab           #+#    #+#             */
+/*   Updated: 2025/05/21 03:05:59 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#ifndef GARBAGE_H
+# define GARBAGE_H
 
-int	main(int ac, char **av, char **env)
+# include "minishell.h"
+
+typedef enum s_gc_type
 {
-	t_type	*command;
-	char	*line;
+	EXEC,
+	LEXER,
+	PARSING,
+	ENV,
+	BUILTIN,
+	REDIR,
+	OTHER
+}	t_gc_type;
 
-	(void)ac;
-	(void)av;
-	line = NULL;
-	while (1)
-	{
-		line = readline("[petitcoquillage]$ ");
-		if (!line)
-		{
-			printf("\n");
-			break ;
-		}
-		if (*line)
-			add_history(line);
-		if (strcmp(line, "exit") == 0)
-		{
-			free(line);
-			break ;
-		}
-		free(line);
-	}
-	return (EXIT_SUCCESS);
-}
+typedef struct s_gc
+{
+	void	*to_free;
+	t_gc_type	type;
+	struct s_gc	*next;
+	struct s_gc	*prev;
+}	t_gc;
+
+void	gc_addback(t_gc **gc, t_gc *new);
+
+#endif

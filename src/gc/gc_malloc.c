@@ -1,41 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   gc_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 02:40:21 by mkettab          ###   ########.fr       */
+/*   Created: 2025/05/21 02:22:40 by mkettab           #+#    #+#             */
+/*   Updated: 2025/05/21 03:08:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	*gc_malloc(size_t size, t_gc **gc, t_gc_type type)
 {
-	t_type	*command;
-	char	*line;
-
-	(void)ac;
-	(void)av;
-	line = NULL;
-	while (1)
-	{
-		line = readline("[petitcoquillage]$ ");
-		if (!line)
-		{
-			printf("\n");
-			break ;
-		}
-		if (*line)
-			add_history(line);
-		if (strcmp(line, "exit") == 0)
-		{
-			free(line);
-			break ;
-		}
-		free(line);
-	}
-	return (EXIT_SUCCESS);
+	void	*malloced;
+	t_gc	*temp;
+	
+	malloced = malloc(size);
+	if (!malloced)
+		return (NULL);
+	temp = malloc(sizeof(t_gc));
+	if (!temp)
+		return (free(malloced), NULL);
+	temp->to_free = malloced;
+	temp->type = type;
+	temp->next = NULL;
+	temp->prev = NULL;
+	if (gc)
+		gc_addback(gc, temp);
+	else
+		temp = gc;
 }
