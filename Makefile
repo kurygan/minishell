@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/05/20 23:59:24 by emetel           ###   ########.fr        #
+#    Updated: 2025/05/22 02:22:15 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,11 @@ FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
 		parsing.c \
-		token.c
+		expander.c \
+		token.c \
+		token_utils.c \
+		segment.c \
+		debug.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/
