@@ -6,7 +6,7 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/05/21 02:40:57 by mkettab          ###   ########.fr        #
+#    Updated: 2025/05/26 18:18:17 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,12 @@ CC = cc
 FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
-		gc/gc_malloc.c gc_utils.c
+		gc/gc_malloc.c gc_utils.c \
+		expander.c \
+		token.c \
+		token_utils.c \
+		segment.c \
+		debug.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/
