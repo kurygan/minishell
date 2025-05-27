@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:26:39 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 03:10:39 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/27 22:29:08 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	gc_addback(t_gc **gc, t_gc *new)
 	new->prev = temp;
 }
 
-gc_free(t_gc **gc, t_gc_type type)
+void	gc_free(t_gc **gc, t_gc_type type)
 {
 	t_gc *curr = *gc;
 	t_gc *next;

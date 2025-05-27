@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/22 02:18:34 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/27 23:05:59 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	add_arg_to_segment(t_cmd_segment *seg, char *arg)
 		while (seg->args[len])
 			len++;
 	}
-	new_args = ft_calloc(len + 2, sizeof(char *));
+	new_args = gc_calloc();
 	if (!new_args)
 		return ;
 	i = 0;
@@ -86,7 +86,7 @@ static t_cmd_segment	*create_segment(t_type **tokens)
 	return (seg);
 }
 
-t_cmd_segment	*convert_tokens(t_type *tokens)
+t_cmd_segment	*convert_tokens(t_sys *sys)
 {
 	t_cmd_segment	*segments;
 	t_cmd_segment	*last;
@@ -94,7 +94,7 @@ t_cmd_segment	*convert_tokens(t_type *tokens)
 
 	segments = NULL;
 	last = NULL;
-	while (tokens)
+	while (sys->type)
 	{
 		new = create_segment(&tokens);
 		if (!segments)

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/26 18:20:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/27 22:49:17 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int ac, char **av, char **env)
 	t_cmd_segment	*command;
 	char			*line;
 	int				exit_status;
+	t_sys			*sys;
 
 	(void)ac;
 	(void)av;
@@ -24,6 +25,7 @@ int	main(int ac, char **av, char **env)
 	sys = malloc(sizeof(t_sys));
 	if (!sys)
 		return (1);
+	sys->env = env;
 	exit_status = 0;
 	while (1)
 	{
@@ -40,7 +42,7 @@ int	main(int ac, char **av, char **env)
 			free(line);
 			break ;
 		}
-		command = handle_line(line, env, exit_status);
+		command = handle_line(line, exit_status, sys);
 		// TODO: exécuter `command` et mettre à jour `exit_status`
 		debug_print_segments(command);
 		free(line);

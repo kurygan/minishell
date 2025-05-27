@@ -6,21 +6,20 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:01:33 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/26 18:19:16 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/27 23:05:39 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_cmd_segment	*handle_line(char *line, char **env, int exit_status, )
+t_cmd_segment	*handle_line(char *line, int exit_status, t_sys *sys)
 {
-	t_type			*tokens;
 	t_cmd_segment	*segments;
 
-	tokens = tokenize(line);
-	segments = convert_tokens(tokens);
-	free_token_list(tokens);
-	expand_variables(segments, env, exit_status);
+	sys->type = tokenize(line);
+	segments = convert_tokens(sys);
+	free_token_list(sys->type);
+	expand_variables(segments, sys->env, exit_status);
 	return (segments);
 }
 

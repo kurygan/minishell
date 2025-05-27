@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:46 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/21 23:39:24 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/27 22:29:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef struct s_gc
 
 void	gc_addback(t_gc **gc, t_gc *new);
 void	*gc_malloc(size_t size, t_gc **gc, t_gc_type type);
+void	gc_free(t_gc **gc, t_gc_type type);
 t_gc	*gc_last(t_gc **gc);
-gc_free(t_gc **gc, t_gc_type type);
+void*	gc_calloc(size_t size, t_gc **gc, t_gc_type type);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/26 18:19:54 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/05/27 22:49:03 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_sys
 {
 	t_gc	*gc;
 	t_type	*type;
+	char	**env;
 }	t_sys;
 
 /* parsing */
