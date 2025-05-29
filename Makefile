@@ -1,5 +1,5 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g3 -lreadline
+FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS = minishell.c
 SRCS_DIR = src/
@@ -17,7 +17,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 
 $(NAME): $(OBJS_PREF)
 	@make all -C lib
-	@$(CC) $(FLAGS) $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJS_PREF) $(LIB_NAME) -lreadline -o $(NAME)
 	@echo "|🛠️| Program compiled"
 
 all: $(NAME)
