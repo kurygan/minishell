@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/22 02:18:36 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/29 01:37:25 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,47 @@ static char	*expand_var(char *arg, char **env, int exit_status)
 	return (ft_strdup(""));
 }
 
+static void	expand_single_str(char **str, char **env, int exit_status)
+{
+	char	*expanded;
+
+	if (*str && (*str)[0] == '$')
+	{
+		expanded = expand_var(*str, env, exit_status);
+		free(*str);
+		*str = expanded;
+	}
+}
+
+static void	expand_str_array(char **arr, char **env, int exit_status)
+{
+	int		i;
+	char	*expanded;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		if (arr[i][0] == '$')
+		{
+			expanded = expand_var(arr[i], env, exit_status);
+			free(arr[i]);
+			arr[i] = expanded;
+		}
+		i++;
+	}
+}
+
 void	expand_variables(t_cmd_segment *segments, char **env, int exit_status)
 {
-	int				i;
-	char			*expanded;
-	t_cmd_segment	*current;
-
-	current = segments;
-	while (current)
+	while (segments)
 	{
-		i = 0;
-		while (current->args && current->args[i])
-		{
-			if (current->args[i][0] == '$')
-			{
-				expanded = expand_var(current->args[i], env, exit_status);
-				free(current->args[i]);
-				current->args[i] = expanded;
-			}
-			i++;
-		}
-		current = current->next;
+		expand_single_str(&segments->cmd, env, exit_status);
+		expand_str_array(segments->args, env, exit_status);
+		expand_str_array(segments->options, env, exit_status);
+		expand_single_str(&segments->infile, env, exit_status);
+		expand_single_str(&segments->outfile, env, exit_status);
+		segments = segments->next;
 	}
 }

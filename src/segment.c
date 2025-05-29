@@ -6,104 +6,87 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/22 02:18:34 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/29 02:07:05 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	add_arg_to_segment(t_cmd_segment *seg, char *arg)
+static void	handle_pipe_token(t_type *token, t_cmd_segment **current,
+							t_cmd_segment **head)
 {
-	int		len;
-	char	**new_args;
-	int		i;
-
-	len = 0;
-	if (seg->args)
-	{
-		while (seg->args[len])
-			len++;
-	}
-	new_args = ft_calloc(len + 2, sizeof(char *));
-	if (!new_args)
-		return ;
-	i = 0;
-	while (i < len)
-	{
-		new_args[i] = seg->args[i];
-		i++;
-	}
-	new_args[len] = ft_strdup(arg);
-	new_args[len + 1] = NULL;
-	free(seg->args);
-	seg->args = new_args;
+	(void)token;
+	if (*current)
+		(*current)->next = init_segment();
+	if (*current)
+		*current = (*current)->next;
+	else
+		*current = init_segment();
+	if (!*head)
+		*head = *current;
 }
 
-static void	handle_redirection_token(t_cmd_segment *seg, t_type **tokens)
+static void	handle_target_token(t_type *token, t_cmd_segment **current,
+							t_cmd_segment **head)
 {
-	t_token	type;
-	char	*file;
-
-	type = (*tokens)->token;
-	if ((*tokens)->next)
+	if (!*current)
 	{
-		file = (*tokens)->next->str;
-		if (type == IN)
-			seg->infile = ft_strdup(file);
-		else if (type == HEREDOC)
-			seg->heredoc = ft_strdup(file);
-		else if (type == TRUNCATE)
-		{
-			seg->outfile = ft_strdup(file);
-			seg->append_mode = 0;
-		}
-		else if (type == APPEND)
-		{
-			seg->outfile = ft_strdup(file);
-			seg->append_mode = 1;
-		}
-		*tokens = (*tokens)->next;
+		*current = init_segment();
+		if (!*head)
+			*head = *current;
 	}
+	(*current)->heredoc = ft_strdup(token->str);
 }
 
-static t_cmd_segment	*create_segment(t_type **tokens)
+static void	process_token(t_type *token, t_cmd_segment **current,
+						t_cmd_segment **head, t_type **next)
+{
+	if (token->token == PIPE)
+		handle_pipe_token(token, current, head);
+	else if (token->token == CMD || token->token == ARGS)
+		handle_command_token(token, current, head);
+	else if (token->token == OPTIONS)
+		handle_option_token(token, current, head);
+	else if (token->token == REDIR_IN || token->token == REDIR_OUT
+		|| token->token == REDIR_APPEND || token->token == REDIR_HEREDOC)
+	{
+		handle_redirection_token(token, next, current, head);
+	}
+	else if (token->token == REDIR_TARGET)
+		handle_target_token(token, current, head);
+}
+
+t_cmd_segment	*init_segment(void)
 {
 	t_cmd_segment	*seg;
 
-	seg = ft_calloc(1, sizeof(t_cmd_segment));
+	seg = malloc(sizeof(t_cmd_segment));
 	if (!seg)
 		return (NULL);
-	while (*tokens && (*tokens)->token != PIPE)
-	{
-		if ((*tokens)->token == CMD && !seg->cmd)
-			seg->cmd = ft_strdup((*tokens)->str);
-		else if ((*tokens)->token == ARGS)
-			add_arg_to_segment(seg, (*tokens)->str);
-		else if ((*tokens)->token >= IN && (*tokens)->token <= APPEND)
-			handle_redirection_token(seg, tokens);
-		*tokens = (*tokens)->next;
-	}
+	seg->cmd = NULL;
+	seg->args = NULL;
+	seg->options = NULL;
+	seg->infile = NULL;
+	seg->heredoc = NULL;
+	seg->outfile = NULL;
+	seg->append_mode = 0;
+	seg->next = NULL;
 	return (seg);
 }
 
 t_cmd_segment	*convert_tokens(t_type *tokens)
 {
-	t_cmd_segment	*segments;
-	t_cmd_segment	*last;
-	t_cmd_segment	*new;
+	t_cmd_segment	*head;
+	t_cmd_segment	*current;
+	t_type			*token;
 
-	segments = NULL;
-	last = NULL;
-	while (tokens)
+	head = NULL;
+	current = NULL;
+	token = tokens;
+	while (token)
 	{
-		new = create_segment(&tokens);
-		if (!segments)
-			segments = new;
-		else
-			last->next = new;
-		last = new;
-		if (tokens && tokens->token == PIPE)
-			tokens = tokens->next;
+		process_token(token, &current, &head, &token);
+		token = token->next;
 	}
-	return (segments);
+	return (head);
 }

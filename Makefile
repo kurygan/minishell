@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/05/22 02:22:15 by emetel           ###   ########.fr        #
+#    Updated: 2025/05/29 02:18:57 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,15 @@ CC = cc
 FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
-		parsing.c \
 		expander.c \
-		token.c \
-		token_utils.c \
+		handle_redirection.c \
+		parsing.c \
+		segment_handler.c \
+		segment_options.c \
 		segment.c \
+		signal.c \
+		token_utils.c \
+		token.c \
 		debug.c
 
 SRCS_DIR = src/
