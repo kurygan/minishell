@@ -6,11 +6,40 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/22 02:15:53 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/29 00:50:06 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static int	is_option(char *word)
+{
+	if (!word || !word[0])
+		return (0);
+	if (word[0] == '-' && word[1] != '\0')
+	{
+		if (word[1] == '-' && word[2] == '\0')
+			return (0);
+		return (1);
+	}
+	return (0);
+}
+
+static int	is_quoted_content(char *word)
+{
+	int	i;
+
+	i = 0;
+	if (!word)
+		return (0);
+	while (word[i])
+	{
+		if (word[i] == '\'' || word[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	handle_pipe(char *line, int *i, t_type **lst)
 {
@@ -32,50 +61,37 @@ void	handle_quote(char *line, int *i, t_type **lst, char quote)
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
+	if (!line[*i])
+	{
+		if (quote == '\'')
+			printf("syntax error: unclosed single quote\n");
+		else
+			printf("syntax error: unclosed double quote\n");
+		return ;
+	}
 	word = ft_substr(line, start, *i - start);
 	*lst = add_token(*lst, word, CMD);
 	free(word);
-	if (line[*i] == quote)
-		(*i)++;
+	(*i)++;
 }
 
 void	handle_word(char *line, int *i, t_type **lst)
 {
 	int		start;
 	char	*word;
+	t_token	token_type;
 
 	start = *i;
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
 		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 		(*i)++;
 	word = ft_substr(line, start, *i - start);
-	*lst = add_token(*lst, word, CMD);
-	free(word);
-}
-
-void	handle_redirection(char *line, int *i, t_type **lst)
-{
-	char	*symbol;
-	t_token	type;
-
-	if (line[*i + 1] == line[*i])
-	{
-		symbol = ft_substr(line, *i, 2);
-		if (line[*i] == '<')
-			type = HEREDOC;
-		else
-			type = APPEND;
-		(*i) += 2;
-	}
+	if (!word)
+		return ;
+	if (is_option(word) && !is_quoted_content(word))
+		token_type = OPTIONS;
 	else
-	{
-		symbol = ft_substr(line, *i, 1);
-		if (line[*i] == '<')
-			type = IN;
-		else
-			type = TRUNCATE;
-		(*i)++;
-	}
-	*lst = add_token(*lst, symbol, type);
-	free(symbol);
+		token_type = CMD;
+	*lst = add_token(*lst, word, token_type);
+	free(word);
 }

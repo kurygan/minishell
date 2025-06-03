@@ -6,11 +6,22 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/22 02:10:00 by emetel           ###   ########.fr       */
+/*   Updated: 2025/05/29 00:16:46 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static int	handle_and_check_quote(char *line, int *i, t_type **lst)
+{
+	int	old_i;
+
+	old_i = *i;
+	handle_quote(line, i, lst, line[old_i]);
+	if (*i == old_i)
+		return (1);
+	return (0);
+}
 
 static void	assign_cmd_and_args(t_type *token_lst)
 {
@@ -30,6 +41,12 @@ static void	assign_cmd_and_args(t_type *token_lst)
 		}
 		else if (tmp->token == PIPE)
 			expect_cmd = 1;
+		else if (tmp->token == REDIR_IN || tmp->token == REDIR_OUT
+			|| tmp->token == REDIR_APPEND || tmp->token == REDIR_HEREDOC)
+		{
+			if (tmp->next)
+				tmp = tmp->next;
+		}
 		tmp = tmp->next;
 	}
 }
@@ -50,7 +67,10 @@ t_type	*tokenize(char *line)
 		else if (line[i] == '<' || line[i] == '>')
 			handle_redirection(line, &i, &token_lst);
 		else if (line[i] == '\'' || line[i] == '\"')
-			handle_quote(line, &i, &token_lst, line[i]);
+		{
+			if (handle_and_check_quote(line, &i, &token_lst))
+				return (NULL);
+		}
 		else
 			handle_word(line, &i, &token_lst);
 	}

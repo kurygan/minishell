@@ -6,15 +6,16 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/27 22:49:17 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/03 21:57:49 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	main(int ac, char **av, char **env)
+static int	process_command(char **env, int *exit_status)
 {
 	t_cmd_segment	*command;
+	t_type			*tokens;
 	char			*line;
 	int				exit_status;
 	t_sys			*sys;
