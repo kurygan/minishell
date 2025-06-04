@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/03 21:57:36 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/04 04:47:46 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_cmd_segment
 	char					*outfile;
 	int						append_mode;
 	struct s_cmd_segment	*next;
+	struct s_cmd_segment	*prev;
 }	t_cmd_segment;
 
 typedef struct s_type
@@ -73,6 +74,7 @@ typedef struct s_sys
 {
 	t_gc	*gc;
 	t_type	*type;
+	t_cmd_segment *cmd;
 	char	**env;
 }	t_sys;
 
@@ -91,14 +93,12 @@ t_cmd_segment	*handle_line(char *line, char **env, int exit_status);
 
 /* segment */
 
-void			handle_command_token(t_type *token, t_cmd_segment **current,
-					t_cmd_segment **head);
-void			handle_redirection_token(t_type *token, t_type **next,
-					t_cmd_segment **current, t_cmd_segment **head);
-void			handle_option_token(t_type *token, t_cmd_segment **current,
-					t_cmd_segment **head);
-t_cmd_segment	*init_segment(void);
-t_cmd_segment	*convert_tokens(t_type *tokens);
+void			handle_command_token(t_sys *sys, t_cmd_segment **current);
+void			handle_redirection_token(t_sys *sys, t_type **next,
+					t_cmd_segment **current);
+void			handle_option_token(t_sys *sys, t_cmd_segment **current);
+t_cmd_segment	*init_segment(t_sys *sys);
+t_cmd_segment	*convert_tokens(t_sys *sys);
 
 /* signal */
 
@@ -108,7 +108,7 @@ void			reset_signals(struct termios *orig_termios);
 
 /* token */
 
-t_type			*tokenize(char *line);
+t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token);
 void			handle_pipe(char *line, int *i, t_type **lst);
 void			handle_quote(char *line, int *i, t_type **lst, char quote);

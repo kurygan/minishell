@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   gc_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/25 00:56:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/03 23:58:09 by mkettab          ###   ########.fr       */
+/*   Created: 2025/06/03 23:04:45 by mkettab           #+#    #+#             */
+/*   Updated: 2025/06/03 23:38:47 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include <minishell.h>
 
-int	ft_strcmp(char *s1, char *s2)
+char	*gc_strdup(char *str, t_gc **gc, t_gc_type type)
 {
-	int	i;
+	char	*duped;
 
-	i = 0;
-	if (!s1 || !s2)
-		return (0);
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (0);
+	duped = gc_malloc(sizeof(char) * ft_strlen(str), gc, type);
+	if (!duped)
+		return (NULL);
+	duped = ft_strcpy(duped, str);
+	return (duped);
 }

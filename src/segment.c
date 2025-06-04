@@ -6,86 +6,76 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/06/03 21:58:45 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/04 04:41:10 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	handle_pipe_token(t_type *token, t_cmd_segment **current,
-							t_cmd_segment **head)
+static void	handle_pipe_token(t_sys *sys, t_cmd_segment **current)
 {
-	(void)token;
 	if (*current)
-		(*current)->next = init_segment();
-	if (*current)
+	{
+		(*current)->next = init_segment(sys);
+		(*current)->next->prev = *current;
 		*current = (*current)->next;
+	}
 	else
-		*current = init_segment();
-	if (!*head)
-		*head = *current;
+		*current = init_segment(sys);
+	if (!sys->cmd)
+		sys->cmd = *current;
 }
 
-static void	handle_target_token(t_type *token, t_cmd_segment **current,
-							t_cmd_segment **head)
+static void	handle_target_token(t_sys *sys, t_cmd_segment **current)
 {
 	if (!*current)
 	{
-		*current = init_segment();
-		if (!*head)
-			*head = *current;
+		*current = init_segment(sys);
+		if (!sys->cmd)
+			sys->cmd = *current;
 	}
-	(*current)->heredoc = ft_strdup(token->str);
+	(*current)->heredoc = gc_strdup(sys->type->str, &sys->gc, type);
 }
 
-static void	process_token(t_type *token, t_cmd_segment **current,
-						t_cmd_segment **head, t_type **next)
+static void	process_token(t_sys *sys, t_cmd_segment **current, t_type **next)
 {
-	if (token->token == PIPE)
-		handle_pipe_token(token, current, head);
-	else if (token->token == CMD || token->token == ARGS)
-		handle_command_token(token, current, head);
-	else if (token->token == OPTIONS)
-		handle_option_token(token, current, head);
-	else if (token->token == REDIR_IN || token->token == REDIR_OUT
-		|| token->token == REDIR_APPEND || token->token == REDIR_HEREDOC)
+	if (sys->type->token == PIPE)
+		handle_pipe_token(sys, current);
+	else if (sys->type->token == CMD || sys->type->token == ARGS)
+		handle_command_token(sys, current);
+	else if (sys->type->token == OPTIONS)
+		handle_option_token(sys, current);
+	else if (sys->type->token == REDIR_IN || sys->type->token == REDIR_OUT
+		|| sys->type->token == REDIR_APPEND || sys->type->token == REDIR_HEREDOC)
 	{
-		handle_redirection_token(token, next, current, head);
+		handle_redirection_token(sys, next, current);
 	}
-	else if (token->token == REDIR_TARGET)
-		handle_target_token(token, current, head);
+	else if (sys->type->token == REDIR_TARGET)
+		handle_target_token(sys, current);
 }
 
-t_cmd_segment	*init_segment(void)
+t_cmd_segment	*init_segment(t_sys *sys)
 {
 	t_cmd_segment	*seg;
 
-	seg = malloc(sizeof(t_cmd_segment));
+	seg = gc_malloc(sizeof(t_cmd_segment), sys->gc, type);
 	if (!seg)
 		return (NULL);
-	seg->cmd = NULL;
-	seg->args = NULL;
-	seg->options = NULL;
-	seg->infile = NULL;
-	seg->heredoc = NULL;
-	seg->outfile = NULL;
-	seg->append_mode = 0;
-	seg->next = NULL;
+	ft_memset(seg, 0, sizeof(t_cmd_segment));
 	return (seg);
 }
 
 t_cmd_segment	*convert_tokens(t_sys *sys)
 {
-	t_cmd_segment	*head;
-	t_cmd_segment	*current;
 	t_type			*token;
+	t_cmd_segment	*head;
+	t_cmd_segment	*curr;
 
-	head = NULL;
-	current = NULL;
-	token = tokens;
+	curr = NULL;
+	token = sys->type;
 	while (token)
 	{
-		process_token(token, &current, &head, &token);
+		process_token(sys, &curr, &token);
 		token = token->next;
 	}
 	return (head);

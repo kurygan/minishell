@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:46 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/27 22:29:24 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/04 00:00:44 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	*gc_malloc(size_t size, t_gc **gc, t_gc_type type);
 void	gc_free(t_gc **gc, t_gc_type type);
 t_gc	*gc_last(t_gc **gc);
 void*	gc_calloc(size_t size, t_gc **gc, t_gc_type type);
+char	*gc_strdup(char *str, t_gc **gc, t_gc_type type);
 
 #endif

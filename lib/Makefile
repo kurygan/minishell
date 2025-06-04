@@ -3,6 +3,7 @@ FLAGS = -Wall -Wextra -Werror
 
 SRCS = str/ft_strnstr.c \
 	   str/ft_strncmp.c \
+	   str/ft_strcpy.c \
 	   str/ft_strchr.c \
 	   str/ft_toupper.c \
 	   str/ft_tolower.c \
