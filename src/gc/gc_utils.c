@@ -6,11 +6,11 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:26:39 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/27 22:29:08 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:27:55 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/minishell.h"
 
 t_gc	*gc_last(t_gc **gc)
 {
@@ -28,7 +28,7 @@ void	gc_addback(t_gc **gc, t_gc *new)
 {
 	t_gc *temp;
 
-	temp = gc_last(*gc);
+	temp = gc_last(gc);
 	if (!temp)
 	{
 		*gc = new;
@@ -46,7 +46,7 @@ void	gc_free(t_gc **gc, t_gc_type type)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->type == type || type == -1)
+		if (curr->type == type || type == ALL)
 		{
 			if (curr->prev)
 				curr->next->prev = curr->prev;

@@ -82,7 +82,11 @@ t_type	*add_token(t_sys *sys, char *str, t_token token)
 	t_type	*tmp;
 
 	new = gc_calloc(sizeof(t_type), &sys->gc, type);
+	if (!new)
+		return (NULL);
 	new->str = gc_strdup(str, &sys->gc, type);
+	if (!new->str)
+		return (NULL);
 	new->token = token;
 	if (!sys->type)
 		return (new);

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:51:32 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:52:54 by emetel           ###   ########.fr       */
+/*   Updated: 2025/06/13 23:07:51 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 void	sigint_handler(int sig)
 {

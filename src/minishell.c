@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/04 04:47:20 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:28:19 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,18 @@ static int	process_command(t_sys *sys)
 
 int main(int ac, char **av, char **env)
 {
+	(void)ac;
+	(void)av;
 	t_sys	*sys;
 	if (!env || !*env)
 		return (1);
-	sys = gc_malloc(sizeof(t_sys), &sys->gc, OTHER);
+	sys = malloc(sizeof(t_sys));
 	if (!sys)
 		return (1);
 	ft_memset(sys, 0, sizeof(t_sys));
 	sys->env = env;
 	process_command(sys);
-	gc_free(&sys->gc, -1);
+	gc_free(&sys->gc, ALL);
+	free(sys);
 	return (1);
 }

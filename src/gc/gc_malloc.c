@@ -6,11 +6,11 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:22:40 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/04 04:35:06 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:11:40 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/minishell.h"
 
 void	*gc_malloc(size_t size, t_gc **gc, t_gc_type type)
 {
@@ -30,7 +30,8 @@ void	*gc_malloc(size_t size, t_gc **gc, t_gc_type type)
 	if (gc)
 		gc_addback(gc, temp);
 	else
-		temp = gc;
+		temp = *gc;
+	return (malloced);
 }
 
 void*	gc_calloc(size_t size, t_gc **gc, t_gc_type type)

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/04 04:47:46 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:46:18 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <signal.h>
@@ -80,8 +81,7 @@ typedef struct s_sys
 
 /* expander */
 
-void			expand_variables(t_cmd_segment *segments, char **env,
-					int exit_status);
+void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status);
 
 /* handle_redirection */
 
@@ -89,7 +89,7 @@ void			handle_redirection(char *line, int *i, t_type **lst);
 
 /* parsing */
 
-t_cmd_segment	*handle_line(char *line, char **env, int exit_status);
+t_cmd_segment	*handle_line(char *line, int exit_status, t_sys *sys);
 
 /* segment */
 

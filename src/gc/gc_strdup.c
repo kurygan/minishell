@@ -6,11 +6,11 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 23:04:45 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/03 23:38:47 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 21:59:25 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "../../inc/minishell.h"
 
 char	*gc_strdup(char *str, t_gc **gc, t_gc_type type)
 {

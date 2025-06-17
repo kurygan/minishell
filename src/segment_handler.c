@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/06/04 04:40:23 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:36:27 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	add_arg_to_segment(t_cmd_segment *current, t_sys *sys)
 {
 	int		i;
 	char	**new_args;
-	const char	*arg_str;
+	char	*arg_str;
 
 	i = 0;
 	arg_str = sys->type->str;
@@ -25,7 +25,7 @@ static void	add_arg_to_segment(t_cmd_segment *current, t_sys *sys)
 		while (current->args[i])
 			i++;
 	}
-	new_args = (char **)gc_malloc(sizeof(char *) * (i + 2), &sys->gc, type);
+	new_args = (char **)gc_malloc(sizeof(char *) * (i + 2), &sys->gc, PARSING);
 	if (!new_args)
 		return ;
 	i = 0;
@@ -38,7 +38,7 @@ static void	add_arg_to_segment(t_cmd_segment *current, t_sys *sys)
 		}
 		free(current->args);
 	}
-	new_args[i] = gc_strdup(arg_str, sys->gc, type);
+	new_args[i] = gc_strdup(arg_str, &sys->gc, PARSING);
 	new_args[i + 1] = NULL;
 	current->args = new_args;
 }
@@ -52,7 +52,7 @@ void	handle_command_token(t_sys *sys, t_cmd_segment **current)
 			sys->cmd = *current;
 	}
 	if (!(*current)->cmd && sys->type->token == CMD)
-		(*current)->cmd = gc_strdup(sys->type->str, &sys->gc, type);
+		(*current)->cmd = gc_strdup(sys->type->str, &sys->gc, PARSING);
 	else
 		add_arg_to_segment(*current, sys);
 }
@@ -73,10 +73,10 @@ void	handle_redirection_token(t_sys *sys, t_type **next,
 	{
 		*next = (*next)->next;
 		if (token->token == REDIR_IN)
-			(*current)->infile = gc_strdup((*next)->str, &sys->gc, type);
+			(*current)->infile = gc_strdup((*next)->str, &sys->gc, PARSING);
 		else if (token->token == REDIR_OUT || token->token == REDIR_APPEND)
 		{
-			(*current)->outfile = gc_strdup((*next)->str, &sys->gc, type);
+			(*current)->outfile = gc_strdup((*next)->str, &sys->gc, PARSING);
 			if (token->token == REDIR_APPEND)
 				(*current)->append_mode = 1;
 			else
@@ -84,6 +84,6 @@ void	handle_redirection_token(t_sys *sys, t_type **next,
 		}
 		else if (token->token == REDIR_HEREDOC
 			&& (*next)->token == REDIR_TARGET)
-			(*current)->heredoc = gc_strdup((*next)->str, &sys->gc, type);
+			(*current)->heredoc = gc_strdup((*next)->str, &sys->gc, PARSING);
 	}
 }

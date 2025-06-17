@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/06/04 00:02:16 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:34:16 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,24 @@ static char	*expand_var(char *arg, t_sys *sys, int exit_status)
 	char	**env;
 
 	if (!arg || arg[0] != '$')
-		return (gc_strdup(arg, &sys->gc, type));
+		return (gc_strdup(arg, &sys->gc, OTHER));
 	if (arg[1] == '?')
 		return (ft_itoa(exit_status));
 	
 	var_name = arg + 1;
 	len = ft_strlen(var_name);
 	i = 0;
+	env = sys->env;
 	while (env[i])
 	{
 		if (!ft_strcmp(env[i], var_name) && env[i][len] == '=')
 		{
 			value = env[i] + len + 1;
-			return (gc_strdup(value, &sys->gc, type));
+			return (gc_strdup(value, &sys->gc, OTHER));
 		}
 		i++;
 	}
-	return (gc_strdup("", &sys->gc, type));
+	return (gc_strdup("", &sys->gc, OTHER));
 }
 
 static void	expand_single_str(char **str, t_sys *sys, int exit_status)

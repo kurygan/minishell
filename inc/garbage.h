@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:46 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/04 00:00:44 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:28:05 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 typedef enum s_gc_type
 {
 	EXEC,
-	LEXER,
 	PARSING,
 	ENV,
 	BUILTIN,
 	REDIR,
-	OTHER
+	OTHER,
+	ALL
 }	t_gc_type;
 
 typedef struct s_gc

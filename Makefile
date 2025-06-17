@@ -6,7 +6,7 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/06/03 22:00:45 by mkettab          ###   ########.fr        #
+#    Updated: 2025/06/10 21:58:06 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = cc
 FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
-		gc/gc_malloc.c gc/gc_utils.c \
+		gc/gc_malloc.c gc/gc_utils.c gc/gc_strdup.c \
 		expander.c \
 		handle_redirection.c \
 		parsing.c \
@@ -36,11 +36,11 @@ NAME = minishell
 LIB_NAME = lib/lib.a
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS_PREF)
-	@make all -C lib
+	@make -C lib
 	@$(CC) $(FLAGS) -lreadline $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
 	@echo "|🛠️| Program compiled"
 

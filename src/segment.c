@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/06/04 04:41:10 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/10 22:54:01 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	handle_target_token(t_sys *sys, t_cmd_segment **current)
 		if (!sys->cmd)
 			sys->cmd = *current;
 	}
-	(*current)->heredoc = gc_strdup(sys->type->str, &sys->gc, type);
+	(*current)->heredoc = gc_strdup(sys->type->str, &sys->gc, OTHER);
 }
 
 static void	process_token(t_sys *sys, t_cmd_segment **current, t_type **next)
@@ -58,7 +58,7 @@ t_cmd_segment	*init_segment(t_sys *sys)
 {
 	t_cmd_segment	*seg;
 
-	seg = gc_malloc(sizeof(t_cmd_segment), sys->gc, type);
+	seg = gc_malloc(sizeof(t_cmd_segment), &sys->gc, OTHER);
 	if (!seg)
 		return (NULL);
 	ft_memset(seg, 0, sizeof(t_cmd_segment));
@@ -68,7 +68,6 @@ t_cmd_segment	*init_segment(t_sys *sys)
 t_cmd_segment	*convert_tokens(t_sys *sys)
 {
 	t_type			*token;
-	t_cmd_segment	*head;
 	t_cmd_segment	*curr;
 
 	curr = NULL;
@@ -78,5 +77,5 @@ t_cmd_segment	*convert_tokens(t_sys *sys)
 		process_token(sys, &curr, &token);
 		token = token->next;
 	}
-	return (head);
+	return (sys->cmd);
 }
