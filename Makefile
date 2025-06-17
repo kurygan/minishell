@@ -6,12 +6,12 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/06/10 21:58:06 by mkettab          ###   ########.fr        #
+#    Updated: 2025/06/17 22:36:21y mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g3
+FLAGS = -Wall -Wextra -Werror -g3 -I/opt/homebrew/opt/readline/include
 
 SRCS =	minishell.c \
 		gc/gc_malloc.c gc/gc_utils.c gc/gc_strdup.c \
@@ -41,7 +41,8 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 
 $(NAME): $(OBJS_PREF)
 	@make -C lib
-	@$(CC) $(FLAGS) -lreadline $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
+	@$(CC) $(FLAGS) -lreadline -L/opt/homebrew/opt/readline/lib $(OBJS_PREF) \
+	$(LIB_NAME) -o $(NAME)
 	@echo "|🛠️| Program compiled"
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/10 22:46:18 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/17 22:45:49 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status);
 
 /* handle_redirection */
 
-void			handle_redirection(char *line, int *i, t_type **lst);
+void			handle_redirection(char *line, int *i, t_sys *sys);
 
 /* parsing */
 
@@ -109,10 +109,10 @@ void			reset_signals(struct termios *orig_termios);
 /* token */
 
 t_type			*tokenize(char *line, t_sys *sys);
-t_type			*add_token(t_type *list, char *str, t_token token);
-void			handle_pipe(char *line, int *i, t_type **lst);
-void			handle_quote(char *line, int *i, t_type **lst, char quote);
-void			handle_word(char *line, int *i, t_type **lst);
+t_type			*add_token(t_sys *sys, char *str, t_token token);
+void			handle_pipe(char *line, int *i, t_sys *sys);
+void			handle_quote(char *line, int *i, t_sys *sys, char quote);
+void			handle_word(char *line, int *i, t_sys *sys);
 
 /* debug */
 

@@ -17,7 +17,7 @@ static int	handle_and_check_quote(char *line, int *i, t_sys *sys)
 	int	old_i;
 
 	old_i = *i;
-	handle_quote(line, i, sys->type, line[old_i]);
+	handle_quote(line, i, sys, line[old_i]);
 	if (*i == old_i)
 		return (1);
 	return (0);
@@ -81,10 +81,10 @@ t_type	*add_token(t_sys *sys, char *str, t_token token)
 	t_type	*new;
 	t_type	*tmp;
 
-	new = gc_calloc(sizeof(t_type), &sys->gc, type);
+	new = gc_calloc(sizeof(t_type), &sys->gc, OTHER);
 	if (!new)
 		return (NULL);
-	new->str = gc_strdup(str, &sys->gc, type);
+	new->str = gc_strdup(str, &sys->gc, OTHER);
 	if (!new->str)
 		return (NULL);
 	new->token = token;
