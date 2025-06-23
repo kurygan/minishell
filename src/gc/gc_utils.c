@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:26:39 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/10 22:27:55 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/18 02:14:21 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	gc_free(t_gc **gc, t_gc_type type)
 				curr->prev->next = curr->next;
 			if (*gc == curr)
 				*gc = curr->next;
-			free(curr->to_free);
+			if (curr->to_free)
+				free(curr->to_free);
 			free(curr);
 		}
 		curr = next;

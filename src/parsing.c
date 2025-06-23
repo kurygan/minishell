@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:01:33 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/04 04:43:22 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/18 02:14:47 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_cmd_segment	*handle_line(char *line, int exit_status, t_sys *sys)
 	if (!sys->type)
 		return (NULL);
 	segments = convert_tokens(sys);
-	free_token_list(sys->type);
 	expand_variables(segments, sys, exit_status);
 	return (segments);
 }

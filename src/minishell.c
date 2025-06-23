@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/10 22:28:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/18 02:16:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static int	process_command(t_sys *sys)
 		// TODO: exécuter `command` et mettre à jour `exit_status`
 		debug_print_segments(sys->cmd);
 		free(line);
-		free_segments(sys->cmd);
 		// TODO: free_segments(command);
 	}
 	return (exit_status);
