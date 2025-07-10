@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/17 22:45:49 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/24 22:48:00 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,5 @@ void			handle_word(char *line, int *i, t_sys *sys);
 
 void			debug_print_segments(t_cmd_segment *seg);
 void			debug_print_tokens(t_type *tokens);
-void			free_segments(t_cmd_segment *segments);
-void			free_token_list(t_type *lst);
 
 #endif

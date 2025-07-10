@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/06/10 22:36:27 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/23 20:51:15 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	add_arg_to_segment(t_cmd_segment *current, t_sys *sys)
 			new_args[i] = current->args[i];
 			i++;
 		}
-		free(current->args);
 	}
 	new_args[i] = gc_strdup(arg_str, &sys->gc, PARSING);
 	new_args[i + 1] = NULL;

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:22:40 by mkettab           #+#    #+#             */
-/*   Updated: 2025/06/10 22:11:40 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/24 22:54:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ void*	gc_calloc(size_t size, t_gc **gc, t_gc_type type)
 	malloced = gc_malloc(size, gc, type);
 	if (!malloced)
 		return (NULL);
+	ft_memset(malloced, 0, size);
 	return (malloced);
 }

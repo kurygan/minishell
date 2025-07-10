@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/06/17 22:44:54 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/06/23 20:53:25 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	handle_pipe(char *line, int *i, t_sys *sys)
 	(void)line;
 	symbol = gc_strdup("|", &sys->gc, OTHER);
 	sys->type = add_token(sys, symbol, PIPE);
-	free(symbol);
 	(*i)++;
 }
 

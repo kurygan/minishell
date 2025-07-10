@@ -64,11 +64,6 @@ void	handle_option_token(t_sys *sys, t_cmd_segment **current)
 	if (!new_options)
 		return ;
 	if (!fill_options_array(new_options, (*current)->options, sys))
-	{
-		free(new_options);
 		return ;
-	}
-	if ((*current)->options)
-		free((*current)->options);
 	(*current)->options = new_options;
 }

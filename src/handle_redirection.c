@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 00:52:56 by emetel           ###   ########.fr       */
+/*   Updated: 2025/06/23 21:00:55 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*extract_unquoted_target(char *line, int *i)
 	return (target);
 }
 
-static void	handle_redirection_target(char *line, int *i, t_type **lst,
+static void	handle_redirection_target(char *line, int *i, t_sys *sys,
 									t_token type)
 {
 	char	*limiter;
@@ -79,19 +79,17 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 	else
 		limiter = extract_unquoted_target(line, i);
 	if (type == REDIR_HEREDOC)
-		*lst = add_token(*lst, limiter, REDIR_TARGET);
+		sys->type = add_token(sys, limiter, REDIR_TARGET);
 	else
-		*lst = add_token(*lst, limiter, ARGS);
-	free(limiter);
+		sys->type = add_token(sys, limiter, ARGS);
 }
 
-void	handle_redirection(char *line, int *i, t_type **lst)
+void	handle_redirection(char *line, int *i, t_sys *sys)
 {
 	char	*symbol;
 	t_token	type;
 
 	type = identify_redirection_type(line, i, &symbol);
-	*lst = add_token(*lst, symbol, type);
-	free(symbol);
-	handle_redirection_target(line, i, lst, type);
+	sys->type = add_token(sys, symbol, type);
+	handle_redirection_target(line, i, sys, type);
 }
