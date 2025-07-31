@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:37:25 by emetel           ###   ########.fr       */
+/*   Updated: 2025/07/31 21:26:35 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*expand_var(char *arg, char **env, int exit_status)
+static char	*expand_var(char *arg, t_sys *sys, int exit_status)
 {
 	int		i;
 	char	*var_name;
@@ -26,11 +26,11 @@ static char	*expand_var(char *arg, char **env, int exit_status)
 	var_name = arg + 1;
 	len = ft_strlen(var_name);
 	i = 0;
-	while (env[i])
+	while (sys->env[i])
 	{
-		if (!ft_strncmp(env[i], var_name, len) && env[i][len] == '=')
+		if (!ft_strncmp(sys->env[i], var_name, len) && sys->env[i][len] == '=')
 		{
-			value = env[i] + len + 1;
+			value = sys->env[i] + len + 1;
 			return (ft_strdup(value));
 		}
 		i++;
@@ -38,19 +38,19 @@ static char	*expand_var(char *arg, char **env, int exit_status)
 	return (ft_strdup(""));
 }
 
-static void	expand_single_str(char **str, char **env, int exit_status)
+static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 {
 	char	*expanded;
 
 	if (*str && (*str)[0] == '$')
 	{
-		expanded = expand_var(*str, env, exit_status);
+		expanded = expand_var(*str, sys, exit_status);
 		free(*str);
 		*str = expanded;
 	}
 }
 
-static void	expand_str_array(char **arr, char **env, int exit_status)
+static void	expand_str_array(char **arr, t_sys *sys, int exit_status)
 {
 	int		i;
 	char	*expanded;
@@ -62,7 +62,7 @@ static void	expand_str_array(char **arr, char **env, int exit_status)
 	{
 		if (arr[i][0] == '$')
 		{
-			expanded = expand_var(arr[i], env, exit_status);
+			expanded = expand_var(arr[i], sys, exit_status);
 			free(arr[i]);
 			arr[i] = expanded;
 		}
@@ -70,15 +70,15 @@ static void	expand_str_array(char **arr, char **env, int exit_status)
 	}
 }
 
-void	expand_variables(t_cmd_segment *segments, char **env, int exit_status)
+void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status)
 {
 	while (segments)
 	{
-		expand_single_str(&segments->cmd, env, exit_status);
-		expand_str_array(segments->args, env, exit_status);
-		expand_str_array(segments->options, env, exit_status);
-		expand_single_str(&segments->infile, env, exit_status);
-		expand_single_str(&segments->outfile, env, exit_status);
+		expand_single_str(&segments->cmd, sys, exit_status);
+		expand_str_array(segments->args, sys, exit_status);
+		expand_str_array(segments->options, sys, exit_status);
+		expand_single_str(&segments->infile, sys, exit_status);
+		expand_single_str(&segments->outfile, sys, exit_status);
 		segments = segments->next;
 	}
 }

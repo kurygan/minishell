@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 02:07:05 by emetel           ###   ########.fr       */
+/*   Updated: 2025/07/31 21:08:00 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_cmd_segment	*init_segment(void)
 	return (seg);
 }
 
-t_cmd_segment	*convert_tokens(t_type *tokens)
+t_cmd_segment	*convert_tokens(t_sys *sys)
 {
 	t_cmd_segment	*head;
 	t_cmd_segment	*current;
@@ -82,7 +82,7 @@ t_cmd_segment	*convert_tokens(t_type *tokens)
 
 	head = NULL;
 	current = NULL;
-	token = tokens;
+	token = sys->tokens;
 	while (token)
 	{
 		process_token(token, &current, &head, &token);

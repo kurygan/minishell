@@ -3,25 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:01:33 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/29 00:26:00 by emetel           ###   ########.fr       */
+/*   Updated: 2025/07/31 21:17:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_cmd_segment	*handle_line(char *line, char **env, int exit_status)
+t_cmd_segment	*handle_line(t_sys *sys, int exit_status)
 {
-	t_type			*tokens;
 	t_cmd_segment	*segments;
 
-	tokens = tokenize(line);
-	if (!tokens)
-		return (NULL);
-	segments = convert_tokens(tokens);
-	free_token_list(tokens);
-	expand_variables(segments, env, exit_status);
+	segments = convert_tokens(sys);
+	expand_variables(segments, sys, exit_status);
 	return (segments);
 }

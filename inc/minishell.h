@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/29 02:15:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/07/31 21:17:37 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdbool.h>
 # include "../lib/libft.h"
 
 # ifndef ECHOCTL
@@ -68,9 +69,16 @@ typedef struct s_type
 	struct s_type			*prev;
 }	t_type;
 
+typedef struct s_sys
+{
+	char			**env;
+	t_cmd_segment	*command;
+	t_type			*tokens;
+}	t_sys;
+
 /* expander */
 
-void			expand_variables(t_cmd_segment *segments, char **env,
+void			expand_variables(t_cmd_segment *segments, t_sys *sys,
 					int exit_status);
 
 /* handle_redirection */
@@ -79,7 +87,7 @@ void			handle_redirection(char *line, int *i, t_type **lst);
 
 /* parsing */
 
-t_cmd_segment	*handle_line(char *line, char **env, int exit_status);
+t_cmd_segment	*handle_line(t_sys *sys, int exit_status);
 
 /* segment */
 
@@ -90,7 +98,7 @@ void			handle_redirection_token(t_type *token, t_type **next,
 void			handle_option_token(t_type *token, t_cmd_segment **current,
 					t_cmd_segment **head);
 t_cmd_segment	*init_segment(void);
-t_cmd_segment	*convert_tokens(t_type *tokens);
+t_cmd_segment	*convert_tokens(t_sys *sys);
 
 /* signal */
 
