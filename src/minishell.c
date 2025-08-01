@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/07/31 21:18:06 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/01 02:19:35 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	process_command(char **env, int *exit_status)
 	if (!sys)
 		return (true);
 	sys->env = env;
-	line = readline("[petitcoquillage]$ ");
+	line = readline("[suicideProject]$ ");
 	if (!line)
 	{
 		printf("\n");
@@ -34,7 +34,7 @@ static bool	process_command(char **env, int *exit_status)
 		free(line);
 		return (true);
 	}
-	sys->tokens = tokenize(line);
+	sys->tokens = tokenize(line, sys);
 	sys->command = handle_line(sys, *exit_status);
 	debug_print_tokens(sys->tokens);
 	debug_print_segments(sys->command);

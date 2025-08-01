@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 00:50:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/01 02:24:38 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static int	is_quoted_content(char *word)
 	return (0);
 }
 
-void	handle_pipe(char *line, int *i, t_type **lst)
+void	handle_pipe(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	char	*symbol;
 
 	(void)line;
 	symbol = ft_strdup("|");
-	*lst = add_token(*lst, symbol, PIPE);
+	*lst = add_token(*lst, symbol, PIPE, sys);
 	free(symbol);
 	(*i)++;
 }
@@ -70,7 +70,7 @@ void	handle_quote(char *line, int *i, t_type **lst, char quote)
 		return ;
 	}
 	word = ft_substr(line, start, *i - start);
-	*lst = add_token(*lst, word, CMD);
+	*lst = add_token(*lst, word, CMD, sys);
 	free(word);
 	(*i)++;
 }

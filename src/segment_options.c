@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment_options.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:58:20 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:59:15 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/01 02:18:18 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	count_options(char **options)
 }
 
 static int	fill_options_array(char **new_options, char **old_options,
-		char *new_option)
+		char *new_option, t_sys *sys)
 {
 	int	i;
 
@@ -47,14 +47,15 @@ static int	fill_options_array(char **new_options, char **old_options,
 }
 
 void	handle_option_token(t_type *token, t_cmd_segment **current,
-		t_cmd_segment **head)
+		t_cmd_segment **head, t_sys *sys)
 {
+	(void)sys;
 	int		count;
 	char	**new_options;
 
 	if (!*current)
 	{
-		*current = init_segment();
+		*current = ft_calloc(1, sizeof(t_cmd_segment));
 		if (!*head)
 			*head = *current;
 	}
@@ -64,7 +65,7 @@ void	handle_option_token(t_type *token, t_cmd_segment **current,
 	new_options = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!new_options)
 		return ;
-	if (!fill_options_array(new_options, (*current)->options, token->str))
+	if (!fill_options_array(new_options, (*current)->options, token->str, sys))
 	{
 		free(new_options);
 		return ;

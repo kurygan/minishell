@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   segment_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:58:02 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/01 02:18:13 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str)
+static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str,
+				t_sys *sys)
 {
+	(void)sys;
 	int		i;
 	char	**new_args;
 
@@ -42,26 +44,30 @@ static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str)
 }
 
 void	handle_command_token(t_type *token, t_cmd_segment **current,
-						t_cmd_segment **head)
+						t_cmd_segment **head, t_sys *sys)
 {
+	(void)sys;
 	if (!*current)
 	{
-		*current = init_segment();
+		*current = ft_calloc(1, sizeof(t_cmd_segment));
 		if (!*head)
 			*head = *current;
 	}
 	if (!(*current)->cmd && token->token == CMD)
 		(*current)->cmd = ft_strdup(token->str);
 	else
-		add_arg_to_segment(*current, token->str);
+		add_arg_to_segment(*current, token->str, sys);
 }
 
-void	handle_redirection_token(t_type *token, t_type **next,
-		t_cmd_segment **current, t_cmd_segment **head)
+void	handle_redirection_token(t_type *token, t_cmd_segment **current,
+			t_cmd_segment **head, t_sys *sys)
 {
+	t_type **next = &token;
+	(void)sys;
+
 	if (!*current)
 	{
-		*current = init_segment();
+		*current = ft_calloc(1, sizeof(t_cmd_segment));
 		if (!*head)
 			*head = *current;
 	}

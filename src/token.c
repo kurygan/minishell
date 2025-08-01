@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 00:16:46 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/01 02:24:23 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	assign_cmd_and_args(t_type *token_lst)
 	}
 }
 
-t_type	*tokenize(char *line)
+t_type	*tokenize(char *line, t_sys *sys)
 {
 	int		i;
 	t_type	*token_lst;
@@ -63,7 +63,7 @@ t_type	*tokenize(char *line)
 		if (line[i] == ' ' || line[i] == '\t')
 			i++;
 		else if (line[i] == '|')
-			handle_pipe(line, &i, &token_lst);
+			handle_pipe(line, &i, &token_lst, sys);
 		else if (line[i] == '<' || line[i] == '>')
 			handle_redirection(line, &i, &token_lst);
 		else if (line[i] == '\'' || line[i] == '\"')
@@ -78,7 +78,7 @@ t_type	*tokenize(char *line)
 	return (token_lst);
 }
 
-t_type	*add_token(t_type *list, char *str, t_token token)
+t_type	*add_token(t_type *list, char *str, t_token token, t_sys *sys)
 {
 	t_type	*new;
 	t_type	*tmp;

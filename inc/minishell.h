@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/07/31 21:17:37 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/01 02:20:11 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,11 @@ t_cmd_segment	*handle_line(t_sys *sys, int exit_status);
 /* segment */
 
 void			handle_command_token(t_type *token, t_cmd_segment **current,
-					t_cmd_segment **head);
-void			handle_redirection_token(t_type *token, t_type **next,
-					t_cmd_segment **current, t_cmd_segment **head);
+					t_cmd_segment **head, t_sys *sys);
+void			handle_redirection_token(t_type *token,
+					t_cmd_segment **current, t_cmd_segment **head, t_sys *sys);
 void			handle_option_token(t_type *token, t_cmd_segment **current,
-					t_cmd_segment **head);
-t_cmd_segment	*init_segment(void);
+					t_cmd_segment **head, t_sys *sys);
 t_cmd_segment	*convert_tokens(t_sys *sys);
 
 /* signal */
@@ -108,8 +107,8 @@ void			reset_signals(struct termios *orig_termios);
 
 /* token */
 
-t_type			*tokenize(char *line);
-t_type			*add_token(t_type *list, char *str, t_token token);
+t_type			*tokenize(char *line, t_sys *sys);
+t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(char *line, int *i, t_type **lst);
 void			handle_quote(char *line, int *i, t_type **lst, char quote);
 void			handle_word(char *line, int *i, t_type **lst);
