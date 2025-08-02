@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/01 02:24:38 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/02 21:38:21 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ void	handle_pipe(char *line, int *i, t_type **lst, t_sys *sys)
 	(*i)++;
 }
 
-void	handle_quote(char *line, int *i, t_type **lst, char quote)
+void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	int		start;
 	char	*word;
+	char	quote;
 
+	quote = line[*i];
 	(*i)++;
 	start = *i;
 	while (line[*i] && line[*i] != quote)
@@ -75,7 +77,7 @@ void	handle_quote(char *line, int *i, t_type **lst, char quote)
 	(*i)++;
 }
 
-void	handle_word(char *line, int *i, t_type **lst)
+void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	int		start;
 	char	*word;
@@ -92,6 +94,6 @@ void	handle_word(char *line, int *i, t_type **lst)
 		token_type = OPTIONS;
 	else
 		token_type = CMD;
-	*lst = add_token(*lst, word, token_type);
+	*lst = add_token(*lst, word, token_type, sys);
 	free(word);
 }

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:58:20 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/01 02:18:18 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/02 23:39:51 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	count_options(char **options)
 static int	fill_options_array(char **new_options, char **old_options,
 		char *new_option, t_sys *sys)
 {
+	(void)sys;
 	int	i;
 
 	i = 0;
@@ -49,13 +50,14 @@ static int	fill_options_array(char **new_options, char **old_options,
 void	handle_option_token(t_type *token, t_cmd_segment **current,
 		t_cmd_segment **head, t_sys *sys)
 {
-	(void)sys;
 	int		count;
 	char	**new_options;
 
 	if (!*current)
 	{
 		*current = ft_calloc(1, sizeof(t_cmd_segment));
+		if (*current)
+			(*current)->sys = sys;
 		if (!*head)
 			*head = *current;
 	}

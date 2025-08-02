@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/07/31 21:26:35 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/02 23:50:26 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static char	*expand_var(char *arg, t_sys *sys, int exit_status)
 
 static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 {
+	(void)sys;
 	char	*expanded;
 
 	if (*str && (*str)[0] == '$')
@@ -52,6 +53,7 @@ static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 
 static void	expand_str_array(char **arr, t_sys *sys, int exit_status)
 {
+	(void)sys;
 	int		i;
 	char	*expanded;
 

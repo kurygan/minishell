@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/01 02:20:11 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/02 21:50:08 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,16 @@ typedef struct s_cmd_segment
 	char					*heredoc;
 	char					*outfile;
 	int						append_mode;
+	struct s_sys *sys;
 	struct s_cmd_segment	*next;
+	struct s_cmd_segment	*prev;
 }	t_cmd_segment;
 
 typedef struct s_type
 {
 	char					*str;
 	t_token					token;
+	struct s_sys			*sys;
 	struct s_type			*next;
 	struct s_type			*prev;
 }	t_type;
@@ -83,7 +86,7 @@ void			expand_variables(t_cmd_segment *segments, t_sys *sys,
 
 /* handle_redirection */
 
-void			handle_redirection(char *line, int *i, t_type **lst);
+void			handle_redirection(char *line, int *i, t_type **lst, t_sys *sys);
 
 /* parsing */
 
@@ -109,9 +112,9 @@ void			reset_signals(struct termios *orig_termios);
 
 t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
-void			handle_pipe(char *line, int *i, t_type **lst);
-void			handle_quote(char *line, int *i, t_type **lst, char quote);
-void			handle_word(char *line, int *i, t_type **lst);
+void			handle_pipe(char *line, int *i, t_type **lst, t_sys *sys);
+void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
+void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
 
 /* debug */
 

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/01 01:22:18 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/02 23:43:56 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,20 @@ static void	handle_pipe_token(t_type *token, t_cmd_segment **current,
 							t_cmd_segment **head, t_sys *sys)
 {
 	(void)token;
-	(void)sys;
 	if (*current)
+	{
 		(*current)->next = ft_calloc(1, sizeof(t_cmd_segment));
+		if ((*current)->next)
+			(*current)->next->sys = sys;
+	}
 	if (*current)
 		*current = (*current)->next;
 	else
+	{
 		*current = ft_calloc(1, sizeof(t_cmd_segment));
+		if (*current)
+			(*current)->sys = sys;
+	}
 	if (!*head)
 		*head = *current;
 }
@@ -30,10 +37,11 @@ static void	handle_pipe_token(t_type *token, t_cmd_segment **current,
 static void	handle_target_token(t_type *token, t_cmd_segment **current,
 							t_cmd_segment **head, t_sys *sys)
 {
-	(void)sys;
 	if (!*current)
 	{
 		*current = ft_calloc(1, sizeof(t_cmd_segment));
+		if (*current)
+			(*current)->sys = sys;
 		if (!*head)
 			*head = *current;
 	}
@@ -53,7 +61,7 @@ static void	process_token(t_type *token, t_cmd_segment **current,
 	else if (token->token == REDIR_IN || token->token == REDIR_OUT
 		|| token->token == REDIR_APPEND || token->token == REDIR_HEREDOC)
 	{
-		handle_redirection_token(token, sys, current, head);
+		handle_redirection_token(token, current, head, sys);
 	}
 	else if (token->token == REDIR_TARGET)
 		handle_target_token(token, current, head, sys);
