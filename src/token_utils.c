@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 17:46:45 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 18:53:43 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void	handle_word(char *line, int *i, t_type **lst)
 
 	start = *i;
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>'
+		&& line[*i] != '\'' && line[*i] != '\"')
 		(*i)++;
 	word = ft_substr(line, start, *i - start);
 	if (!word)
