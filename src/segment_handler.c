@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:58:02 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:54:50 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	handle_command_token(t_type *token, t_cmd_segment **current,
 		if (!*head)
 			*head = *current;
 	}
-	if (!(*current)->cmd && token->token == CMD)
+	if (!(*current)->cmd && (token->token == CMD || token->token == SINGLE_QUOTE
+			|| token->token == DOUBLE_QUOTE))
 		(*current)->cmd = ft_strdup(token->str);
 	else
 		add_arg_to_segment(*current, token->str);

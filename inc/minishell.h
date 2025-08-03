@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/29 02:15:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 18:00:50 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef enum e_token
 	REDIR_HEREDOC,
 	REDIR_TARGET,
 	OPTIONS,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
 	ERROR
 }	t_token;
 
@@ -72,6 +74,27 @@ typedef struct s_type
 
 void			expand_variables(t_cmd_segment *segments, char **env,
 					int exit_status);
+
+/* expand_quote */
+
+char			*expand_quote(char *arg, char **env, int exit_status,
+					int is_single_quote);
+
+/* quote_utils */
+
+char			*get_env_value(char *var_name, char **env);
+char			*remove_quotes(char *str);
+char			*process_regular_char(char *content, char *result, int *i);
+char			*process_valid_variable(char *content, char *result, char **env,
+					int *i);
+char			*process_invalid_variable(char *content, char *result, int *i);
+
+/* expand_utils */
+
+void			expand_quoted_str(char **str, char **env, int exit_status,
+					int is_single);
+void			expand_variable_str(char **str, char **env, int exit_status);
+char			*extract_var_content(char *content, int *i, int start);
 
 /* handle_redirection */
 

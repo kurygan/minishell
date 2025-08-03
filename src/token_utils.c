@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 00:50:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:46:45 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,23 @@ void	handle_quote(char *line, int *i, t_type **lst, char quote)
 {
 	int		start;
 	char	*word;
+	t_token	token_type;
 
-	(*i)++;
 	start = *i;
+	(*i)++;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
 	if (!line[*i])
 	{
-		if (quote == '\'')
-			printf("syntax error: unclosed single quote\n");
-		else
-			printf("syntax error: unclosed double quote\n");
+		*i = start;
 		return ;
 	}
-	word = ft_substr(line, start, *i - start);
-	*lst = add_token(*lst, word, CMD);
+	word = ft_substr(line, start, (*i - start) + 1);
+	if (quote == '\'')
+		token_type = SINGLE_QUOTE;
+	else
+		token_type = DOUBLE_QUOTE;
+	*lst = add_token(*lst, word, token_type);
 	free(word);
 	(*i)++;
 }

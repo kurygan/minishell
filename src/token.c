@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 00:16:46 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:54:50 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	assign_cmd_and_args(t_type *token_lst)
 	expect_cmd = 1;
 	while (tmp)
 	{
-		if (tmp->token == CMD)
+		if (tmp->token == CMD || tmp->token == SINGLE_QUOTE
+			|| tmp->token == DOUBLE_QUOTE)
 		{
 			if (expect_cmd)
 				expect_cmd = 0;

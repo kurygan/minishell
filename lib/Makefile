@@ -16,6 +16,7 @@ SRCS = str/ft_strnstr.c \
 	   str/ft_putendl_fd.c \
 	   str/ft_substr.c \
 	   str/ft_strjoin.c \
+	   str/ft_strjoin_free.c \
 	   str/ft_strtrim.c \
 	   str/ft_itoa.c \
 	   str/ft_split.c \

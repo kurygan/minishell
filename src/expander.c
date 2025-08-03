@@ -6,66 +6,39 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:37:25 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:55:07 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*expand_var(char *arg, char **env, int exit_status)
-{
-	int		i;
-	char	*var_name;
-	char	*value;
-	size_t	len;
-
-	if (!arg || arg[0] != '$')
-		return (ft_strdup(arg));
-	if (arg[1] == '?')
-		return (ft_itoa(exit_status));
-	var_name = arg + 1;
-	len = ft_strlen(var_name);
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], var_name, len) && env[i][len] == '=')
-		{
-			value = env[i] + len + 1;
-			return (ft_strdup(value));
-		}
-		i++;
-	}
-	return (ft_strdup(""));
-}
-
 static void	expand_single_str(char **str, char **env, int exit_status)
 {
-	char	*expanded;
+	char	*original;
+	size_t	len;
 
-	if (*str && (*str)[0] == '$')
-	{
-		expanded = expand_var(*str, env, exit_status);
-		free(*str);
-		*str = expanded;
-	}
+	if (!*str)
+		return ;
+	original = *str;
+	len = ft_strlen(original);
+	if (original[0] == '\'' && original[len - 1] == '\'')
+		expand_quoted_str(str, env, exit_status, 1);
+	else if (original[0] == '\"' && original[len - 1] == '\"')
+		expand_quoted_str(str, env, exit_status, 0);
+	else if (original[0] == '$')
+		expand_variable_str(str, env, exit_status);
 }
 
 static void	expand_str_array(char **arr, char **env, int exit_status)
 {
 	int		i;
-	char	*expanded;
 
 	if (!arr)
 		return ;
 	i = 0;
 	while (arr[i])
 	{
-		if (arr[i][0] == '$')
-		{
-			expanded = expand_var(arr[i], env, exit_status);
-			free(arr[i]);
-			arr[i] = expanded;
-		}
+		expand_single_str(&arr[i], env, exit_status);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 02:25:51 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 02:26:55 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/03 18:02:32 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,19 +131,20 @@ void	free_token_list(t_type *lst)
 
 void	debug_print_tokens(t_type *tokens)
 {
-	t_type *token;
-	int i;
-	const char *token_types[] = {
-		"CMD", "ARGS", "PIPE", 
+	t_type		*token;
+	int			i;
+	const char	*token_types[] = {
+		"CMD", "ARGS", "PIPE",
 		"REDIR_IN", "REDIR_OUT", "REDIR_APPEND", "REDIR_HEREDOC",
 		"REDIR_TARGET", "OPTIONS", "ERROR"
 	};
+
 	if (!tokens)
 	{
 		printf("\n┌─────────────────────────────┐\n");
 		printf("│         TOKENS: NONE        │\n");
 		printf("└─────────────────────────────┘\n\n");
-		return;
+		return ;
 	}
 	printf("\n┌─────────────────────────────┐\n");
 	printf("│           TOKENS           │\n");
