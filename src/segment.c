@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 00:37:51 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 01:11:54 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,19 @@ static void	process_token(t_type *token, t_cmd_segment **current,
 						t_cmd_segment **head, t_sys *sys)
 {
 	
-	if (token->token == PIPE){
+	if (token->token == PIPE)
 		handle_pipe_token(token, current, head, sys);
-		printf("DEBUG: Processing token type %d, str: %s\n", token->token, token->str ? token->str : "NULL");}
-	else if (token->token == CMD || token->token == ARGS){
+	else if (token->token == CMD || token->token == ARGS)
 		handle_command_token(token, current, head, sys);
-		printf("DEBUG: Processing token type %d, str: %s\n", token->token, token->str ? token->str : "NULL");}
-	else if (token->token == OPTIONS){
+	else if (token->token == OPTIONS)
 		handle_option_token(token, current, head, sys);
-		printf("DEBUG: Processing token type %d, str: %s\n", token->token, token->str ? token->str : "NULL");}
 	else if (token->token == REDIR_IN || token->token == REDIR_OUT
 		|| token->token == REDIR_APPEND || token->token == REDIR_HEREDOC)
 	{
 		handle_redirection_token(token, current, head, sys);
-		printf("DEBUG: Processing token type %d, str: %s\n", token->token, token->str ? token->str : "NULL");
 	}
-	else if (token->token == REDIR_TARGET){
+	else if (token->token == REDIR_TARGET)
 		handle_target_token(token, current, head, sys);
-		printf("DEBUG: Processing token type %d, str: %s\n", token->token, token->str ? token->str : "NULL");}
 }
 
 t_cmd_segment	*convert_tokens(t_sys *sys)

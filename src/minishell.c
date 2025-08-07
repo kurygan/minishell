@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:46:12 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 01:11:19 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ static bool	process_command(char **env, int *exit_status)
 		return (true);
 	}
 	sys->tokens = tokenize(line, sys);
-	printf("Tokenized\n");
 	sys->command = handle_line(sys, *exit_status);
-	printf("Segmented\n");
 	debug_print_tokens(sys->tokens);
 	debug_print_segments(sys->command);
 	free(line);
