@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/02 23:50:39 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:12:15 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ static bool	process_command(char **env, int *exit_status)
 	debug_print_tokens(sys->tokens);
 	debug_print_segments(sys->command);
 	free(line);
-	free_token_list(sys->tokens);
-	free_segments(sys->command);
 	return (false);
 }
 

@@ -23,6 +23,7 @@ SRCS = str/ft_strnstr.c \
 	   str/ft_striteri.c \
 	   str/ft_freetab.c \
 	   str/ft_strcmp.c \
+	   str/ft_strcpy.c \
 	   num/ft_atoi.c \
 	   is/ft_isascii.c \
 	   is/ft_isprint.c \

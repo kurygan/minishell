@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/02 23:42:09 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:12:06 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 		*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
 	else
 		*lst = add_token(*lst, limiter, ARGS, (*lst)->sys);
-	free(limiter);
 }
 
 void	handle_redirection(char *line, int *i, t_type **lst, t_sys *sys)
@@ -93,6 +92,5 @@ void	handle_redirection(char *line, int *i, t_type **lst, t_sys *sys)
 
 	type = identify_redirection_type(line, i, &symbol, sys);
 	*lst = add_token(*lst, symbol, type, sys);
-	free(symbol);
 	handle_redirection_target(line, i, lst, type);
 }

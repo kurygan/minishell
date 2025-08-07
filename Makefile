@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
+#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/05/29 02:18:57 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/08 00:30:39 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,11 @@ SRCS =	minishell.c \
 		signal.c \
 		token_utils.c \
 		token.c \
-		debug.c
+		debug.c \
+		garbage_collector/gc_free.c \
+		garbage_collector/gc_malloc.c \
+		garbage_collector/gc_strdup.c \
+		garbage_collector/gc_utils.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/
@@ -35,7 +39,7 @@ NAME = minishell
 LIB_NAME = lib/lib.a
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS_PREF)

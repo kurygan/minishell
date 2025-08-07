@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/02 23:43:56 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:28:06 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	handle_pipe_token(t_type *token, t_cmd_segment **current,
 	(void)token;
 	if (*current)
 	{
-		(*current)->next = ft_calloc(1, sizeof(t_cmd_segment));
+		(*current)->next = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
 		if ((*current)->next)
 			(*current)->next->sys = sys;
 	}
@@ -26,7 +26,7 @@ static void	handle_pipe_token(t_type *token, t_cmd_segment **current,
 		*current = (*current)->next;
 	else
 	{
-		*current = ft_calloc(1, sizeof(t_cmd_segment));
+		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
 		if (*current)
 			(*current)->sys = sys;
 	}
@@ -39,13 +39,13 @@ static void	handle_target_token(t_type *token, t_cmd_segment **current,
 {
 	if (!*current)
 	{
-		*current = ft_calloc(1, sizeof(t_cmd_segment));
+		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
 		if (*current)
 			(*current)->sys = sys;
 		if (!*head)
 			*head = *current;
 	}
-	(*current)->heredoc = ft_strdup(token->str);
+	(*current)->heredoc = gc_strdup(token->str, &(sys->garbage));
 }
 
 static void	process_token(t_type *token, t_cmd_segment **current,

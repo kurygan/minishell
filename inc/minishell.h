@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/02 21:50:08 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:31:53 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <readline/history.h>
 # include <stdbool.h>
 # include "../lib/libft.h"
+# include "garbage.h"
 
 # ifndef ECHOCTL
 #  define ECHOCTL 0000001000
@@ -77,6 +78,7 @@ typedef struct s_sys
 	char			**env;
 	t_cmd_segment	*command;
 	t_type			*tokens;
+	struct _gc				*garbage;
 }	t_sys;
 
 /* expander */

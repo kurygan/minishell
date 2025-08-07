@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:58:20 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/02 23:39:51 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:26:27 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	fill_options_array(char **new_options, char **old_options,
 			i++;
 		}
 	}
-	new_options[i] = ft_strdup(new_option);
+	new_options[i] = gc_strdup(new_option, &(sys->garbage));
 	if (!new_options[i])
 		return (0);
 	new_options[i + 1] = NULL;
@@ -55,7 +55,7 @@ void	handle_option_token(t_type *token, t_cmd_segment **current,
 
 	if (!*current)
 	{
-		*current = ft_calloc(1, sizeof(t_cmd_segment));
+		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
 		if (*current)
 			(*current)->sys = sys;
 		if (!*head)
@@ -64,15 +64,12 @@ void	handle_option_token(t_type *token, t_cmd_segment **current,
 	if (!*current || !token)
 		return ;
 	count = count_options((*current)->options);
-	new_options = (char **)malloc(sizeof(char *) * (count + 2));
+	new_options = (char **)gc_malloc(&(sys->garbage), sizeof(char *) * (count + 2));
 	if (!new_options)
 		return ;
 	if (!fill_options_array(new_options, (*current)->options, token->str, sys))
 	{
-		free(new_options);
 		return ;
 	}
-	if ((*current)->options)
-		free((*current)->options);
 	(*current)->options = new_options;
 }

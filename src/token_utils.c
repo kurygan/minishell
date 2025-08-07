@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/02 21:38:21 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:12:38 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	handle_pipe(char *line, int *i, t_type **lst, t_sys *sys)
 	(void)line;
 	symbol = ft_strdup("|");
 	*lst = add_token(*lst, symbol, PIPE, sys);
-	free(symbol);
 	(*i)++;
 }
 
@@ -73,7 +72,6 @@ void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 	}
 	word = ft_substr(line, start, *i - start);
 	*lst = add_token(*lst, word, CMD, sys);
-	free(word);
 	(*i)++;
 }
 
@@ -95,5 +93,4 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	else
 		token_type = CMD;
 	*lst = add_token(*lst, word, token_type, sys);
-	free(word);
 }

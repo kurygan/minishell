@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 00:27:43 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/07 22:20:45 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ t_type	*add_token(t_type *list, char *str, t_token token, t_sys *sys)
 	}
 	tmp->next = new;
 	new->prev = tmp;
+	new->next = NULL;
 	return (list);
 }
