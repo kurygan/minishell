@@ -6,7 +6,7 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/08 00:30:39 by mkettab          ###   ########.fr        #
+#    Updated: 2025/08/08 01:09:47 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS =	minishell.c \
 		garbage_collector/gc_free.c \
 		garbage_collector/gc_malloc.c \
 		garbage_collector/gc_strdup.c \
-		garbage_collector/gc_utils.c
+		garbage_collector/gc_utils.c \
+		garbage_collector/gc_substr.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/
@@ -61,4 +62,8 @@ fclean: clean
 
 re: fclean all 
 
-.PHONY: all clean fclean re
+valgrind: $(NAME)
+	@echo "|🔍| Running valgrind with readline suppression..."
+	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+
+.PHONY: all clean fclean re valgrind

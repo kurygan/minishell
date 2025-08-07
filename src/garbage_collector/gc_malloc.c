@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/07 23:13:03 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:46:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	*gc_malloc(gc **garbage, size_t size)
 		return (NULL);
 	temp->next = NULL;
 	temp->prev = NULL;
-	mem = malloc(sizeof(size));
+	mem = malloc(size);
 	if (!mem)
 		return (NULL);
 	temp->mem = mem;
-	if (!garbage)
+	if (!garbage || !*garbage)
 		*garbage = temp;
 	else
 	{

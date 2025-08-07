@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:21:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/07 23:30:52 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:46:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,15 @@ void	gc_carbonize(gc	**garbage)
 	gc *temp;
 	gc *next;
 
+	if (!garbage || !*garbage)
+		return;
 	temp = *garbage;
-	while (1)
+	while (temp)
 	{
 		next = temp->next;
 		free(temp->mem);
-		if (next)
-			next->prev = NULL;
 		free(temp);
-		if (!(next))
-			break;
 		temp = next;
 	}
+	*garbage = NULL;
 }

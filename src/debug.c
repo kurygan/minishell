@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 02:25:51 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/07 22:49:32 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:46:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,52 +81,14 @@ void	debug_print_segments(t_cmd_segment *seg)
 
 void	free_segments(t_cmd_segment *segments)
 {
-	t_cmd_segment	*tmp;
-	int				i;
-
-	while (segments)
-	{
-		tmp = segments->next;
-		free(segments->cmd);
-		if (segments->args)
-		{
-			i = 0;
-			while (segments->args[i])
-			{
-				free(segments->args[i]);
-				i++;
-			}
-			free(segments->args);
-		}
-		if (segments->options)
-		{
-			i = 0;
-			while (segments->options[i])
-			{
-				free(segments->options[i]);
-				i++;
-			}
-			free(segments->options);
-		}
-		free(segments->infile);
-		free(segments->outfile);
-		free(segments->heredoc);
-		free(segments);
-		segments = tmp;
-	}
+	// Memory is managed by garbage collector - no manual freeing needed
+	(void)segments;
 }
 
 void	free_token_list(t_type *lst)
 {
-	t_type	*tmp;
-
-	while (lst)
-	{
-		tmp = lst->next;
-		free(lst->str);
-		free(lst);
-		lst = tmp;
-	}
+	// Memory is managed by garbage collector - no manual freeing needed
+	(void)lst;
 }
 
 void	debug_print_tokens(t_type *tokens)

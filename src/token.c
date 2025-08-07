@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/07 22:20:45 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:51:19 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ t_type	*add_token(t_type *list, char *str, t_token token, t_sys *sys)
 	t_type	*new;
 	t_type	*tmp;
 
-	new = malloc(sizeof(t_type));
+	new = gc_malloc(&(sys->garbage), sizeof(t_type));
 	ft_memset(new, 0, sizeof(t_type));
-	new->str = ft_strdup(str);
+	new->str = gc_strdup(str, &(sys->garbage));
 	new->token = token;
 	new->sys = sys;
 	if (!list)

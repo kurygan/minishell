@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:12:15 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:46:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ static bool	process_command(char **env, int *exit_status)
 	if (!sys)
 		return (true);
 	sys->env = env;
+	sys->garbage = NULL;  // Initialize garbage collector
 	line = readline("[suicideProject]$ ");
 	if (!line)
 	{
 		printf("\n");
+		gc_carbonize(&(sys->garbage));  // Clean up before exit
+		free(sys);
 		return (true);
 	}
 	if (*line)
@@ -32,13 +35,19 @@ static bool	process_command(char **env, int *exit_status)
 	if (ft_strcmp(line, "exit") == 0)
 	{
 		free(line);
+		gc_carbonize(&(sys->garbage));  // Clean up before exit
+		free(sys);
 		return (true);
 	}
 	sys->tokens = tokenize(line, sys);
+	printf("Tokenized\n");
 	sys->command = handle_line(sys, *exit_status);
+	printf("Segmented\n");
 	debug_print_tokens(sys->tokens);
 	debug_print_segments(sys->command);
 	free(line);
+	gc_carbonize(&(sys->garbage));  // Clean up all allocated memory
+	free(sys);
 	return (false);
 }
 

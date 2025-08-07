@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 00:12:38 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:49:53 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
 		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 		(*i)++;
-	word = ft_substr(line, start, *i - start);
+	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)
 		return ;
 	if (is_option(word) && !is_quoted_content(word))
