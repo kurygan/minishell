@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/11 02:32:10 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/11 03:17:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,11 @@ static bool	process_command(char **env, int *exit_status)
 	}
 	if (*line)
 		add_history(line);
-	if (ft_strcmp(line, "exit") == 0)
-	{
-		free(line);
-		gc_carbonize(&(sys->garbage));
-		free(sys);
-		return (true);
-	}
 	sys->tokens = tokenize(line, sys);
 	sys->command = handle_line(sys, *exit_status);
 	debug_print_tokens(sys->tokens);
 	debug_print_segments(sys->command);
+	exec(sys->command);
 	free(line);
 	gc_carbonize(&(sys->garbage));
 	free(sys);
