@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 01:11:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/11 02:32:10 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	process_command(char **env, int *exit_status)
 	if (!line)
 	{
 		printf("\n");
-		gc_carbonize(&(sys->garbage));  // Clean up before exit
+		gc_carbonize(&(sys->garbage));
 		free(sys);
 		return (true);
 	}
@@ -35,7 +35,7 @@ static bool	process_command(char **env, int *exit_status)
 	if (ft_strcmp(line, "exit") == 0)
 	{
 		free(line);
-		gc_carbonize(&(sys->garbage));  // Clean up before exit
+		gc_carbonize(&(sys->garbage));
 		free(sys);
 		return (true);
 	}
@@ -44,7 +44,7 @@ static bool	process_command(char **env, int *exit_status)
 	debug_print_tokens(sys->tokens);
 	debug_print_segments(sys->command);
 	free(line);
-	gc_carbonize(&(sys->garbage));  // Clean up all allocated memory
+	gc_carbonize(&(sys->garbage));
 	free(sys);
 	return (false);
 }

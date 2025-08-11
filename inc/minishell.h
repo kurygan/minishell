@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:31:53 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/09 22:59:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef enum e_token
 	REDIR_HEREDOC,
 	REDIR_TARGET,
 	OPTIONS,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
 	ERROR
 }	t_token;
 
@@ -85,6 +87,27 @@ typedef struct s_sys
 
 void			expand_variables(t_cmd_segment *segments, t_sys *sys,
 					int exit_status);
+
+/* expand_quote */
+
+char			*expand_quote(char *arg, t_sys *sys, int exit_status,
+					int is_single_quote);
+
+/* quote_utils */
+
+char			*get_env_value(char *var_name, char **env);
+char			*remove_quotes(char *str, t_sys *sys);
+char			*process_regular_char(char *content, char *result, int *i, struct _gc **garbage);
+char			*process_valid_variable(char *content, char *result, t_sys *sys,
+					int *i);
+char			*process_invalid_variable(char *content, char *result, int *i, struct _gc **garbage);
+
+/* expand_utils */
+
+void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
+					int is_single);
+void			expand_variable_str(char **str, t_sys *sys, int exit_status);
+char			*extract_var_content(char *content, int *i, int start, struct _gc **garbage);
 
 /* handle_redirection */
 

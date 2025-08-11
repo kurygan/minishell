@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 00:49:53 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/09 23:06:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,24 @@ void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 	int		start;
 	char	*word;
 	char	quote;
+	t_token	token_type;
 
 	quote = line[*i];
-	(*i)++;
 	start = *i;
+	(*i)++;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
 	if (!line[*i])
 	{
-		if (quote == '\'')
-			printf("syntax error: unclosed single quote\n");
-		else
-			printf("syntax error: unclosed double quote\n");
+		*i = start;
 		return ;
 	}
-	word = ft_substr(line, start, *i - start);
-	*lst = add_token(*lst, word, CMD, sys);
+	word = gc_substr(line, start, (*i - start) + 1, &(sys->garbage));
+	if (quote == '\'')
+		token_type = SINGLE_QUOTE;
+	else
+		token_type = DOUBLE_QUOTE;
+	*lst = add_token(*lst, word, token_type, sys);
 	(*i)++;
 }
 
@@ -83,7 +85,8 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 
 	start = *i;
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>'
+		&& line[*i] != '\'' && line[*i] != '\"')
 		(*i)++;
 	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)

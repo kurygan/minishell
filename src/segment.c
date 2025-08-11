@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 01:11:54 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 01:17:57 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static void	process_token(t_type *token, t_cmd_segment **current,
 	
 	if (token->token == PIPE)
 		handle_pipe_token(token, current, head, sys);
-	else if (token->token == CMD || token->token == ARGS)
+	else if (token->token == CMD || token->token == ARGS
+		|| token->token == SINGLE_QUOTE || token->token == DOUBLE_QUOTE)
 		handle_command_token(token, current, head, sys);
 	else if (token->token == OPTIONS)
 		handle_option_token(token, current, head, sys);

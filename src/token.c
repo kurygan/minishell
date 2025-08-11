@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 00:51:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/08 01:14:47 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	expect_cmd = 1;
 	while (tmp)
 	{
-		if (tmp->token == CMD)
+		if (tmp->token == CMD || tmp->token == SINGLE_QUOTE
+			|| tmp->token == DOUBLE_QUOTE)
 		{
 			if (expect_cmd)
 				expect_cmd = 0;

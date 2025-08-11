@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:52:49 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:49:33 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/09 23:02:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@ void	*gc_calloc(gc **garbage, size_t size);
 char	*gc_strdup(const char *str, gc **garbage);
 void	gc_carbonize(gc **garbage);
 char	*gc_substr(char const *s, unsigned int start, size_t len, gc **garbage);
+void	gc_free(void *mem, gc **garbage);
+char	*gc_strjoin(char *s1, char *s2, gc **garbage);
+char	*gc_itoa(int n, gc **garbage);
 
 #endif

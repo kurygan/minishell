@@ -6,7 +6,7 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/08 01:09:47 by mkettab          ###   ########.fr        #
+#    Updated: 2025/08/09 23:00:08 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@ FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =	minishell.c \
 		expander.c \
+		expand_quote.c \
+		quote_utils.c \
+		expand_utils.c \
 		handle_redirection.c \
 		parsing.c \
 		segment_handler.c \
@@ -28,7 +31,9 @@ SRCS =	minishell.c \
 		garbage_collector/gc_malloc.c \
 		garbage_collector/gc_strdup.c \
 		garbage_collector/gc_utils.c \
-		garbage_collector/gc_substr.c
+		garbage_collector/gc_substr.c \
+		garbage_collector/gc_strjoin.c \
+		garbage_collector/gc_itoa.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/
