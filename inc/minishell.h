@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/09 22:59:12 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/11 22:42:41 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ typedef struct s_sys
 	char			**env;
 	t_cmd_segment	*command;
 	t_type			*tokens;
-	struct _gc				*garbage;
+	int				exit_status;
+	struct _gc		*garbage;
 }	t_sys;
 
 /* expander */
@@ -140,6 +141,10 @@ t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
+
+/* exec */
+
+void	exec(t_sys *sys);
 
 /* debug */
 

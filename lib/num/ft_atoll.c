@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 02:35:44 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/11 03:13:12 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/11 21:18:42 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,4 @@ long long	ft_atoll(char const *str, bool *error)
 	if (negative)
 		return (-atolled);
 	return atolled;
-}
-
-int main(int argc, char const *argv[])
-{
-	bool error = false;
-	long long test = ft_atoll(argv[1], &error);
-	if (error)
-		printf("numeric argument required\n");
-	else
-		printf("%lld\n", test);
-	return 0;
 }
