@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/11 22:43:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/13 01:39:08 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,27 @@ static bool	process_command(t_sys *sys, int *exit_status)
 {
 	char			*line;
 
-	line = readline("[suicideProject]$ ");
-	if (!line)
+	while (!sys->exit_status)
 	{
-		printf("\n");
+		line = readline("minishell$ ");
+		if (!line)
+		{
+			printf("exit\n");
+			break ;
+			// gc_carbonize(&(sys->garbage));
+			// return (true);
+		}
+		if (*line)
+			add_history(line);
+			// return (printf("sys->command pointer: %p\n", &(sys->command)), false);
+		sys->tokens = tokenize(line, sys);
+		sys->command = handle_line(sys, *exit_status);
+		// debug_print_tokens(sys->tokens);
+		// debug_print_segments(sys->command);
+		exec(sys);
 		gc_carbonize(&(sys->garbage));
-		return (true);
+		free(line);
 	}
-	if (!*line)
-		return (printf("sys->command pointer: %p\n", &(sys->command)), false);
-	add_history(line);
-	sys->tokens = tokenize(line, sys);
-	sys->command = handle_line(sys, *exit_status);
-	debug_print_tokens(sys->tokens);
-	debug_print_segments(sys->command);
-	exec(sys);
-	gc_carbonize(&(sys->garbage));
-	free(line);
 	return (false);
 }
 
@@ -50,8 +54,7 @@ int	main(int ac, char **av, char **env)
 	sys->env = env;
 	sys->garbage = NULL;  // Initialize garbage collector
 	setup_signals(&orig_termios);
-	while (!process_command(sys, &exit_status))
-		;
+	process_command(sys, &exit_status);
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();

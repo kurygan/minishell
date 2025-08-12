@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/12 01:55:07 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/13 01:43:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	is_builtin(char *cmd)
+{
+	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd,
+			"env"))
+		return (1);
+	if (!ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
+			"export") || !ft_strcmp(cmd, "exit"))
+		return (2);
+	return (0);
+}
+
+
 
 static char*	basic_exec(char *cmd, t_sys *sys){
 	char	*path_env;
