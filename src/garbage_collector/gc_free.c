@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gc_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:21:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/09 23:25:05 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/13 01:23:16 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	gc_carbonize(gc	**garbage)
 	while (temp)
 	{
 		next = temp->next;
-		free(temp->mem);
 		free(temp);
 		temp = next;
 	}
