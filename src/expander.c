@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/09 21:12:07 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:45:57 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 		expand_variable_str(str, sys, exit_status);
 }
 
-static void	expand_str_array(char **arr, t_sys *sys, int exit_status)
+static void	expand_str_array(char **str, t_sys *sys, int exit_status)
 {
 	(void)sys;
 	int		i;
 
-	if (!arr)
+	if (!str || !*str)
 		return ;
 	i = 0;
-	while (arr[i])
+	while (str[i])
 	{
-		expand_single_str(&arr[i], sys, exit_status);
+		expand_single_str(&str[i], sys, exit_status);
 		i++;
 	}
 }

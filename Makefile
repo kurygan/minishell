@@ -6,7 +6,7 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/11 22:42:51 by mkettab          ###   ########.fr        #
+#    Updated: 2025/08/13 02:20:48 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS =	minishell.c \
 		token.c \
 		exec.c \
 		debug.c \
+		builtin.c \
 		garbage_collector/gc_free.c \
 		garbage_collector/gc_malloc.c \
 		garbage_collector/gc_strdup.c \

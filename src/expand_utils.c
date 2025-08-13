@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/09 23:04:43 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/13 02:33:48 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	expand_variable_str(char **str, t_sys *sys, int exit_status)
 	char	*expanded;
 
 	expanded = expand_var(*str, sys, exit_status);
-	free(*str);
 	*str = expanded;
 }
 

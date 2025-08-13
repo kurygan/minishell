@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/12 01:55:07 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/13 02:31:06 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	exec(t_sys *sys)
 
 	if (!sys->command || !sys->command->cmd)
 		return;
+	if (is_builtin(sys->command->cmd))
+		return (exec_builtin(sys->command));
 	cmd = basic_exec(sys->command->cmd, sys);
 	static char *default_args[2];
 	default_args[0] = cmd;
@@ -62,7 +64,7 @@ void	exec(t_sys *sys)
 	pid = fork();
 	if (pid == 0){
 		execve(cmd, default_args, sys->env);
-		perror("execve");
+		perror("minishell");
 		exit(127);
 	}
 	else if (pid > 0){
@@ -73,7 +75,7 @@ void	exec(t_sys *sys)
 			sys->exit_status = 1;
 	}
 	else {
-		perror("fork");
+		perror("minishell");
 		sys->exit_status = 1;
 	}
 }
