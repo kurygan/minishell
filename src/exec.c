@@ -6,13 +6,13 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 00:54:10 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:58:07 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char*	basic_exec(char *cmd, t_sys *sys){
+static char*	get_path(char *cmd, t_sys *sys){
 	char	*path_env;
 	char **paths;
 	char *full_path;
@@ -56,7 +56,7 @@ void	exec(t_sys *sys)
 		return;
 	if (is_builtin(sys->command->cmd))
 		return (exec_builtin(sys->command));
-	cmd = basic_exec(sys->command->cmd, sys);
+	cmd = get_path(sys->command->cmd, sys);
 	static char *default_args[2];
 	default_args[0] = cmd;
 	default_args[1] = NULL;
