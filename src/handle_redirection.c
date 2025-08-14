@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 00:12:06 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 02:45:32 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 static t_token	identify_redirection_type(char *line, int *i, char **symbol, t_sys *sys)
 {
 	t_token	type;
-	(void)sys;
 
 	if (line[*i + 1] == line[*i])
 	{
-		*symbol = ft_substr(line, *i, 2);
+		*symbol = gc_substr(line, *i, 2, &(sys->garbage));
 		if (line[*i] == '<')
 			type = REDIR_HEREDOC;
 		else
@@ -28,7 +27,7 @@ static t_token	identify_redirection_type(char *line, int *i, char **symbol, t_sy
 	}
 	else
 	{
-		*symbol = ft_substr(line, *i, 1);
+		*symbol = gc_substr(line, *i, 1, &(sys->garbage));
 		if (line[*i] == '<')
 			type = REDIR_IN;
 		else
@@ -38,7 +37,7 @@ static t_token	identify_redirection_type(char *line, int *i, char **symbol, t_sy
 	return (type);
 }
 
-static char	*extract_quoted_target(char *line, int *i, char quote)
+static char	*extract_quoted_target(char *line, int *i, char quote, t_sys* sys)
 {
 	int		start;
 	char	*target;
@@ -47,13 +46,13 @@ static char	*extract_quoted_target(char *line, int *i, char quote)
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
-	target = ft_substr(line, start, *i - start);
+	target = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (line[*i])
 		(*i)++;
 	return (target);
 }
 
-static char	*extract_unquoted_target(char *line, int *i)
+static char	*extract_unquoted_target(char *line, int *i, t_sys* sys)
 {
 	int		start;
 	char	*target;
@@ -62,7 +61,7 @@ static char	*extract_unquoted_target(char *line, int *i)
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
 		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 		(*i)++;
-	target = ft_substr(line, start, *i - start);
+	target = gc_substr(line, start, *i - start, &(sys->garbage));
 	return (target);
 }
 
@@ -76,9 +75,9 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 	if (!(line[*i] && line[*i] != '|' && line[*i] != '<' && line[*i] != '>'))
 		return ;
 	if (line[*i] == '\'' || line[*i] == '\"')
-		limiter = extract_quoted_target(line, i, line[*i]);
+		limiter = extract_quoted_target(line, i, line[*i], (*lst)->sys);
 	else
-		limiter = extract_unquoted_target(line, i);
+		limiter = extract_unquoted_target(line, i, (*lst)->sys);
 	if (type == REDIR_HEREDOC)
 		*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
 	else

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:46:12 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 01:30:36 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,20 @@ void	*gc_malloc(gc **garbage, size_t size)
 
 	temp = malloc(sizeof(gc));
 	if (!temp)
-		return (NULL);
+	{
+		gc_carbonize(garbage);
+		ft_putstr_fd("Error: Malloc Failed", 2);
+		exit(1);
+	}
 	temp->next = NULL;
 	temp->prev = NULL;
 	mem = malloc(size);
 	if (!mem)
-		return (NULL);
+	{
+		gc_carbonize(garbage);
+		ft_putstr_fd("Error: Malloc Failed", 2);
+		exit(1);
+	}
 	temp->mem = mem;
 	if (!garbage || !*garbage)
 		*garbage = temp;
@@ -42,8 +50,6 @@ void	*gc_calloc(gc **garbage, size_t size)
 {
 	void	*mem;
 	mem = gc_malloc(garbage, size);
-	if (!mem)
-		return NULL;
 	ft_memset(mem, 0, size);
 	return mem;
 }

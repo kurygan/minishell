@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 00:47:29 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:49:08 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 01:31:09 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ char	*gc_substr(char const *s, unsigned int start, size_t len, gc **garbage)
 	if (len > ft_strlen(&s[start]))
 		len = ft_strlen(&s[start]);
 	subbed = gc_malloc(garbage, sizeof(char) * len + 1);
-	if (!subbed)
-		return (NULL);
 	while (i < start && non_const_s[i])
 		i++;
 	ft_strlcpy(subbed, &non_const_s[i], len + 1);

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 00:43:45 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 03:20:55 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,10 @@ void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
 void	exec(t_sys *sys);
 bool	is_builtin(char	*cmd);
 void	exec_builtin(t_cmd_segment *cmd);
+
+/* redir */
+
+int	handle_heredoc(char* delimiter, t_sys* sys);
 
 /* debug */
 

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 22:40:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/09 22:41:51 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 01:30:42 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ char	*gc_itoa(int n, gc **garbage)
 	len = ft_intlen(n);
 	limits = 0;
 	dest = gc_malloc(garbage, sizeof(char) * (len + 1));
-	if (!dest)
-		return (NULL);
 	if (n == -2147483648)
 	{
 		ft_strlcpy(dest, "-2147483648", 12);
