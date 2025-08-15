@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/15 20:46:52 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/16 00:01:04by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char*	expand_heredoc(char* line, t_sys* sys)
 				i++;
 			var_expanded = expand_var(gc_substr(line, start, i, &(sys->garbage)), sys, sys->exit_status);
 			line_extended = gc_strjoin(line_extended, var_expanded, &(sys->garbage));
+
 		}
 		else
 			i++;
@@ -80,4 +81,47 @@ int	handle_heredoc(char* delimiter, t_sys* sys)
 	}
 	close(pipe_fd[1]);
 	return pipe_fd[0];
+}
+
+int handle_redir_in(t_cmd_segment* cmd, t_sys* sys)
+{
+	int pipe_fd[2];
+
+	if (pipe(pipe_fd) == -1)
+		return (-1);
+	close(pipe_fd[1]);
+	if (!cmd->infile || !cmd->heredoc)
+		return (close(pipe_fd[0]), -1);
+	if (cmd->infile)
+	{
+		pipe_fd[0] = open(cmd->infile, O_RDONLY, 0777);
+		if (pipe_fd[0] < 0)
+		{
+			if (access(cmd->infile, F_OK) == 0)
+				printf("Permission Denied\n");
+			else
+				printf("Error: No such file\n");
+		}
+	}
+	else if (cmd->heredoc)
+		pipe_fd[0] = handle_heredoc(cmd->heredoc, sys);
+	return (pipe_fd[0]);
+}
+
+int	handle_redir_out(t_cmd_segment *cmd)
+{
+	int pipe_fd[2];
+	
+	if (pipe(pipe_fd) == -1)
+		return -1;
+	close(pipe_fd[0]);
+	if (!cmd->outfile)
+		return (close(pipe_fd[1]), -1);
+	if (cmd->append_mode)
+		pipe_fd[1] = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	else
+		pipe_fd[1] = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (pipe_fd[1] == -1)
+		printf("Error: Permission denied");
+	return pipe_fd[1];
 }

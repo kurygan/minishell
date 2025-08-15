@@ -6,13 +6,13 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 00:47:29 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 01:31:09 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/15 23:56:50 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-char	*gc_substr(char const *s, unsigned int start, size_t len, gc **garbage)
+char	*gc_substr(char const *s, unsigned int start, size_t len, t_gc **garbage)
 {
 	unsigned int	i;
 	char			*non_const_s;

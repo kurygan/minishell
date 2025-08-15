@@ -6,78 +6,78 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 02:25:51 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 03:04:01 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/15 23:52:42 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//void	debug_print_segments(t_cmd_segment *seg)
-//{
-//	int	i;
-//	int	j;
+void	debug_print_segments(t_cmd_segment *seg)
+{
+	int	i;
+	int	j;
 
-//// 	if (!seg)
-//// 	{
-//// 		printf("\n┌─────────────────────────────┐\n");
-//// 		printf("│        SEGMENTS: NONE       │\n");
-//// 		printf("└─────────────────────────────┘\n\n");
-//// 		return ;
-//// 	}
-//// 	printf("\n┌─────────────────────────────┐\n");
-//// 	printf("│         SEGMENTS            │\n");
-//// 	printf("└─────────────────────────────┘\n");
-//// 	i = 1;
-//// 	while (seg)
-//// 	{
-//// 		printf("┌─ Segment %d %s\n", i++, seg->next ? "├────────────────"
-//// 			: "└────────────────");
-//// 		printf("│  Command  : %s\n", seg->cmd ? seg->cmd : "(null)");
-//// 		printf("│  Options  : ");
-//// 		if (!seg->options)
-//// 		{
-//// 			printf("(null)\n");
-//// 		}
-//// 		else
-//// 		{
-//// 			printf("[");
-//// 			j = 0;
-//// 			while (seg->options[j])
-//// 			{
-//// 				printf("\"%s\"", seg->options[j]);
-//// 				if (seg->options[j + 1])
-//// 					printf(", ");
-//// 				j++;
-//// 			}
-//// 			printf("]\n");
-//// 		}
-//// 		printf("│  Args     : ");
-//// 		if (!seg->args)
-//// 		{
-//// 			printf("(null)\n");
-//// 		}
-//// 		else
-//// 		{
-//// 			printf("[");
-//// 			j = 0;
-//// 			while (seg->args[j])
-//// 			{
-//// 				printf("\"%s\"", seg->args[j]);
-//// 				if (seg->args[j + 1])
-//// 					printf(", ");
-//// 				j++;
-//// 			}
-//// 			printf("]\n");
-//// 		}
-//// 		printf("│  Infile   : %s\n", seg->infile ? seg->infile : "(null)");
-//// 		printf("│  Heredoc  : %s\n", seg->heredoc ? seg->heredoc : "(null)");
-//// 		printf("│  Outfile  : %s\n", seg->outfile ? seg->outfile : "(null)");
-//// 		printf("│  Append   : %s\n", seg->append_mode ? "YES" : "NO");
-//// 		printf("│\n");
-//// 		seg = seg->next;
-//// 	}
-//// 	printf("\n");
-//// }
+ 	if (!seg)
+ 	{
+ 		printf("\n┌─────────────────────────────┐\n");
+ 		printf("│        SEGMENTS: NONE       │\n");
+ 		printf("└─────────────────────────────┘\n\n");
+ 		return ;
+ 	}
+ 	printf("\n┌─────────────────────────────┐\n");
+ 	printf("│         SEGMENTS            │\n");
+ 	printf("└─────────────────────────────┘\n");
+ 	i = 1;
+ 	while (seg)
+ 	{
+ 		printf("┌─ Segment %d %s\n", i++, seg->next ? "├────────────────"
+ 			: "└────────────────");
+ 		printf("│  Command  : %s\n", seg->cmd ? seg->cmd : "(null)");
+ 		printf("│  Options  : ");
+ 		if (!seg->options)
+ 		{
+ 			printf("(null)\n");
+ 		}
+ 		else
+ 		{
+ 			printf("[");
+ 			j = 0;
+ 			while (seg->options[j])
+ 			{
+ 				printf("\"%s\"", seg->options[j]);
+ 				if (seg->options[j + 1])
+ 					printf(", ");
+ 				j++;
+ 			}
+ 			printf("]\n");
+ 		}
+ 		printf("│  Args     : ");
+ 		if (!seg->args)
+ 		{
+ 			printf("(null)\n");
+ 		}
+ 		else
+ 		{
+ 			printf("[");
+ 			j = 0;
+ 			while (seg->args[j])
+ 			{
+ 				printf("\"%s\"", seg->args[j]);
+ 				if (seg->args[j + 1])
+ 					printf(", ");
+ 				j++;
+ 			}
+ 			printf("]\n");
+ 		}
+ 		printf("│  Infile   : %s\n", seg->infile ? seg->infile : "(null)");
+ 		printf("│  Heredoc  : %s\n", seg->heredoc ? seg->heredoc : "(null)");
+ 		printf("│  Outfile  : %s\n", seg->outfile ? seg->outfile : "(null)");
+ 		printf("│  Append   : %s\n", seg->append_mode ? "YES" : "NO");
+ 		printf("│\n");
+ 		seg = seg->next;
+ 	}
+ 	printf("\n");
+ }
 
 //void	free_segments(t_cmd_segment *segments)
 //{

@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 03:06:12 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/16 00:07:45 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,39 +52,53 @@ void	exec(t_sys *sys)
 	pid_t	pid;
 	int		status;
 	char	*cmd;
-	int		in_fd;
+	static char	*default_args[2];
+	int		fd[2];
 
 	if (!sys->command || !sys->command->cmd)
 		return;
 
-	in_fd = -1;
-	if (sys->command->heredoc)
+	fd[0] = -1;
+	fd[1] = -1;
+	if (sys->command->heredoc || sys->command->infile)
 	{
-		in_fd = handle_heredoc(sys->command->heredoc, sys);
-		if (in_fd == -1)
+		fd[0] = handle_redir_in(sys->command, sys);
+		if (fd[0] == -1)
 		{
-			perror("minishell: heredoc");
+			perror("minishell: in");
 			sys->exit_status = 1;
 			return;
 		}
 	}
-	if (is_builtin(sys->command->cmd))
-		exec_builtin(sys->command);
+	if (sys->command->outfile)
+	{
+		fd[1] = handle_redir_out(sys->command);
+		if (fd[1] == -1)
+		{
+			perror("minishell: out");
+			sys->exit_status = 1;
+			return;
+		}
+	}
 	cmd = get_path(sys->command->cmd, sys);
-	static char *default_args[2];
 	default_args[0] = cmd;
 	default_args[1] = NULL;
 
 	pid = fork();
 	if (pid == 0){
-		if (in_fd != -1)
+		if (fd[0] != -1)
 		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
 		}
-		execve(cmd, default_args, sys->env);
-		perror("minishell");
-		exit(127);
+		if (is_builtin(sys->command->cmd))
+			exec_builtin(sys->command);
+		else
+		{
+			execve(cmd, default_args, sys->env);
+			perror("minishell");
+			exit(127);
+		}
 	}
 	else if (pid > 0){
 		waitpid(pid, &status, 0);

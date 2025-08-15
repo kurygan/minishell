@@ -6,13 +6,13 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:21:14 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/09 23:26:26 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/15 23:56:49 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-char	*gc_strjoin(char *s1, char *s2, gc **garbage)
+char	*gc_strjoin(char *s1, char *s2, t_gc **garbage)
 {
 	size_t	j;
 	char	*joined;

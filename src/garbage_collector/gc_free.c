@@ -6,15 +6,15 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:21:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 00:59:59 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/16 00:08:08 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-void	gc_free(void *mem, gc **garbage)
+void	gc_free(void *mem, t_gc **garbage)
 {
-	gc *temp;
+	t_gc *temp;
 
 	temp = *garbage;
 	while (1)
@@ -33,10 +33,10 @@ void	gc_free(void *mem, gc **garbage)
 	free(temp);
 }
 
-void	gc_carbonize(gc	**garbage)
+void	gc_carbonize(t_gc	**garbage)
 {
-	gc *temp;
-	gc *next;
+	t_gc *temp;
+	t_gc *next;
 
 	if (!garbage || !*garbage)
 		return;

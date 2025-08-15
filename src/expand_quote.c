@@ -6,13 +6,13 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 16:12:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/09 23:05:02 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/15 23:56:32 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*handle_exit_status(char *result, int exit_status, int *i, gc **garbage)
+static char	*handle_exit_status(char *result, int exit_status, int *i, t_gc **garbage)
 {
 	char	*temp;
 

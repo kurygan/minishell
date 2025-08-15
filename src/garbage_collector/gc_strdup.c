@@ -6,13 +6,13 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:13:12 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 01:30:51 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/15 23:56:48 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-char	*gc_strdup(const char *str, gc **garbage)
+char	*gc_strdup(const char *str, t_gc **garbage)
 {
 	char	*duped;
 

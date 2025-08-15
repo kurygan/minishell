@@ -6,19 +6,19 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 01:30:36 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/16 00:08:27 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-void	*gc_malloc(gc **garbage, size_t size)
+void	*gc_malloc(t_gc **garbage, size_t size)
 {
-	gc		*temp;
-	gc		*last;
+	t_gc		*temp;
+	t_gc		*last;
 	void	*mem;
 
-	temp = malloc(sizeof(gc));
+	temp = malloc(sizeof(t_gc));
 	if (!temp)
 	{
 		gc_carbonize(garbage);
@@ -46,7 +46,7 @@ void	*gc_malloc(gc **garbage, size_t size)
 	return (mem);
 }
 
-void	*gc_calloc(gc **garbage, size_t size)
+void	*gc_calloc(t_gc **garbage, size_t size)
 {
 	void	*mem;
 	mem = gc_malloc(garbage, size);
