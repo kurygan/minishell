@@ -6,13 +6,13 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/13 02:33:48 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:06:45 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*expand_var(char *arg, t_sys *sys, int exit_status)
+char	*expand_var(char *arg, t_sys *sys, int exit_status)
 {
 	int		i;
 	char	*var_name;

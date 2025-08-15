@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 03:20:55 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:22:48 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,11 @@ char			*process_regular_char(char *content, char *result, int *i, struct _gc **g
 char			*process_valid_variable(char *content, char *result, t_sys *sys,
 					int *i);
 char			*process_invalid_variable(char *content, char *result, int *i, struct _gc **garbage);
+char	*extract_quoted_target(char *line, int *i, char quote, t_sys* sys);
 
 /* expand_utils */
 
+char	*expand_var(char *arg, t_sys *sys, int exit_status);
 void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
 					int is_single);
 void			expand_variable_str(char **str, t_sys *sys, int exit_status);
