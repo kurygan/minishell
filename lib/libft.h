@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:08:04 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/03 17:39:09 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/11 02:44:36 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 size_t				ft_strlen(const char *s);
 int					ft_isalpha(int c);
@@ -45,6 +46,7 @@ void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *dst, const void *src, size_t n);
 void				*ft_memmove(void *dst, const void *src, size_t len);
 size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char				*ft_strcpy(char *dest, const char *src);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
 size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);

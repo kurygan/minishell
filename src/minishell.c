@@ -6,52 +6,55 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/05/29 02:23:46 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 19:10:26 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	process_command(char **env, int *exit_status)
+static bool	process_command(t_sys *sys, int *exit_status)
 {
-	t_cmd_segment	*command;
-	t_type			*tokens;
 	char			*line;
 
-	line = readline("[petitcoquillage]$ ");
-	if (!line)
+	while (!sys->exit_status)
 	{
-		printf("\n");
-		return (1);
-	}
-	if (*line)
+		line = readline("[suicideProject]$ ");
+		if (!line)
+		{
+			printf("\n");
+			gc_carbonize(&(sys->garbage));
+			return (true);
+		}
 		add_history(line);
-	if (ft_strcmp(line, "exit") == 0)
-	{
+		sys->tokens = tokenize(line, sys);
+		sys->command = handle_line(sys, *exit_status);
+		// debug_print_tokens(sys->tokens);
+		// debug_print_segments(sys->command);
+		exec(sys);
+		gc_carbonize(&(sys->garbage));
 		free(line);
-		return (1);
 	}
-	tokens = tokenize(line);
-	command = handle_line(line, env, *exit_status);
-	debug_print_tokens(tokens);
-	debug_print_segments(command);
-	free(line);
-	free_token_list(tokens);
-	free_segments(command);
-	return (0);
+	return (false);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	int				exit_status;
 	struct termios	orig_termios;
+	t_sys			*sys;
 
 	(void)ac;
 	(void)av;
 	exit_status = 0;
+	sys = malloc(sizeof(t_sys));
+	if (!sys)
+		return (1);
+	sys->exit_status = 0;
+	sys->env = env;
+	sys->garbage = NULL; // Initialize garbage collector
 	setup_signals(&orig_termios);
-	while (!process_command(env, &exit_status))
-		;
+	process_command(sys, &exit_status);
+	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();
 	return (exit_status);

@@ -24,7 +24,10 @@ SRCS = str/ft_strnstr.c \
 	   str/ft_striteri.c \
 	   str/ft_freetab.c \
 	   str/ft_strcmp.c \
+	   str/ft_strcpy.c \
 	   num/ft_atoi.c \
+	   num/ft_putint_fd.c \
+	   num/ft_atoll.c \
 	   is/ft_isascii.c \
 	   is/ft_isprint.c \
 	   is/ft_isdigit.c \
@@ -37,7 +40,6 @@ SRCS = str/ft_strnstr.c \
 	   mem/ft_memcpy.c \
 	   mem/ft_memmove.c \
 	   mem/ft_calloc.c \
-	   num/ft_putint_fd.c \
 	   lst/ft_lstnew.c \
 	   lst/ft_lstadd_front.c \
 	   lst/ft_lstsize.c \

@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   gc_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 18:25:29 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:43:35 by mkettab          ###   ########.fr       */
+/*   Created: 2025/08/07 23:13:12 by mkettab           #+#    #+#             */
+/*   Updated: 2025/08/14 18:24:50 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../../inc/garbage.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+char	*gc_strdup(const char *str, gc **garbage)
 {
-	unsigned char	*char_ptr;
-	size_t			i;
+	char	*duped;
 
-	char_ptr = (unsigned char *)b;
-	i = 0;
-	while (i < len)
-	{
-		char_ptr[i] = c;
-		i++;
-	}
-	return (char_ptr);
+	duped = gc_malloc(garbage, sizeof(char) * (ft_strlen(str) + 1));
+	if (!duped)
+		return (NULL);
+	duped = ft_strcpy(duped, str);
+	return (duped);
 }

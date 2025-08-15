@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   gc_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 18:25:29 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:43:35 by mkettab          ###   ########.fr       */
+/*   Created: 2025/08/07 23:04:52 by mkettab           #+#    #+#             */
+/*   Updated: 2025/08/14 18:23:42 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../../inc/garbage.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+gc	*gc_getlast(gc **garbage)
 {
-	unsigned char	*char_ptr;
-	size_t			i;
+	gc	*temp;
 
-	char_ptr = (unsigned char *)b;
-	i = 0;
-	while (i < len)
+	if (!garbage || !*garbage)
+		return (NULL);
+	temp = *garbage;
+	while (1)
 	{
-		char_ptr[i] = c;
-		i++;
+		if (!(temp->next))
+			break ;
+		temp = temp->next;
 	}
-	return (char_ptr);
+	return (temp);
 }

@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 18:25:29 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/08 00:43:35 by mkettab          ###   ########.fr       */
+/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
+/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../libft.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	unsigned char	*char_ptr;
-	size_t			i;
+	int	i;
 
-	char_ptr = (unsigned char *)b;
 	i = 0;
-	while (i < len)
+	while (src[i])
 	{
-		char_ptr[i] = c;
+		dest[i] = src[i];
 		i++;
 	}
-	return (char_ptr);
+	dest[i] = 0;
+	return (dest);
 }

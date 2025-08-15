@@ -6,24 +6,26 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 17:54:50 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 18:57:33 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str)
+static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str, \
+				t_sys *sys)
 {
 	int		i;
 	char	**new_args;
 
+	(void)sys;
 	i = 0;
 	if (current->args)
 	{
 		while (current->args[i])
 			i++;
 	}
-	new_args = (char **)malloc(sizeof(char *) * (i + 2));
+	new_args = (char **)gc_malloc(&(sys->garbage), sizeof(char *) * (i + 2));
 	if (!new_args)
 		return ;
 	i = 0;
@@ -34,35 +36,41 @@ static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str)
 			new_args[i] = current->args[i];
 			i++;
 		}
-		free(current->args);
 	}
-	new_args[i] = ft_strdup(arg_str);
+	new_args[i] = gc_strdup(arg_str, &(sys->garbage));
 	new_args[i + 1] = NULL;
 	current->args = new_args;
 }
 
 void	handle_command_token(t_type *token, t_cmd_segment **current,
-						t_cmd_segment **head)
+						t_cmd_segment **head, t_sys *sys)
 {
 	if (!*current)
 	{
-		*current = init_segment();
+		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
+		if (*current)
+			(*current)->sys = sys;
 		if (!*head)
 			*head = *current;
 	}
 	if (!(*current)->cmd && (token->token == CMD || token->token == SINGLE_QUOTE
 			|| token->token == DOUBLE_QUOTE))
-		(*current)->cmd = ft_strdup(token->str);
+		(*current)->cmd = gc_strdup(token->str, &(sys->garbage));
 	else
-		add_arg_to_segment(*current, token->str);
+		add_arg_to_segment(*current, token->str, sys);
 }
 
-void	handle_redirection_token(t_type *token, t_type **next,
-		t_cmd_segment **current, t_cmd_segment **head)
+void	handle_redirection_token(t_type *token, t_cmd_segment **current,
+			t_cmd_segment **head, t_sys *sys)
 {
+	t_type	**next;
+
+	next = &token;
 	if (!*current)
 	{
-		*current = init_segment();
+		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
+		if (*current)
+			(*current)->sys = sys;
 		if (!*head)
 			*head = *current;
 	}
@@ -70,10 +78,10 @@ void	handle_redirection_token(t_type *token, t_type **next,
 	{
 		*next = (*next)->next;
 		if (token->token == REDIR_IN)
-			(*current)->infile = ft_strdup((*next)->str);
+			(*current)->infile = gc_strdup((*next)->str, &(sys->garbage));
 		else if (token->token == REDIR_OUT || token->token == REDIR_APPEND)
 		{
-			(*current)->outfile = ft_strdup((*next)->str);
+			(*current)->outfile = gc_strdup((*next)->str, &(sys->garbage));
 			if (token->token == REDIR_APPEND)
 				(*current)->append_mode = 1;
 			else
@@ -81,6 +89,6 @@ void	handle_redirection_token(t_type *token, t_type **next,
 		}
 		else if (token->token == REDIR_HEREDOC
 			&& (*next)->token == REDIR_TARGET)
-			(*current)->heredoc = ft_strdup((*next)->str);
+			(*current)->heredoc = gc_strdup((*next)->str, &(sys->garbage));
 	}
 }

@@ -6,16 +6,18 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 00:52:56 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 19:01:32 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_token	identify_redirection_type(char *line, int *i, char **symbol)
+static t_token	identify_redirection_type(char *line, int *i, char **symbol, \
+					t_sys *sys)
 {
 	t_token	type;
 
+	(void)sys;
 	if (line[*i + 1] == line[*i])
 	{
 		*symbol = ft_substr(line, *i, 2);
@@ -79,19 +81,17 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 	else
 		limiter = extract_unquoted_target(line, i);
 	if (type == REDIR_HEREDOC)
-		*lst = add_token(*lst, limiter, REDIR_TARGET);
+		*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
 	else
-		*lst = add_token(*lst, limiter, ARGS);
-	free(limiter);
+		*lst = add_token(*lst, limiter, ARGS, (*lst)->sys);
 }
 
-void	handle_redirection(char *line, int *i, t_type **lst)
+void	handle_redirection(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	char	*symbol;
 	t_token	type;
 
-	type = identify_redirection_type(line, i, &symbol);
-	*lst = add_token(*lst, symbol, type);
-	free(symbol);
+	type = identify_redirection_type(line, i, &symbol, sys);
+	*lst = add_token(*lst, symbol, type, sys);
 	handle_redirection_target(line, i, lst, type);
 }

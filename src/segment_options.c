@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:58:20 by emetel            #+#    #+#             */
-/*   Updated: 2025/05/29 01:59:15 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 18:58:52 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ static int	count_options(char **options)
 }
 
 static int	fill_options_array(char **new_options, char **old_options,
-		char *new_option)
+		char *new_option, t_sys *sys)
 {
 	int	i;
 
+	(void)sys;
 	i = 0;
 	if (old_options)
 	{
@@ -39,7 +40,7 @@ static int	fill_options_array(char **new_options, char **old_options,
 			i++;
 		}
 	}
-	new_options[i] = ft_strdup(new_option);
+	new_options[i] = gc_strdup(new_option, &(sys->garbage));
 	if (!new_options[i])
 		return (0);
 	new_options[i + 1] = NULL;
@@ -47,29 +48,29 @@ static int	fill_options_array(char **new_options, char **old_options,
 }
 
 void	handle_option_token(t_type *token, t_cmd_segment **current,
-		t_cmd_segment **head)
+		t_cmd_segment **head, t_sys *sys)
 {
 	int		count;
 	char	**new_options;
 
 	if (!*current)
 	{
-		*current = init_segment();
+		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
+		if (*current)
+			(*current)->sys = sys;
 		if (!*head)
 			*head = *current;
 	}
 	if (!*current || !token)
 		return ;
 	count = count_options((*current)->options);
-	new_options = (char **)malloc(sizeof(char *) * (count + 2));
+	new_options = (char **)gc_malloc(&(sys->garbage), \
+					sizeof(char *) * (count + 2));
 	if (!new_options)
 		return ;
-	if (!fill_options_array(new_options, (*current)->options, token->str))
+	if (!fill_options_array(new_options, (*current)->options, token->str, sys))
 	{
-		free(new_options);
 		return ;
 	}
-	if ((*current)->options)
-		free((*current)->options);
 	(*current)->options = new_options;
 }

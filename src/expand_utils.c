@@ -6,13 +6,13 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 18:00:50 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 18:50:28 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*expand_var(char *arg, char **env, int exit_status)
+static char	*expand_var(char *arg, t_sys *sys, int exit_status)
 {
 	int		i;
 	char	*var_name;
@@ -20,48 +20,48 @@ static char	*expand_var(char *arg, char **env, int exit_status)
 	size_t	len;
 
 	if (!arg || arg[0] != '$')
-		return (ft_strdup(arg));
+		return (gc_strdup(arg, &(sys->garbage)));
 	if (arg[1] == '?')
-		return (ft_itoa(exit_status));
+		return (gc_itoa(exit_status, &(sys->garbage)));
 	var_name = arg + 1;
 	len = ft_strlen(var_name);
 	i = 0;
-	while (env[i])
+	while (sys->env[i])
 	{
-		if (!ft_strncmp(env[i], var_name, len) && env[i][len] == '=')
+		if (!ft_strncmp(sys->env[i], var_name, len) && sys->env[i][len] == '=')
 		{
-			value = env[i] + len + 1;
-			return (ft_strdup(value));
+			value = sys->env[i] + len + 1;
+			return (gc_strdup(value, &(sys->garbage)));
 		}
 		i++;
 	}
-	return (ft_strdup(""));
+	return (gc_strdup("", &(sys->garbage)));
 }
 
-void	expand_quoted_str(char **str, char **env, int exit_status,
+void	expand_quoted_str(char **str, t_sys *sys, int exit_status,
 	int is_single)
 {
 	char	*expanded;
 
-	expanded = expand_quote(*str, env, exit_status, is_single);
-	free(*str);
+	expanded = expand_quote(*str, sys, exit_status, is_single);
+	gc_free(*str, &(sys->garbage));
 	*str = expanded;
 }
 
-void	expand_variable_str(char **str, char **env, int exit_status)
+void	expand_variable_str(char **str, t_sys *sys, int exit_status)
 {
 	char	*expanded;
 
-	expanded = expand_var(*str, env, exit_status);
-	free(*str);
+	expanded = expand_var(*str, sys, exit_status);
 	*str = expanded;
 }
 
-char	*extract_var_content(char *content, int *i, int start)
+char	*extract_var_content(char *content, int *i, int start, \
+			struct _gc **garbage)
 {
 	char	*temp;
 
-	temp = ft_substr(content, *i + 1, start - *i - 1);
+	temp = gc_substr(content, *i + 1, start - *i - 1, garbage);
 	*i = start;
 	return (temp);
 }

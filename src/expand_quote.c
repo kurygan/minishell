@@ -6,24 +6,25 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 16:12:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 18:00:50 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 18:59:55 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*handle_exit_status(char *result, int exit_status, int *i)
+static char	*handle_exit_status(char *result, int exit_status, int *i, \
+				struct _gc **garbage)
 {
 	char	*temp;
 
 	temp = ft_itoa(exit_status);
-	result = ft_strjoin_free(result, temp);
-	free(temp);
+	result = gc_strjoin(result, temp, garbage);
+	gc_free(temp, garbage);
 	*i += 2;
 	return (result);
 }
 
-static char	*handle_variable(char *content, char *result, char **env, int *i)
+static char	*handle_variable(char *content, char *result, t_sys *sys, int *i)
 {
 	int		start;
 
@@ -32,49 +33,50 @@ static char	*handle_variable(char *content, char *result, char **env, int *i)
 			|| content[start] == '_'))
 		start++;
 	if (start > *i + 1)
-		return (process_valid_variable(content, result, env, i));
+		return (process_valid_variable(content, result, sys, i));
 	else
-		return (process_invalid_variable(content, result, i));
+		return (process_invalid_variable(content, result, i, &(sys->garbage)));
 }
 
-static char	*expand_variables_in_dquotes(char *content, char **env,
+static char	*expand_variables_in_dquotes(char *content, t_sys *sys,
 	int exit_status)
 {
 	char	*result;
 	int		i;
 
 	if (!content)
-		return (ft_strdup(""));
-	result = ft_strdup("");
+		return (gc_strdup("", &(sys->garbage)));
+	result = gc_strdup("", &(sys->garbage));
 	i = 0;
 	while (content[i])
 	{
 		if (content[i] == '$')
 		{
 			if (content[i + 1] == '?')
-				result = handle_exit_status(result, exit_status, &i);
+				result = handle_exit_status(result, exit_status, &i, \
+						&(sys->garbage));
 			else
-				result = handle_variable(content, result, env, &i);
+				result = handle_variable(content, result, sys, &i);
 		}
 		else
-			result = process_regular_char(content, result, &i);
+			result = process_regular_char(content, result, &i, &(sys->garbage));
 	}
 	return (result);
 }
 
-char	*expand_quote(char *arg, char **env, int exit_status,
+char	*expand_quote(char *arg, t_sys *sys, int exit_status,
 	int is_single_quote)
 {
 	char	*content;
 	char	*result;
 
 	if (!arg)
-		return (ft_strdup(""));
-	content = remove_quotes(arg);
+		return (gc_strdup("", &(sys->garbage)));
+	content = remove_quotes(arg, sys);
 	if (is_single_quote)
-		result = ft_strdup(content);
+		result = gc_strdup(content, &(sys->garbage));
 	else
-		result = expand_variables_in_dquotes(content, env, exit_status);
-	free(content);
+		result = expand_variables_in_dquotes(content, sys, exit_status);
+	gc_free(content, &(sys->garbage));
 	return (result);
 }

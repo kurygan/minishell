@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
+#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/03 17:54:51 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/13 02:20:48 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,16 @@ SRCS =	minishell.c \
 		signal.c \
 		token_utils.c \
 		token.c \
+		exec.c \
 		debug.c \
+		builtin.c \
+		garbage_collector/gc_free.c \
+		garbage_collector/gc_malloc.c \
+		garbage_collector/gc_strdup.c \
+		garbage_collector/gc_utils.c \
+		garbage_collector/gc_substr.c \
+		garbage_collector/gc_strjoin.c \
+		garbage_collector/gc_itoa.c
 
 SRCS_DIR = src/
 OBJS_DIR = build/
@@ -38,7 +47,7 @@ NAME = minishell
 LIB_NAME = lib/lib.a
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS_PREF)
@@ -60,4 +69,8 @@ fclean: clean
 
 re: fclean all 
 
-.PHONY: all clean fclean re
+valgrind: $(NAME)
+	@echo "|🔍| Running valgrind with readline suppression..."
+	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+
+.PHONY: all clean fclean re valgrind

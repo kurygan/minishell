@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 18:53:43 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 19:03:47 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,22 @@
 
 static int	is_option(char *word)
 {
-	if (!word || !word[0])
+	int	i;
+
+	i = 1;
+	if (!word)
 		return (0);
-	if (word[0] == '-' && word[1] != '\0')
+	if (word[0] != '-')
+		return (0);
+	if (word[1] == '\0')
+		return (0);
+	while (word[i])
 	{
-		if (word[1] == '-' && word[2] == '\0')
+		if (word[i] != 'n')
 			return (0);
-		return (1);
+		i++;
 	}
-	return (0);
+	return (1);
 }
 
 static int	is_quoted_content(char *word)
@@ -41,23 +48,24 @@ static int	is_quoted_content(char *word)
 	return (0);
 }
 
-void	handle_pipe(char *line, int *i, t_type **lst)
+void	handle_pipe(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	char	*symbol;
 
 	(void)line;
 	symbol = ft_strdup("|");
-	*lst = add_token(*lst, symbol, PIPE);
-	free(symbol);
+	*lst = add_token(*lst, symbol, PIPE, sys);
 	(*i)++;
 }
 
-void	handle_quote(char *line, int *i, t_type **lst, char quote)
+void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	int		start;
 	char	*word;
+	char	quote;
 	t_token	token_type;
 
+	quote = line[*i];
 	start = *i;
 	(*i)++;
 	while (line[*i] && line[*i] != quote)
@@ -67,17 +75,16 @@ void	handle_quote(char *line, int *i, t_type **lst, char quote)
 		*i = start;
 		return ;
 	}
-	word = ft_substr(line, start, (*i - start) + 1);
+	word = gc_substr(line, start, (*i - start) + 1, &(sys->garbage));
 	if (quote == '\'')
 		token_type = SINGLE_QUOTE;
 	else
 		token_type = DOUBLE_QUOTE;
-	*lst = add_token(*lst, word, token_type);
-	free(word);
+	*lst = add_token(*lst, word, token_type, sys);
 	(*i)++;
 }
 
-void	handle_word(char *line, int *i, t_type **lst)
+void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	int		start;
 	char	*word;
@@ -88,13 +95,12 @@ void	handle_word(char *line, int *i, t_type **lst)
 		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>'
 		&& line[*i] != '\'' && line[*i] != '\"')
 		(*i)++;
-	word = ft_substr(line, start, *i - start);
+	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)
 		return ;
 	if (is_option(word) && !is_quoted_content(word))
 		token_type = OPTIONS;
 	else
 		token_type = CMD;
-	*lst = add_token(*lst, word, token_type);
-	free(word);
+	*lst = add_token(*lst, word, token_type, sys);
 }

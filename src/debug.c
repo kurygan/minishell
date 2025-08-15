@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 02:25:51 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/03 18:02:32 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/14 19:08:44 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	debug_print_segments(t_cmd_segment *seg)
 		return ;
 	}
 	printf("\n┌─────────────────────────────┐\n");
-	printf("│         SEGMENTS           │\n");
+	printf("│         SEGMENTS            │\n");
 	printf("└─────────────────────────────┘\n");
 	i = 1;
 	while (seg)
@@ -79,56 +79,6 @@ void	debug_print_segments(t_cmd_segment *seg)
 	printf("\n");
 }
 
-void	free_segments(t_cmd_segment *segments)
-{
-	t_cmd_segment	*tmp;
-	int				i;
-
-	while (segments)
-	{
-		tmp = segments->next;
-		free(segments->cmd);
-		if (segments->args)
-		{
-			i = 0;
-			while (segments->args[i])
-			{
-				free(segments->args[i]);
-				i++;
-			}
-			free(segments->args);
-		}
-		if (segments->options)
-		{
-			i = 0;
-			while (segments->options[i])
-			{
-				free(segments->options[i]);
-				i++;
-			}
-			free(segments->options);
-		}
-		free(segments->infile);
-		free(segments->outfile);
-		free(segments->heredoc);
-		free(segments);
-		segments = tmp;
-	}
-}
-
-void	free_token_list(t_type *lst)
-{
-	t_type	*tmp;
-
-	while (lst)
-	{
-		tmp = lst->next;
-		free(lst->str);
-		free(lst);
-		lst = tmp;
-	}
-}
-
 void	debug_print_tokens(t_type *tokens)
 {
 	t_type		*token;
@@ -147,11 +97,11 @@ void	debug_print_tokens(t_type *tokens)
 		return ;
 	}
 	printf("\n┌─────────────────────────────┐\n");
-	printf("│           TOKENS           │\n");
+	printf("│           TOKENS            │\n");
 	printf("└─────────────────────────────┘\n");
 	token = tokens;
 	i = 1;
-	while (token)
+	while (1)
 	{
 		printf("├─ Token %3d: ", i++);
 		if (token->token >= 0 && token->token <= 9)
@@ -159,6 +109,8 @@ void	debug_print_tokens(t_type *tokens)
 		else
 			printf("%-13s", "UNKNOWN");
 		printf(" │ '%s'\n", token->str ? token->str : "(null)");
+		if (!(token->next))
+			break;
 		token = token->next;
 	}
 	printf("└─────────────────────────────┘\n\n");
