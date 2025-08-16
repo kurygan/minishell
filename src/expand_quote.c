@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 16:12:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 18:59:55 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 00:51:29 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*handle_variable(char *content, char *result, t_sys *sys, int *i)
 		return (process_invalid_variable(content, result, i, &(sys->garbage)));
 }
 
-static char	*expand_variables_in_dquotes(char *content, t_sys *sys,
+char	*expand_variables_in_dquotes(char *content, t_sys *sys,
 	int exit_status)
 {
 	char	*result;

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 19:09:08 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 01:06:09 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,9 @@ void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
 void			expand_variable_str(char **str, t_sys *sys, int exit_status);
 char			*extract_var_content(char *content, int *i, int start, \
 					struct _gc **garbage);
+char			*expand_var(char *arg, t_sys *sys, int exit_status);
+char			*extract_quoted_target(char *line, int *i, char quote, \
+					t_sys *sys);
 
 /* handle_redirection */
 
@@ -128,7 +131,7 @@ void			handle_command_token(t_type *token, t_cmd_segment **current,
 					t_cmd_segment **head, t_sys *sys);
 void			handle_redirection_token(t_type *token,
 					t_cmd_segment **current, t_cmd_segment **head, t_sys *sys);
-void			handle_option_token(t_type *token, t_cmd_segment **current,
+void			handle_option_token(t_type *token, t_cmd_segment **current, \
 					t_cmd_segment **head, t_sys *sys);
 t_cmd_segment	*convert_tokens(t_sys *sys);
 
@@ -156,5 +159,12 @@ void			exec_builtin(t_cmd_segment *cmd);
 
 void			debug_print_segments(t_cmd_segment *seg);
 void			debug_print_tokens(t_type *tokens);
+
+/* redir */
+
+int				handle_redir_out(t_cmd_segment *cmd);
+int				handle_redir_in(t_cmd_segment *cmd, t_sys *sys);
+int				handle_heredoc(char *delimiter, t_sys *sys);
+char			*expand_heredoc(char *line, t_sys *sys);
 
 #endif

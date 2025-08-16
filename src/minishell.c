@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 19:10:26 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 01:07:53 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static bool	process_command(t_sys *sys, int *exit_status)
 		add_history(line);
 		sys->tokens = tokenize(line, sys);
 		sys->command = handle_line(sys, *exit_status);
-		// debug_print_tokens(sys->tokens);
-		// debug_print_segments(sys->command);
+		debug_print_tokens(sys->tokens);
+		debug_print_segments(sys->command);
 		exec(sys);
 		gc_carbonize(&(sys->garbage));
 		free(line);
@@ -51,7 +51,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	sys->exit_status = 0;
 	sys->env = env;
-	sys->garbage = NULL; // Initialize garbage collector
+	sys->garbage = NULL;
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);
 	free(sys);

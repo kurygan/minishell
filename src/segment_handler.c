@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 18:57:33 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 00:45:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ void	handle_command_token(t_type *token, t_cmd_segment **current,
 void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 			t_cmd_segment **head, t_sys *sys)
 {
-	t_type	**next;
-
-	next = &token;
 	if (!*current)
 	{
 		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
@@ -74,21 +71,19 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 		if (!*head)
 			*head = *current;
 	}
-	if ((*next)->next && (*next)->next->token != PIPE)
+	if (token->next && token->next->token == REDIR_TARGET)
 	{
-		*next = (*next)->next;
 		if (token->token == REDIR_IN)
-			(*current)->infile = gc_strdup((*next)->str, &(sys->garbage));
+			(*current)->infile = gc_strdup(token->next->str, &(sys->garbage));
 		else if (token->token == REDIR_OUT || token->token == REDIR_APPEND)
 		{
-			(*current)->outfile = gc_strdup((*next)->str, &(sys->garbage));
+			(*current)->outfile = gc_strdup(token->next->str, &(sys->garbage));
 			if (token->token == REDIR_APPEND)
 				(*current)->append_mode = 1;
 			else
 				(*current)->append_mode = 0;
 		}
-		else if (token->token == REDIR_HEREDOC
-			&& (*next)->token == REDIR_TARGET)
-			(*current)->heredoc = gc_strdup((*next)->str, &(sys->garbage));
+		else if (token->token == REDIR_HEREDOC)
+			(*current)->heredoc = gc_strdup(token->next->str, &(sys->garbage));
 	}
 }

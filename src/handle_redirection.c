@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 19:01:32 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 00:54:19 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_token	identify_redirection_type(char *line, int *i, char **symbol, \
 	return (type);
 }
 
-static char	*extract_quoted_target(char *line, int *i, char quote)
+char	*extract_quoted_target(char *line, int *i, char quote, t_sys *sys)
 {
 	int		start;
 	char	*target;
@@ -48,7 +48,7 @@ static char	*extract_quoted_target(char *line, int *i, char quote)
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
-	target = ft_substr(line, start, *i - start);
+	target = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (line[*i])
 		(*i)++;
 	return (target);
@@ -72,18 +72,16 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 {
 	char	*limiter;
 
+	(void)type;
 	while (line[*i] && (line[*i] == ' ' || line[*i] == '\t'))
 		(*i)++;
 	if (!(line[*i] && line[*i] != '|' && line[*i] != '<' && line[*i] != '>'))
 		return ;
 	if (line[*i] == '\'' || line[*i] == '\"')
-		limiter = extract_quoted_target(line, i, line[*i]);
+		limiter = extract_quoted_target(line, i, line[*i], (*lst)->sys);
 	else
 		limiter = extract_unquoted_target(line, i);
-	if (type == REDIR_HEREDOC)
-		*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
-	else
-		*lst = add_token(*lst, limiter, ARGS, (*lst)->sys);
+	*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
 }
 
 void	handle_redirection(char *line, int *i, t_type **lst, t_sys *sys)

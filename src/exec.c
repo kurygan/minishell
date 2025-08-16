@@ -6,13 +6,13 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 19:08:14 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 01:14:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char*	get_path(char *cmd, t_sys *sys)
+static char	*get_path(char *cmd, t_sys *sys)
 {
 	char	*path_env;
 	char	**paths;
@@ -53,20 +53,54 @@ void	exec(t_sys *sys)
 	int			status;
 	char		*cmd;
 	static char	*default_args[2];
+	int			fd[2];
 
 	if (!sys->command || !sys->command->cmd)
 		return ;
-	if (is_builtin(sys->command->cmd))
-		return (exec_builtin(sys->command));
+	fd[0] = -1;
+	fd[1] = -1;
+	if (sys->command->heredoc || sys->command->infile)
+	{
+		fd[0] = handle_redir_in(sys->command, sys);
+		if (fd[0] == -1)
+		{
+			printf("infile\n");
+			sys->exit_status = 1;
+			return ;
+		}
+	}
+	if (sys->command->outfile)
+	{
+		fd[1] = handle_redir_out(sys->command);
+		if (fd[1] == -1)
+		{
+			ft_putendl_fd("outfile", 2);
+			sys->exit_status = 1;
+			return ;
+		}
+	}
 	cmd = get_path(sys->command->cmd, sys);
 	default_args[0] = cmd;
 	default_args[1] = NULL;
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(cmd, default_args, sys->env);
-		perror("minishell");
-		exit(127);
+		if (fd[0] != -1)
+		{
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+		}
+		if (is_builtin(sys->command->cmd))
+		{
+			exec_builtin(sys->command);
+			exit(0);
+		}
+		else
+		{
+			execve(cmd, default_args, sys->env);
+			perror("minishell");
+			exit(127);
+		}
 	}
 	else if (pid > 0)
 	{
