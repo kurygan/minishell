@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:16:01 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:31:53 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,23 @@ void	exec(t_sys *sys)
 	default_args[1] = NULL;
 
 	pid = fork();
-	if (pid == 0){
+	if (pid == 0)
+	{
 		if (fd[0] != -1)
 		{
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
 		}
+		if (fd[1] != -1)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+		}
 		if (is_builtin(sys->command->cmd))
+		{
 			exec_builtin(sys->command);
+			exit(0);
+		}
 		else
 		{
 			execve(cmd, default_args, sys->env);
