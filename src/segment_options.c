@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:58:20 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 00:43:27 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:23:15 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	fill_options_array(char **new_options, char **old_options,
 	(void)sys;
 	int	i;
 
+	(void)sys;
 	i = 0;
 	if (old_options)
 	{
@@ -64,7 +65,8 @@ void	handle_option_token(t_type *token, t_cmd_segment **current,
 	if (!*current || !token)
 		return ;
 	count = count_options((*current)->options);
-	new_options = (char **)gc_malloc(&(sys->garbage), sizeof(char *) * (count + 2));
+	new_options = (char **)gc_malloc(&(sys->garbage), \
+					sizeof(char *) * (count + 2));
 	if (!new_options)
 		return ;
 	if (!fill_options_array(new_options, (*current)->options, token->str, sys))

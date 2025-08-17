@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/15 23:56:39 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:20:06 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ char	*process_valid_variable(char *content, char *result, t_sys *sys, int *i)
 	temp = extract_var_content(content, i, start, &(sys->garbage));
 	var_value = get_env_value(temp, sys->env);
 	if (var_value)
-		result = gc_strjoin(result, gc_strdup(var_value, &(sys->garbage)), &(sys->garbage));
+		result = gc_strjoin(result, gc_strdup(var_value, &(sys->garbage)), \
+				&(sys->garbage));
 	gc_free(temp, &(sys->garbage));
 	return (result);
 }

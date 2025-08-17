@@ -5,23 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/07 23:19:57 by mkettab          ###   ########.fr       */
+/*   Created: 2024/11/01 23:57:56 by mkettab           #+#    #+#             */
+/*   Updated: 2025/08/17 02:15:19 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strcpy(char *dest, const char *src)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
 	int	i;
 
+	if (!s)
+		return ;
 	i = 0;
-	while (src[i])
+	while (s[i])
 	{
-		dest[i] = src[i];
+		(*f)(i, &s[i]);
 		i++;
 	}
-	dest[i] = 0;
-	return (dest);
 }

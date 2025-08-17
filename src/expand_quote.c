@@ -6,13 +6,14 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 16:12:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/15 23:56:32 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:16:38 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*handle_exit_status(char *result, int exit_status, int *i, t_gc **garbage)
+static char	*handle_exit_status(char *result, int exit_status, int *i, \
+				struct _gc **garbage)
 {
 	char	*temp;
 
@@ -37,7 +38,7 @@ static char	*handle_variable(char *content, char *result, t_sys *sys, int *i)
 		return (process_invalid_variable(content, result, i, &(sys->garbage)));
 }
 
-static char	*expand_variables_in_dquotes(char *content, t_sys *sys,
+char	*expand_variables_in_dquotes(char *content, t_sys *sys,
 	int exit_status)
 {
 	char	*result;
@@ -52,7 +53,8 @@ static char	*expand_variables_in_dquotes(char *content, t_sys *sys,
 		if (content[i] == '$')
 		{
 			if (content[i + 1] == '?')
-				result = handle_exit_status(result, exit_status, &i, &(sys->garbage));
+				result = handle_exit_status(result, exit_status, &i, \
+						&(sys->garbage));
 			else
 				result = handle_variable(content, result, sys, &i);
 		}

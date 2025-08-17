@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/08 01:14:47 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:21:10 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,24 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	t_type	*tmp;
 	int		expect_cmd;
 
+	(void)sys;
 	tmp = token_lst;
 	expect_cmd = 1;
 	while (tmp)
 	{
+		if (tmp->token == REDIR_IN || tmp->token == REDIR_OUT
+			|| tmp->token == REDIR_APPEND || tmp->token == REDIR_HEREDOC
+			|| tmp->token == REDIR_TARGET)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		if (tmp->prev && !(tmp->prev->token == CMD \
+			|| tmp->prev->token == OPTIONS || tmp->prev->token == REDIR_TARGET \
+			|| tmp->prev->token == REDIR_IN || tmp->prev->token == REDIR_OUT \
+			|| tmp->prev->token == REDIR_APPEND \
+			|| tmp->prev->token == REDIR_HEREDOC))
+			tmp->token = ARGS;
 		if (tmp->token == CMD || tmp->token == SINGLE_QUOTE
 			|| tmp->token == DOUBLE_QUOTE)
 		{
@@ -43,12 +57,6 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 		}
 		else if (tmp->token == PIPE)
 			expect_cmd = 1;
-		else if (tmp->token == REDIR_IN || tmp->token == REDIR_OUT
-			|| tmp->token == REDIR_APPEND || tmp->token == REDIR_HEREDOC)
-		{
-			if (tmp->next)
-				tmp = tmp->next;
-		}
 		tmp = tmp->next;
 	}
 }

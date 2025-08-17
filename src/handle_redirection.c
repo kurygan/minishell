@@ -6,16 +6,18 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 18:22:36 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:17:47 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_token	identify_redirection_type(char *line, int *i, char **symbol, t_sys *sys)
+static t_token	identify_redirection_type(char *line, int *i, char **symbol, \
+					t_sys *sys)
 {
 	t_token	type;
 
+	(void)sys;
 	if (line[*i + 1] == line[*i])
 	{
 		*symbol = gc_substr(line, *i, 2, &(sys->garbage));
@@ -37,7 +39,7 @@ static t_token	identify_redirection_type(char *line, int *i, char **symbol, t_sy
 	return (type);
 }
 
-char	*extract_quoted_target(char *line, int *i, char quote, t_sys* sys)
+char	*extract_quoted_target(char *line, int *i, char quote, t_sys *sys)
 {
 	int		start;
 	char	*target;
@@ -70,6 +72,7 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 {
 	char	*limiter;
 
+	(void)type;
 	while (line[*i] && (line[*i] == ' ' || line[*i] == '\t'))
 		(*i)++;
 	if (!(line[*i] && line[*i] != '|' && line[*i] != '<' && line[*i] != '>'))

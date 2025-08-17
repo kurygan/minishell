@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/09 23:06:24 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:21:24 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,22 @@
 
 static int	is_option(char *word)
 {
-	if (!word || !word[0])
+	int	i;
+
+	i = 1;
+	if (!word)
 		return (0);
-	if (word[0] == '-' && word[1] != '\0')
+	if (word[0] != '-')
+		return (0);
+	if (word[1] == '\0')
+		return (0);
+	while (word[i])
 	{
-		if (word[1] == '-' && word[2] == '\0')
+		if (word[i] != 'n')
 			return (0);
-		return (1);
+		i++;
 	}
-	return (0);
+	return (1);
 }
 
 static int	is_quoted_content(char *word)

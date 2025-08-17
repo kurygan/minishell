@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/16 00:07:52 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:14:47 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,14 @@ typedef struct s_cmd_segment
 	struct s_sys *sys;
 	struct s_cmd_segment	*next;
 	struct s_cmd_segment	*prev;
+	struct s_cmd_segment	*prev;
 }	t_cmd_segment;
 
 typedef struct s_type
 {
 	char					*str;
 	t_token					token;
+	struct s_sys			*sys;
 	struct s_sys			*sys;
 	struct s_type			*next;
 	struct s_type			*prev;
@@ -160,7 +162,12 @@ int	handle_heredoc(char* delimiter, t_sys* sys);
 
 void			debug_print_segments(t_cmd_segment *seg);
 void			debug_print_tokens(t_type *tokens);
-void			free_segments(t_cmd_segment *segments);
-void			free_token_list(t_type *lst);
+
+/* redir */
+
+int				handle_redir_out(t_cmd_segment *cmd);
+int				handle_redir_in(t_cmd_segment *cmd, t_sys *sys);
+int				handle_heredoc(char *delimiter, t_sys *sys);
+char			*expand_heredoc(char *line, t_sys *sys);
 
 #endif
