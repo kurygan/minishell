@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:21:10 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 03:13:39 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static int	handle_and_check_quote(char *line, int *i, t_type **lst, t_sys *sys)
 
 static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 {
-	(void)sys;
 	t_type	*tmp;
 	int		expect_cmd;
 
@@ -101,8 +100,10 @@ t_type	*add_token(t_type *list, char *str, t_token token, t_sys *sys)
 	if (!list)
 		return (new);
 	tmp = list;
-	while (tmp->next)
+	while (1)
 	{
+		if (!tmp->next)
+			break ;
 		tmp = tmp->next;
 	}
 	tmp->next = new;

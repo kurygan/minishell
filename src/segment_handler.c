@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:26:51 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 03:21:39 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,18 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 		if (!*head)
 			*head = *current;
 	}
-	if (token->next && token->next->token == REDIR_TARGET)
+	if (token->prev)
 	{
-		if (token->token == REDIR_IN)
-			(*current)->infile = gc_strdup(token->next->str, &(sys->garbage));
-		else if (token->token == REDIR_OUT || token->token == REDIR_APPEND)
+		if (token->prev->token == REDIR_IN)
+			(*current)->infile = gc_strdup(token->str, &(sys->garbage));
+		if (token->prev->token == REDIR_OUT)
+			(*current)->outfile = gc_strdup(token->str, &(sys->garbage));
+		if (token->prev->token == REDIR_HEREDOC)
+			(*current)->heredoc = gc_strdup(token->str, &(sys->garbage));
+		if (token->prev->token == REDIR_APPEND)
 		{
-			(*current)->outfile = gc_strdup(token->next->str, &(sys->garbage));
-			if (token->token == REDIR_APPEND)
-				(*current)->append_mode = 1;
-			else
-				(*current)->append_mode = 0;
+			(*current)->outfile = gc_strdup(token->str, &(sys->garbage));
+			(*current)->append_mode = 1;
 		}
-		else if (token->token == REDIR_HEREDOC)
-			(*current)->heredoc = gc_strdup(token->next->str, &(sys->garbage));
 	}
 }

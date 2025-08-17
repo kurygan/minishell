@@ -6,21 +6,21 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:31:53 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 03:20:40 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char*	get_path(char *cmd, t_sys *sys)
+static char	*get_path(char *cmd, t_sys *sys)
 {
 	char	*path_env;
-	char **paths;
-	char *full_path;
-	int i;
+	char	**paths;
+	char	*full_path;
+	int		i;
 
 	if (!cmd)
-		return NULL;
+		return (NULL);
 	if (ft_strchr(cmd, '/'))
 		return (gc_strdup(cmd, &(sys->garbage)));
 	path_env = NULL;
@@ -30,11 +30,11 @@ static char*	get_path(char *cmd, t_sys *sys)
 		if (!ft_strncmp(sys->env[i], "PATH=", 5))
 		{
 			path_env = sys->env[i] + 5;
-			break;
+			break ;
 		}
 	}
 	if (!path_env)
-		return NULL;
+		return (NULL);
 	paths = ft_split(path_env, ':');
 	i = -1;
 	while (paths && paths[++i])
@@ -49,41 +49,41 @@ static char*	get_path(char *cmd, t_sys *sys)
 
 void	exec(t_sys *sys)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd;
+	pid_t		pid;
+	int			status;
+	char		*cmd;
 	static char	*default_args[2];
-	int		fd[2];
+	int			fd[2];
 
 	if (!sys->command || !sys->command->cmd)
-		return;
-
+		return ;
 	fd[0] = -1;
 	fd[1] = -1;
 	if (sys->command->heredoc || sys->command->infile)
 	{
 		fd[0] = handle_redir_in(sys->command, sys);
+		if (sys->command->infile)
+			printf("Infile FD: %d\n", fd[0]);
 		if (fd[0] == -1)
 		{
-			perror("minishell: in");
 			sys->exit_status = 1;
-			return;
+			return ;
 		}
 	}
 	if (sys->command->outfile)
 	{
 		fd[1] = handle_redir_out(sys->command);
+		printf("Outfile FD: %d\n", fd[1]);
 		if (fd[1] == -1)
 		{
-			perror("minishell: out");
+			ft_putendl_fd("outfile", 2);
 			sys->exit_status = 1;
-			return;
+			return ;
 		}
 	}
 	cmd = get_path(sys->command->cmd, sys);
 	default_args[0] = cmd;
 	default_args[1] = NULL;
-
 	pid = fork();
 	if (pid == 0)
 	{
@@ -109,14 +109,16 @@ void	exec(t_sys *sys)
 			exit(127);
 		}
 	}
-	else if (pid > 0){
+	else if (pid > 0)
+	{
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			sys->exit_status = WEXITSTATUS(status);
 		else
 			sys->exit_status = 1;
 	}
-	else {
+	else
+	{
 		perror("minishell");
 		sys->exit_status = 1;
 	}

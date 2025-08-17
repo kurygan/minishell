@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:27:09 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 03:17:18 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ static void	handle_pipe_token(t_type *token, t_cmd_segment **current, \
 		*head = *current;
 }
 
-static void	process_token(t_type *token, t_cmd_segment **current,
-						t_cmd_segment **head, t_sys *sys)
+static void	process_token(t_type *token, t_cmd_segment **current, \
+				t_cmd_segment **head, t_sys *sys)
 {
-	
 	if (token->token == PIPE)
 		handle_pipe_token(token, current, head, sys);
 	else if (token->token == CMD || token->token == ARGS
@@ -45,11 +44,8 @@ static void	process_token(t_type *token, t_cmd_segment **current,
 		handle_command_token(token, current, head, sys);
 	else if (token->token == OPTIONS)
 		handle_option_token(token, current, head, sys);
-	else if (token->token == REDIR_IN || token->token == REDIR_OUT
-		|| token->token == REDIR_APPEND || token->token == REDIR_HEREDOC)
-	{
+	else if (token->token == REDIR_TARGET)
 		handle_redirection_token(token, current, head, sys);
-	}
 }
 
 t_cmd_segment	*convert_tokens(t_sys *sys)
@@ -64,12 +60,6 @@ t_cmd_segment	*convert_tokens(t_sys *sys)
 	while (token)
 	{
 		process_token(token, &current, &head, sys);
-		if (token->token == REDIR_IN || token->token == REDIR_OUT
-			|| token->token == REDIR_APPEND || token->token == REDIR_HEREDOC)
-		{
-			if (token->next && token->next->token == REDIR_TARGET)
-				token = token->next;
-		}
 		token = token->next;
 	}
 	return (head);
