@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: tylerlover911 <tylerlover911@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
+/*   Created: 2024/10/23 01:39:22 by mkettab           #+#    #+#             */
+/*   Updated: 2025/03/20 01:13:43 by tylerlover9      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <string.h>
 #include "../libft.h"
 
-char	*ft_strcpy(char *dest, const char *src)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	char	*last_occ;
 
-	i = 0;
-	while (src[i])
+	last_occ = NULL;
+	while (*s)
 	{
-		dest[i] = src[i];
-		i++;
+		if ((char)*s == (char)c)
+			last_occ = (char *)s;
+		s++;
 	}
-	dest[i] = 0;
-	return (dest);
+	if ((char)*s == (char)c)
+		last_occ = (char *)s;
+	return (last_occ);
 }

@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
+/*   Created: 2024/10/16 22:17:30 by mkettab           #+#    #+#             */
+/*   Updated: 2024/11/11 20:43:17 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include <stdio.h>
+#include <string.h>
 
-char	*ft_strcpy(char *dest, const char *src)
+char	*ft_strchr(const char *s, int c)
 {
-	int	i;
+	char	*ptr;
 
-	i = 0;
-	while (src[i])
+	ptr = (char *)s;
+	while (*ptr)
 	{
-		dest[i] = src[i];
-		i++;
+		if (*ptr == (unsigned char)c)
+			return (ptr);
+		ptr++;
 	}
-	dest[i] = 0;
-	return (dest);
+	if (*ptr == (unsigned char)c)
+		return (ptr);
+	return (NULL);
 }

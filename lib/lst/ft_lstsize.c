@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: tylerlover911 <tylerlover911@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
+/*   Created: 2024/11/02 15:48:59 by mkettab           #+#    #+#             */
+/*   Updated: 2025/03/20 01:13:43 by tylerlover9      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strcpy(char *dest, const char *src)
+int	ft_lstsize(t_list *lst)
 {
-	int	i;
+	t_list	*temp;
+	int		i;
 
+	temp = lst;
 	i = 0;
-	while (src[i])
+	while (temp)
 	{
-		dest[i] = src[i];
+		temp = temp->next;
 		i++;
 	}
-	dest[i] = 0;
-	return (dest);
+	return (i);
 }

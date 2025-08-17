@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
+/*   Created: 2024/10/19 01:49:04 by mkettab           #+#    #+#             */
+/*   Updated: 2024/11/11 20:42:50 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include <stdlib.h>
 
-char	*ft_strcpy(char *dest, const char *src)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	int	i;
+	unsigned char	*ptr_src;
+	unsigned char	*ptr_dst;
+	size_t			i;
 
+	ptr_src = (unsigned char *)src;
+	ptr_dst = (unsigned char *)dst;
 	i = 0;
-	while (src[i])
+	while (i < n)
 	{
-		dest[i] = src[i];
+		ptr_dst[i] = ptr_src[i];
 		i++;
 	}
-	dest[i] = 0;
-	return (dest);
+	return (ptr_dst);
 }

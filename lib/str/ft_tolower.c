@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
+/*   Created: 2024/10/16 17:46:25 by mkettab           #+#    #+#             */
+/*   Updated: 2024/10/16 18:33:12 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
-
-char	*ft_strcpy(char *dest, const char *src)
+int	ft_tolower(int c)
 {
-	int	i;
-
-	i = 0;
-	while (src[i])
+	if (c >= 'A' && c <= 'Z')
 	{
-		dest[i] = src[i];
-		i++;
+		c += 32;
+		return (c);
 	}
-	dest[i] = 0;
-	return (dest);
+	return (c);
 }

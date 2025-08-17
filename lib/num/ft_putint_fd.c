@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_putint_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: tylerlover911 <tylerlover911@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 23:16:20 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:47:19 by emetel           ###   ########.fr       */
+/*   Created: 2024/09/11 18:07:57 by mkettab           #+#    #+#             */
+/*   Updated: 2025/03/20 01:17:46 by tylerlover9      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strcpy(char *dest, const char *src)
+void	ft_putint_fd(int n, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (src[i])
+	if (n == -2147483648)
 	{
-		dest[i] = src[i];
-		i++;
+		ft_putstr_fd("-2147483648", fd);
+		return ;
 	}
-	dest[i] = 0;
-	return (dest);
+	if (n < 0)
+	{
+		n = -n;
+		ft_putchar_fd('-', fd);
+	}
+	if (n >= 10)
+	{
+		ft_putint_fd(n / 10, fd);
+		ft_putint_fd(n % 10, fd);
+	}
+	if (n < 10)
+		ft_putchar_fd(n + '0', fd);
 }
