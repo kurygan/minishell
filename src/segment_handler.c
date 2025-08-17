@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:23:46 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:26:51 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	handle_command_token(t_type *token, t_cmd_segment **current,
 void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 			t_cmd_segment **head, t_sys *sys)
 {
-	t_type **next = &token;
 
 	if (!*current)
 	{

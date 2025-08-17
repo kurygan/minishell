@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:22:54 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/17 02:27:09 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,6 @@ static void	handle_pipe_token(t_type *token, t_cmd_segment **current, \
 	}
 	if (!*head)
 		*head = *current;
-}
-
-static void	handle_target_token(t_type *token, t_cmd_segment **current,
-							t_cmd_segment **head, t_sys *sys)
-{
-	if (!*current)
-	{
-		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
-		(*current)->sys = sys;
-		if (!*head)
-			*head = *current;
-	}
-	(*current)->heredoc = gc_strdup(token->str, &(sys->garbage));
 }
 
 static void	process_token(t_type *token, t_cmd_segment **current,
