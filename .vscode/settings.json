@@ -1,5 +1,13 @@
 {
 	"files.associations": {
-		"minishell.h": "c"
-	}
+		"minishell.h": "c",
+		"garbage.h": "c"
+	},
+	"makefile.launchConfigurations": [
+		{
+			"cwd": "/tmp/test",
+			"binaryPath": "/tmp/test/minishell",
+			"binaryArgs": []
+		}
+	]
 }
