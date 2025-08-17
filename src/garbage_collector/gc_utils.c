@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:04:52 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:20:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 00:33:40 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ t_gc	*gc_getlast(t_gc **garbage)
 	t_gc	*temp;
 
 	if (!garbage || !*garbage)
-		return NULL;
+		return (NULL);
 	temp = *garbage;
 	while (1)
 	{
 		if (!(temp->next))
-			break;
+			break ;
 		temp = temp->next;
 	}
 	return (temp);

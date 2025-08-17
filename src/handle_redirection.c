@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:17:47 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 00:44:59 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,7 @@ static void	handle_redirection_target(char *line, int *i, t_type **lst,
 		limiter = extract_quoted_target(line, i, line[*i], (*lst)->sys);
 	else
 		limiter = extract_unquoted_target(line, i, (*lst)->sys);
-	if (type == REDIR_HEREDOC)
-		*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
-	else
-		*lst = add_token(*lst, limiter, ARGS, (*lst)->sys);
+	*lst = add_token(*lst, limiter, REDIR_TARGET, (*lst)->sys);
 }
 
 void	handle_redirection(char *line, int *i, t_type **lst, t_sys *sys)

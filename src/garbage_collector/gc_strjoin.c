@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:21:14 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:20:46 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 00:33:09 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char	*gc_strjoin(char *s1, char *s2, t_gc **garbage)
 
 	if (!s1 || !s2)
 		return (NULL);
-	joined = gc_malloc(garbage, sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	joined = gc_malloc(garbage, sizeof(char) * (ft_strlen(s1) + \
+			ft_strlen(s2) + 1));
 	j = 0;
 	if (!joined)
 		return (NULL);

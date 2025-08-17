@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:21:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:21:07 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 00:32:25 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	gc_free(void *mem, t_gc **garbage)
 {
-	t_gc *temp;
+	t_gc	*temp;
 
 	temp = *garbage;
 	while (1)
 	{
 		if (!(temp->next) || temp->mem == mem)
-			break;
+			break ;
 		temp = temp->next;
 	}
 	if (!(temp->next) && temp->mem != mem)
@@ -33,13 +33,13 @@ void	gc_free(void *mem, t_gc **garbage)
 	free(temp);
 }
 
-void	gc_carbonize(t_gc	**garbage)
+void	gc_carbonize(t_gc **garbage)
 {
-	t_gc *temp;
-	t_gc *next;
+	t_gc	*temp;
+	t_gc	*next;
 
 	if (!garbage || !*garbage)
-		return;
+		return ;
 	temp = *garbage;
 	while (temp)
 	{

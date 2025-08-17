@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:21:01 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 00:34:06 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	*gc_malloc(t_gc **garbage, size_t size)
 void	*gc_calloc(t_gc **garbage, size_t size)
 {
 	void	*mem;
+
 	mem = gc_malloc(garbage, size);
 	ft_memset(mem, 0, size);
-	return mem;
+	return (mem);
 }
