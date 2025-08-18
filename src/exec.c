@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 01:14:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/18 02:25:18 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,17 @@ static char	*get_path(char *cmd, t_sys *sys)
 	return (ft_freetab(paths), gc_strdup(cmd, &(sys->garbage)));
 }
 
-void	exec(t_sys *sys)
+void fd_redir(t_sys *sys, int fd[2])
 {
-	pid_t		pid;
-	int			status;
-	char		*cmd;
-	static char	*default_args[2];
-	int			fd[2];
-
-	if (!sys->command || !sys->command->cmd)
-		return ;
 	fd[0] = -1;
 	fd[1] = -1;
 	if (sys->command->heredoc || sys->command->infile)
 	{
 		fd[0] = handle_redir_in(sys->command, sys);
+		if (sys->command->infile)
+			printf("Infile FD: %d\n", fd[0]);
 		if (fd[0] == -1)
 		{
-			printf("infile\n");
 			sys->exit_status = 1;
 			return ;
 		}
@@ -72,6 +65,7 @@ void	exec(t_sys *sys)
 	if (sys->command->outfile)
 	{
 		fd[1] = handle_redir_out(sys->command);
+		printf("Outfile FD: %d\n", fd[1]);
 		if (fd[1] == -1)
 		{
 			ft_putendl_fd("outfile", 2);
@@ -79,9 +73,57 @@ void	exec(t_sys *sys)
 			return ;
 		}
 	}
+}
+
+char	**get_args(t_cmd_segment *command)
+{
+	char	**args;
+	char	**temp;
+	int		arg_count;
+	int		i;
+
+	arg_count = 0;
+	i = 0;
+	if (command->args)
+	{
+		temp = command->args;
+		while (temp[arg_count])
+			arg_count++;
+	}
+	if (arg_count == 0)
+	{
+		args = gc_malloc(&(command->sys->garbage), sizeof(char *) * 2);
+		args[0] = command->cmd;
+		args[1] = NULL;
+	}
+	else
+	{
+		args = gc_malloc(&(command->sys->garbage), \
+			sizeof(char *) * (arg_count + 2));
+		args[i++] = command->cmd;
+		while (i <= arg_count && temp[i - 1])
+		{
+			args[i] = temp[i - 1];
+			i++;
+		}
+		args[i] = NULL;
+	}
+	return (args);
+}
+
+void	exec(t_sys *sys)
+{
+	pid_t		pid;
+	int			status;
+	char		*cmd;
+	char		**args;
+	int			fd[2];
+
+	if (!sys->command || !sys->command->cmd)
+		return ;
+	fd_redir(sys, fd);
 	cmd = get_path(sys->command->cmd, sys);
-	default_args[0] = cmd;
-	default_args[1] = NULL;
+	args = get_args(sys->command);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -90,6 +132,11 @@ void	exec(t_sys *sys)
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
 		}
+		if (fd[1] != -1)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+		}
 		if (is_builtin(sys->command->cmd))
 		{
 			exec_builtin(sys->command);
@@ -97,7 +144,7 @@ void	exec(t_sys *sys)
 		}
 		else
 		{
-			execve(cmd, default_args, sys->env);
+			execve(cmd, args, sys->env);
 			perror("minishell");
 			exit(127);
 		}

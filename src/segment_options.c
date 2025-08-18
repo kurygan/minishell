@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment_options.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:58:20 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/14 18:58:52 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 02:23:15 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	count_options(char **options)
 static int	fill_options_array(char **new_options, char **old_options,
 		char *new_option, t_sys *sys)
 {
+	(void)sys;
 	int	i;
 
 	(void)sys;

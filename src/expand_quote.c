@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expand_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 16:12:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 00:51:29 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 02:26:28 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 static char	*handle_exit_status(char *result, int exit_status, int *i, \
-				struct _gc **garbage)
+				t_gc **garbage)
 {
 	char	*temp;
 

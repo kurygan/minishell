@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 01:06:09 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 02:26:14 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_cmd_segment
 	char					*heredoc;
 	char					*outfile;
 	int						append_mode;
-	struct s_sys			*sys;
+	struct s_sys *sys;
 	struct s_cmd_segment	*next;
 	struct s_cmd_segment	*prev;
 }	t_cmd_segment;
@@ -81,7 +81,7 @@ typedef struct s_sys
 	t_cmd_segment	*command;
 	t_type			*tokens;
 	int				exit_status;
-	struct _gc		*garbage;
+	struct s_gc		*garbage;
 }	t_sys;
 
 /* expander */
@@ -98,28 +98,25 @@ char			*expand_quote(char *arg, t_sys *sys, int exit_status,
 
 char			*get_env_value(char *var_name, char **env);
 char			*remove_quotes(char *str, t_sys *sys);
-char			*process_regular_char(char *content, char *result, int *i, \
-					struct _gc **garbage);
+char			*process_regular_char(char *content, char *result, int *i, struct s_gc **garbage);
 char			*process_valid_variable(char *content, char *result, t_sys *sys,
 					int *i);
-char			*process_invalid_variable(char *content, char *result, int *i, \
-					struct _gc **garbage);
+char			*process_invalid_variable(char *content, char *result, int *i, struct s_gc **garbage);
+char	*extract_quoted_target(char *line, int *i, char quote, t_sys* sys);
 
 /* expand_utils */
 
+char	*expand_var(char *arg, t_sys *sys, int exit_status);
 void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
 					int is_single);
 void			expand_variable_str(char **str, t_sys *sys, int exit_status);
-char			*extract_var_content(char *content, int *i, int start, \
-					struct _gc **garbage);
-char			*expand_var(char *arg, t_sys *sys, int exit_status);
-char			*extract_quoted_target(char *line, int *i, char quote, \
-					t_sys *sys);
+char			*extract_var_content(char *content, int *i, int start, struct s_gc **garbage);
 
 /* handle_redirection */
 
-void			handle_redirection(char *line, int *i, t_type **lst, \
-					t_sys *sys);
+void			handle_redirection(char *line, int *i, t_type **lst, t_sys *sys);
+int				handle_redir_in(t_cmd_segment* cmd, t_sys* sys);
+int	handle_redir_out(t_cmd_segment *cmd);
 
 /* parsing */
 
@@ -131,7 +128,7 @@ void			handle_command_token(t_type *token, t_cmd_segment **current,
 					t_cmd_segment **head, t_sys *sys);
 void			handle_redirection_token(t_type *token,
 					t_cmd_segment **current, t_cmd_segment **head, t_sys *sys);
-void			handle_option_token(t_type *token, t_cmd_segment **current, \
+void			handle_option_token(t_type *token, t_cmd_segment **current,
 					t_cmd_segment **head, t_sys *sys);
 t_cmd_segment	*convert_tokens(t_sys *sys);
 
@@ -151,9 +148,13 @@ void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
 
 /* exec */
 
-void			exec(t_sys *sys);
-bool			is_builtin(char	*cmd);
-void			exec_builtin(t_cmd_segment *cmd);
+void	exec(t_sys *sys);
+bool	is_builtin(char	*cmd);
+void	exec_builtin(t_cmd_segment *cmd);
+
+/* redir */
+
+int	handle_heredoc(char* delimiter, t_sys* sys);
 
 /* debug */
 

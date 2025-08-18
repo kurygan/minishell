@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 01:04:03 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 03:19:41 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	handle_redir_in(t_cmd_segment *cmd, t_sys *sys)
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	close(pipe_fd[1]);
-	if (!cmd->infile || !cmd->heredoc)
+	if (!cmd->infile && !cmd->heredoc)
 		return (close(pipe_fd[0]), -1);
 	if (cmd->infile)
 	{

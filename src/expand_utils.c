@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 00:52:11 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/17 02:17:04 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	expand_variable_str(char **str, t_sys *sys, int exit_status)
 	*str = expanded;
 }
 
-char	*extract_var_content(char *content, int *i, int start, \
-			struct _gc **garbage)
+char	*extract_var_content(char *content, int *i, int start, t_gc **garbage)
 {
 	char	*temp;
 

@@ -3,29 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   gc_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:25:17 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/18 00:34:06 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-void	*gc_malloc(gc **garbage, size_t size)
+void	*gc_malloc(t_gc **garbage, size_t size)
 {
-	gc		*temp;
-	gc		*last;
+	t_gc		*temp;
+	t_gc		*last;
 	void	*mem;
 
-	temp = malloc(sizeof(gc));
+	temp = malloc(sizeof(t_gc));
 	if (!temp)
-		return (NULL);
+	{
+		gc_carbonize(garbage);
+		ft_putstr_fd("Error: Malloc Failed", 2);
+		exit(1);
+	}
 	temp->next = NULL;
 	temp->prev = NULL;
 	mem = malloc(size);
 	if (!mem)
-		return (NULL);
+	{
+		gc_carbonize(garbage);
+		ft_putstr_fd("Error: Malloc Failed", 2);
+		exit(1);
+	}
 	temp->mem = mem;
 	if (!garbage || !*garbage)
 		*garbage = temp;
@@ -38,13 +46,11 @@ void	*gc_malloc(gc **garbage, size_t size)
 	return (mem);
 }
 
-void	*gc_calloc(gc **garbage, size_t size)
+void	*gc_calloc(t_gc **garbage, size_t size)
 {
 	void	*mem;
 
 	mem = gc_malloc(garbage, size);
-	if (!mem)
-		return (NULL);
 	ft_memset(mem, 0, size);
 	return (mem);
 }

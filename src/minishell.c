@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 02:06:21 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/18 02:26:57 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static bool	process_command(t_sys *sys, int *exit_status)
 
 	while (!sys->exit_status)
 	{
-		line = readline("[suicideProject]$ ");
+		line = readline("[petitcoquillage]$ ");
 		if (!line)
 		{
-			printf("\n");
-			gc_carbonize(&(sys->garbage));
-			return (true);
+			printf("exit\n");
+			sys->exit_status = 1;
+			return (sys->exit_status);
 		}
 		add_history(line);
 		sys->tokens = tokenize(line, sys);
@@ -39,7 +39,7 @@ static bool	process_command(t_sys *sys, int *exit_status)
 
 int	main(int ac, char **av, char **env)
 {
-	int				exit_status;
+	int				exit_status = 0;
 	struct termios	orig_termios;
 	t_sys			*sys;
 

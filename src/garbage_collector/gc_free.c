@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   gc_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:21:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/14 18:26:52 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/18 00:32:25 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
-void	gc_free(void *mem, gc **garbage)
+void	gc_free(void *mem, t_gc **garbage)
 {
-	gc	*temp;
+	t_gc	*temp;
 
 	temp = *garbage;
 	while (1)
@@ -33,10 +33,10 @@ void	gc_free(void *mem, gc **garbage)
 	free(temp);
 }
 
-void	gc_carbonize(gc	**garbage)
+void	gc_carbonize(t_gc **garbage)
 {
-	gc	*temp;
-	gc	*next;
+	t_gc	*temp;
+	t_gc	*next;
 
 	if (!garbage || !*garbage)
 		return ;
