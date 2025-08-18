@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 06:40:18 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/18 07:08:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,20 @@ bool	is_builtin(char	*cmd)
 	return (false);
 }
 
-static bool	is_n_option(char *str)
+static bool	check_n_option(char **options)
 {
 	int	i;
 
-	if (!str || str[0] != '-')
+	if (!options)
 		return (false);
-	i = 1;
-	while (str[i] && str[i] == 'n')
+	i = 0;
+	while (options[i])
+	{
+		if (is_option(options[i]))
+			return (true);
 		i++;
-	return (str[i] == '\0');
+	}
+	return (false);
 }
 
 void	exec_echo(t_cmd_segment *cmd)
@@ -39,27 +43,20 @@ void	exec_echo(t_cmd_segment *cmd)
 	char	**args;
 	bool	print;
 	bool	no_newline;
-	int		i;
 
-	if (!cmd->args)
-		return ((void)printf("\n"));
+	no_newline = check_n_option(cmd->options);
 	args = cmd->args;
-	no_newline = false;
 	print = false;
-	i = 0;
-	while (args[i])
+	if (args)
 	{
-		if (is_n_option(args[i]))
-			no_newline = true;
-		i++;
-	}
-	while (*args)
-	{
-		if (print)
-			printf(" ");
-		print = true;
-		printf("%s", *args);
-		args++;
+		while (*args)
+		{
+			if (print)
+				printf(" ");
+			print = true;
+			printf("%s", *args);
+			args++;
+		}
 	}
 	if (!no_newline)
 		printf("\n");

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 06:45:49 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/18 07:06:14 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
+int				is_option(char *word);
 
 /* exec */
 
