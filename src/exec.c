@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 03:20:40 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 02:25:18 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,8 @@ static char	*get_path(char *cmd, t_sys *sys)
 	return (ft_freetab(paths), gc_strdup(cmd, &(sys->garbage)));
 }
 
-void	exec(t_sys *sys)
+void fd_redir(t_sys *sys, int fd[2])
 {
-	pid_t		pid;
-	int			status;
-	char		*cmd;
-	static char	*default_args[2];
-	int			fd[2];
-
-	if (!sys->command || !sys->command->cmd)
-		return ;
 	fd[0] = -1;
 	fd[1] = -1;
 	if (sys->command->heredoc || sys->command->infile)
@@ -81,9 +73,57 @@ void	exec(t_sys *sys)
 			return ;
 		}
 	}
+}
+
+char	**get_args(t_cmd_segment *command)
+{
+	char	**args;
+	char	**temp;
+	int		arg_count;
+	int		i;
+
+	arg_count = 0;
+	i = 0;
+	if (command->args)
+	{
+		temp = command->args;
+		while (temp[arg_count])
+			arg_count++;
+	}
+	if (arg_count == 0)
+	{
+		args = gc_malloc(&(command->sys->garbage), sizeof(char *) * 2);
+		args[0] = command->cmd;
+		args[1] = NULL;
+	}
+	else
+	{
+		args = gc_malloc(&(command->sys->garbage), \
+			sizeof(char *) * (arg_count + 2));
+		args[i++] = command->cmd;
+		while (i <= arg_count && temp[i - 1])
+		{
+			args[i] = temp[i - 1];
+			i++;
+		}
+		args[i] = NULL;
+	}
+	return (args);
+}
+
+void	exec(t_sys *sys)
+{
+	pid_t		pid;
+	int			status;
+	char		*cmd;
+	char		**args;
+	int			fd[2];
+
+	if (!sys->command || !sys->command->cmd)
+		return ;
+	fd_redir(sys, fd);
 	cmd = get_path(sys->command->cmd, sys);
-	default_args[0] = cmd;
-	default_args[1] = NULL;
+	args = get_args(sys->command);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -104,7 +144,7 @@ void	exec(t_sys *sys)
 		}
 		else
 		{
-			execve(cmd, default_args, sys->env);
+			execve(cmd, args, sys->env);
 			perror("minishell");
 			exit(127);
 		}
