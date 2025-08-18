@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 00:44:59 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 06:33:51 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*extract_quoted_target(char *line, int *i, char quote, t_sys *sys)
 	return (target);
 }
 
-static char	*extract_unquoted_target(char *line, int *i, t_sys* sys)
+static char	*extract_unquoted_target(char *line, int *i, t_sys *sys)
 {
 	int		start;
 	char	*target;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 03:19:41 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 06:33:19 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,18 @@ char	*expand_heredoc(char *line, t_sys *sys)
 		{
 			if (i > start)
 			{
-				line_extended = gc_strjoin(line_extended, gc_substr(line, start, i, &(sys->garbage)), &(sys->garbage));
+				line_extended = gc_strjoin(line_extended, \
+								gc_substr(line, start, i, &(sys->garbage)), \
+								&(sys->garbage));
 				start = i;
 			}
 			i++;
 			while (ft_isalnum(line[i]) || line[i] == '_')
 				i++;
-			var_expanded = expand_var(gc_substr(line, start, i, &(sys->garbage)), sys, sys->exit_status);
-			line_extended = gc_strjoin(line_extended, var_expanded, &(sys->garbage));
+			var_expanded = expand_var(gc_substr(line, start, i, \
+							&(sys->garbage)), sys, sys->exit_status);
+			line_extended = gc_strjoin(line_extended, \
+							var_expanded, &(sys->garbage));
 		}
 		else
 			i++;

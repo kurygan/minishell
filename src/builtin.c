@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 02:32:03 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 06:40:18 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 bool	is_builtin(char	*cmd)
 {
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "pwd")
-			|| !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset")
-			|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"))
+	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") \
+		|| !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") \
+		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") \
+		|| !ft_strcmp(cmd, "exit"))
 		return (true);
 	return (false);
 }

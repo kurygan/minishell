@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/17 02:26:14 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 06:45:49 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_cmd_segment
 	char					*heredoc;
 	char					*outfile;
 	int						append_mode;
-	struct s_sys *sys;
+	struct s_sys			*sys;
 	struct s_cmd_segment	*next;
 	struct s_cmd_segment	*prev;
 }	t_cmd_segment;
@@ -98,25 +98,30 @@ char			*expand_quote(char *arg, t_sys *sys, int exit_status,
 
 char			*get_env_value(char *var_name, char **env);
 char			*remove_quotes(char *str, t_sys *sys);
-char			*process_regular_char(char *content, char *result, int *i, struct s_gc **garbage);
+char			*process_regular_char(char *content, char *result, int *i, \
+					struct s_gc **garbage);
 char			*process_valid_variable(char *content, char *result, t_sys *sys,
 					int *i);
-char			*process_invalid_variable(char *content, char *result, int *i, struct s_gc **garbage);
-char	*extract_quoted_target(char *line, int *i, char quote, t_sys* sys);
+char			*process_invalid_variable(char *content, char *result, int *i, \
+					struct s_gc **garbage);
+char			*extract_quoted_target(char *line, int *i, char quote, \
+					t_sys *sys);
 
 /* expand_utils */
 
-char	*expand_var(char *arg, t_sys *sys, int exit_status);
+char			*expand_var(char *arg, t_sys *sys, int exit_status);
 void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
 					int is_single);
 void			expand_variable_str(char **str, t_sys *sys, int exit_status);
-char			*extract_var_content(char *content, int *i, int start, struct s_gc **garbage);
+char			*extract_var_content(char *content, int *i, int start, \
+					struct s_gc **garbage);
 
 /* handle_redirection */
 
-void			handle_redirection(char *line, int *i, t_type **lst, t_sys *sys);
-int				handle_redir_in(t_cmd_segment* cmd, t_sys* sys);
-int	handle_redir_out(t_cmd_segment *cmd);
+void			handle_redirection(char *line, int *i, t_type **lst, \
+					t_sys *sys);
+int				handle_redir_in(t_cmd_segment *cmd, t_sys *sys);
+int				handle_redir_out(t_cmd_segment *cmd);
 
 /* parsing */
 
@@ -148,13 +153,13 @@ void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
 
 /* exec */
 
-void	exec(t_sys *sys);
-bool	is_builtin(char	*cmd);
-void	exec_builtin(t_cmd_segment *cmd);
+void			exec(t_sys *sys);
+bool			is_builtin(char	*cmd);
+void			exec_builtin(t_cmd_segment *cmd);
 
 /* redir */
 
-int	handle_heredoc(char* delimiter, t_sys* sys);
+int				handle_heredoc(char *delimiter, t_sys *sys);
 
 /* debug */
 
