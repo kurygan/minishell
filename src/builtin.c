@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 07:08:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/20 11:24:03 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,25 @@ void	exec_echo(t_cmd_segment *cmd)
 		printf("\n");
 }
 
+void	exec_pwd(t_cmd_segment *cmd)
+{
+	char	*cwd;
+
+	(void)cmd;
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+	{
+		perror("pwd");
+		return ;
+	}
+	printf("%s\n", cwd);
+	free(cwd);
+}
+
 void	exec_builtin(t_cmd_segment *cmd)
 {
 	if (!(ft_strcmp(cmd->cmd, "echo")))
 		exec_echo(cmd);
+	else if (!(ft_strcmp(cmd->cmd, "pwd")))
+		exec_pwd(cmd);
 }
