@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/20 11:24:03 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/20 11:49:02 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ void	exec_echo(t_cmd_segment *cmd)
 		while (*args)
 		{
 			if (print)
-				printf(" ");
+				ft_putchar_fd(' ', 1);
 			print = true;
-			printf("%s", *args);
+			ft_putstr_fd(*args, 1);
 			args++;
 		}
 	}
 	if (!no_newline)
-		printf("\n");
+		ft_putchar_fd('\n', 1);
 }
 
 void	exec_pwd(t_cmd_segment *cmd)
@@ -73,7 +73,7 @@ void	exec_pwd(t_cmd_segment *cmd)
 		perror("pwd");
 		return ;
 	}
-	printf("%s\n", cwd);
+	ft_putendl_fd(cwd, 1);
 	free(cwd);
 }
 
