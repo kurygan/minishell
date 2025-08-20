@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 06:37:34 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/20 12:02:10 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,8 +227,16 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 	current = segments;
 	if (cmd_count == 1)
 	{
-		exec_child_process(current, NULL, 1, 1);
-		return ;
+		if (is_builtin(current->cmd)) // Added this condition to prevent any exit (emetel)
+		{
+			exec_builtin(current);
+			return ;
+		}
+		else
+		{
+			exec_child_process(current, NULL, 1, 1);
+			return ;
+		}
 	}
 	pipes = create_pipes(cmd_count - 1, sys);
 	pids = gc_malloc(&(sys->garbage), sizeof(pid_t) * cmd_count);

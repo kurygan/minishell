@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 07:06:14 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/20 11:53:40 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ int				is_option(char *word);
 void			exec(t_sys *sys);
 bool			is_builtin(char	*cmd);
 void			exec_builtin(t_cmd_segment *cmd);
+void			exec_cd(t_cmd_segment *cmd);
 
 /* redir */
 
