@@ -47,31 +47,33 @@ static char	*get_path(char *cmd, t_sys *sys)
 	return (ft_freetab(paths), gc_strdup(cmd, &(sys->garbage)));
 }
 
-void	fd_redir(t_cmd_segment *command, int fd[2])
+void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
 {
-	if (command->heredoc || command->infile)
+	int fd[2];
+
+	if (cmd->infile || cmd->heredoc)
 	{
-		fd[0] = handle_redir_in(command, command->sys);
-		if (command->infile || command->heredoc)
-			printf("Infile FD: %d\n", fd[0]);
-		if (fd[0] == -1)
+		fd[0] = handle_redir_in(cmd, cmd->sys);
+		if (fd[0] != -1)
 		{
-			command->sys->exit_status = 1;
-			return ;
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
 		}
 	}
-	else
-		fd[0] = -1;
-	if (command->outfile)
+	else if (cmd_index > 0 && pipes)
+		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
+
+	if (cmd->outfile)
 	{
-		fd[1] = handle_redir_out(command);
-		printf("Outfile FD: %d\n", fd[1]);
-		if (fd[1] == -1)
+		fd[1] = handle_redir_out(cmd);
+		if (fd[1] != -1)
 		{
-			command->sys->exit_status = 1;
-			return ;
+			dup2(fd[1], STDOUT_FILENO);
+			close (fd[1]);
 		}
 	}
+	else if (cmd_index < total_cmds - 1 && pipes)
+		dup2(pipes[cmd_index][1], STDOUT_FILENO);
 }
 
 char	**get_args(t_cmd_segment *command)
@@ -162,24 +164,15 @@ int	count_commands(t_cmd_segment *segments)
 	return (count);
 }
 
-void	wait_for_children(pid_t *pids, int cmd_count, t_sys *sys)
+void	wait_pids(pid_t pid, t_sys *sys)
 {
-	int	i;
 	int	status;
 
-	i = 0;
-	while (i < cmd_count)
-	{
-		waitpid(pids[i], &status, 0);
-		if (i == cmd_count) // Last command determines exit status
-		{
-			if (WIFEXITED(status))
-				sys->exit_status = WEXITSTATUS(status);
-			else
-				sys->exit_status = 1;
-		}
-		i++;
-	}
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		sys->exit_status = WEXITSTATUS(status);
+	else
+		sys->exit_status = 1;
 }
 
 void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
@@ -187,32 +180,8 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 {
 	char	*path;
 	char	**args;
-	int		fd[2];
 
-	if (cmd->infile || cmd->heredoc)
-	{
-		fd[0] = handle_redir_in(cmd, cmd->sys);
-		if (fd[0] != -1)
-		{
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
-		}
-	}
-	else if (cmd_index > 0 && pipes)
-		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
-
-	if (cmd->outfile)
-	{
-		fd[1] = handle_redir_out(cmd);
-		if (fd[1] != -1)
-		{
-			dup2(fd[1], STDOUT_FILENO);
-			close (fd[1]);
-		}
-	}
-	else if (cmd_index < total_cmds - 1 && pipes)
-		dup2(pipes[cmd_index][1], STDOUT_FILENO);
-	
+	fd_redir(cmd, cmd_index, total_cmds, pipes);
 	if (pipes)
 		close_all_pipes(pipes, total_cmds - 1);
 	if (is_builtin(cmd->cmd))
@@ -248,11 +217,11 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		pids[i] = fork();
 		if (pids[i] == 0)
 			exec_child_process(current, pipes, i, cmd_count);
+		wait_pids(pids[i], sys);
 		current = current->next;
 		i++;
 	}
 	close_all_pipes(pipes, cmd_count - 1);
-	wait_for_children(pids, cmd_count, sys);
 }
 
 // Replace your current exec function with this:
