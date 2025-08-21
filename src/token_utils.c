@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:21:24 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 07:06:13 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	is_option(char *word)
+int	is_option(char *word)
 {
 	int	i;
 
@@ -48,13 +48,9 @@ static int	is_quoted_content(char *word)
 	return (0);
 }
 
-void	handle_pipe(char *line, int *i, t_type **lst, t_sys *sys)
+void	handle_pipe(int *i, t_type **lst, t_sys *sys)
 {
-	char	*symbol;
-
-	(void)line;
-	symbol = ft_strdup("|");
-	*lst = add_token(*lst, symbol, PIPE, sys);
+	*lst = add_token(*lst, "|", PIPE, sys);
 	(*i)++;
 }
 

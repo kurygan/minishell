@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 03:23:19 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 06:37:34 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,12 @@ static char	*get_path(char *cmd, t_sys *sys)
 	return (ft_freetab(paths), gc_strdup(cmd, &(sys->garbage)));
 }
 
-void fd_redir(t_cmd_segment *command, int fd[2])
+void	fd_redir(t_cmd_segment *command, int fd[2])
 {
-	fd[0] = -1;
-	fd[1] = -1;
 	if (command->heredoc || command->infile)
 	{
 		fd[0] = handle_redir_in(command, command->sys);
-		if (command->infile)
+		if (command->infile || command->heredoc)
 			printf("Infile FD: %d\n", fd[0]);
 		if (fd[0] == -1)
 		{
@@ -62,13 +60,14 @@ void fd_redir(t_cmd_segment *command, int fd[2])
 			return ;
 		}
 	}
+	else
+		fd[0] = -1;
 	if (command->outfile)
 	{
 		fd[1] = handle_redir_out(command);
 		printf("Outfile FD: %d\n", fd[1]);
 		if (fd[1] == -1)
 		{
-			ft_putendl_fd("outfile", 2);
 			command->sys->exit_status = 1;
 			return ;
 		}
@@ -113,145 +112,153 @@ char	**get_args(t_cmd_segment *command)
 
 int	**create_pipes(int pipe_count, t_sys *sys)
 {
-    int	**pipes;
-    int	i;
+	int	**pipes;
+	int	i;
 
-    pipes = gc_malloc(&(sys->garbage), sizeof(int *) * pipe_count);
-    i = 0;
-    while (i < pipe_count)
-    {
-        pipes[i] = gc_malloc(&(sys->garbage), sizeof(int) * 2);
-        if (pipe(pipes[i]) == -1)
-        {
-            perror("pipe");
-            return (NULL);
-        }
-        i++;
-    }
-    return (pipes);
+	if (pipe_count == 0)
+		return NULL;
+	pipes = gc_malloc(&(sys->garbage), sizeof(int *) * pipe_count);
+	i = 0;
+	while (i < pipe_count)
+	{
+		pipes[i] = gc_malloc(&(sys->garbage), sizeof(int) * 2);
+		if (pipe(pipes[i]) == -1)
+		{
+			perror("pipe");
+			return (NULL);
+		}
+		i++;
+	}
+	return (pipes);
 }
 
 void	close_all_pipes(int **pipes, int pipe_count)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < pipe_count)
-    {
-        close(pipes[i][0]);
-        close(pipes[i][1]);
-        i++;
-    }
+	i = 0;
+	while (i < pipe_count)
+	{
+		if (pipes[i][0] > 0)
+			close(pipes[i][0]);
+		if (pipes[i][1] > 0)
+			close(pipes[i][1]);
+		i++;
+	}
 }
 
 int	count_commands(t_cmd_segment *segments)
 {
-    int	count;
+	int	count;
+	t_cmd_segment	*tmp;
 
-    count = 0;
-    while (segments)
-    {
-        count++;
-        segments = segments->next;
-    }
-    return (count);
+	count = 0;
+	tmp = segments;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return (count);
 }
 
 void	wait_for_children(pid_t *pids, int cmd_count, t_sys *sys)
 {
-    int	i;
-    int	status;
+	int	i;
+	int	status;
 
-    i = 0;
-    while (i < cmd_count)
-    {
-        waitpid(pids[i], &status, 0);
-        if (i == cmd_count - 1)  // Last command determines exit status
-        {
-            if (WIFEXITED(status))
-                sys->exit_status = WEXITSTATUS(status);
-            else
-                sys->exit_status = 1;
-        }
-        i++;
-    }
+	i = 0;
+	while (i < cmd_count)
+	{
+		waitpid(pids[i], &status, 0);
+		if (i == cmd_count) // Last command determines exit status
+		{
+			if (WIFEXITED(status))
+				sys->exit_status = WEXITSTATUS(status);
+			else
+				sys->exit_status = 1;
+		}
+		i++;
+	}
 }
 
-void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, int total_cmds)
+void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
+			int total_cmds)
 {
-	int	temp_pipe[2];
+	char	*path;
+	char	**args;
+	int		fd[2];
 
-	if (pipes)
+	if (cmd->infile || cmd->heredoc)
 	{
-	    if (cmd_index > 0)  // Not first command
-	    {
-	        dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
-	    }
-	    if (cmd_index < total_cmds - 1)  // Not last command
-	    {
-	        dup2(pipes[cmd_index][1], STDOUT_FILENO);
-	    }
-	    close_all_pipes(pipes, total_cmds - 1);
-		fd_redir(cmd, pipes[cmd_index]);
+		fd[0] = handle_redir_in(cmd, cmd->sys);
+		if (fd[0] != -1)
+		{
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+		}
+	}
+	else if (cmd_index > 0 && pipes)
+		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
+
+	if (cmd->outfile)
+	{
+		fd[1] = handle_redir_out(cmd);
+		if (fd[1] != -1)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close (fd[1]);
+		}
+	}
+	else if (cmd_index < total_cmds - 1 && pipes)
+		dup2(pipes[cmd_index][1], STDOUT_FILENO);
+	
+	if (pipes)
+		close_all_pipes(pipes, total_cmds - 1);
+	if (is_builtin(cmd->cmd))
+	{
+		exec_builtin(cmd);
+		exit(0);
 	}
 	else
-		fd_redir(cmd, temp_pipe);
-    
-    
-    // Execute command
-    if (is_builtin(cmd->cmd))
-    {
-        exec_builtin(cmd);
-        exit(0);
-    }
-    else
-    {
-        char *path = get_path(cmd->cmd, cmd->sys);
-        char **args = get_args(cmd);
-        execve(path, args, cmd->sys->env);
-        perror("minishell");
-        exit(127);
-    }
+	{
+		path = get_path(cmd->cmd, cmd->sys);
+		args = get_args(cmd);
+		execve(path, args, cmd->sys->env);
+		perror("minishell");
+		exit(127);
+	}
 }
 
 void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 {
-    t_cmd_segment	*current;
-    int				cmd_count;
-    int				**pipes;
-    pid_t			*pids;
-    int				i;
+	t_cmd_segment	*current;
+	int				cmd_count;
+	int				**pipes;
+	pid_t			*pids;
+	int				i;
 
-    cmd_count = count_commands(segments);
-    current = segments;
-    if (cmd_count == 1)
-    {
-		exec_child_process(current, NULL, 1, 1);
-        return ;
-    }
-    
-    pipes = create_pipes(cmd_count - 1, sys);
-    pids = gc_malloc(&(sys->garbage), sizeof(pid_t) * cmd_count);
-    
-    i = 0;
-    while (current)
-    {
-        pids[i] = fork();
-        if (pids[i] == 0)
-            exec_child_process(current, pipes, i, cmd_count);
-        current = current->next;
-        i++;
-    }
-    
-    close_all_pipes(pipes, cmd_count - 1);
-    wait_for_children(pids, cmd_count, sys);
+	cmd_count = count_commands(segments);
+	current = segments;
+	pipes = create_pipes(cmd_count - 1, sys);
+	pids = gc_malloc(&(sys->garbage), sizeof(pid_t) * cmd_count);
+	i = 0;
+	while (current)
+	{
+		pids[i] = fork();
+		if (pids[i] == 0)
+			exec_child_process(current, pipes, i, cmd_count);
+		current = current->next;
+		i++;
+	}
+	close_all_pipes(pipes, cmd_count - 1);
+	wait_for_children(pids, cmd_count, sys);
 }
 
 // Replace your current exec function with this:
 void	exec(t_sys *sys)
 {
-    if (!sys->command || !sys->command->cmd)
-        return ;
-    
-    exec_pipeline(sys->command, sys);
+	if (!sys->command || !sys->command->cmd)
+		return ;
+	exec_pipeline(sys->command, sys);
 }

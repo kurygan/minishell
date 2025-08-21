@@ -8,6 +8,11 @@
 			"cwd": "/tmp/test",
 			"binaryPath": "/tmp/test/minishell",
 			"binaryArgs": []
+		},
+		{
+			"cwd": "/home/mkettab/Documents/minishell",
+			"binaryPath": "/home/mkettab/Documents/minishell/minishell",
+			"binaryArgs": []
 		}
 	]
 }

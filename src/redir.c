@@ -40,6 +40,8 @@ char	*expand_heredoc(char *line, t_sys *sys)
 		else
 			i++;
 	}
+	if (line_extended[0] == 0)
+		line_extended = line;
 	return (line_extended);
 }
 

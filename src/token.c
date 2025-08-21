@@ -33,15 +33,22 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	expect_cmd = 1;
 	while (tmp)
 	{
+		if (tmp->prev && tmp->prev->token == PIPE)
+		{
+			tmp->token = CMD;
+			tmp = tmp->next;
+			continue;
+		}
 		if (tmp->token == REDIR_IN || tmp->token == REDIR_OUT
 			|| tmp->token == REDIR_APPEND || tmp->token == REDIR_HEREDOC
-			|| tmp->token == REDIR_TARGET)
+			|| tmp->token == REDIR_TARGET || tmp->token == PIPE)
 		{
+			if (tmp->token == PIPE)
+				expect_cmd = 1;
 			tmp = tmp->next;
 			continue ;
 		}
-		if (tmp->prev && !(tmp->prev->token == CMD \
-			|| tmp->prev->token == OPTIONS || tmp->prev->token == REDIR_TARGET \
+		if (tmp->prev && !(tmp->prev->token == OPTIONS || tmp->prev->token == REDIR_TARGET \
 			|| tmp->prev->token == REDIR_IN || tmp->prev->token == REDIR_OUT \
 			|| tmp->prev->token == REDIR_APPEND \
 			|| tmp->prev->token == REDIR_HEREDOC))
@@ -72,7 +79,7 @@ t_type	*tokenize(char *line, t_sys *sys)
 		if (line[i] == ' ' || line[i] == '\t')
 			i++;
 		else if (line[i] == '|')
-			handle_pipe(line, &i, &token_lst, sys);
+			handle_pipe(&i, &token_lst, sys);
 		else if (line[i] == '<' || line[i] == '>')
 			handle_redirection(line, &i, &token_lst, sys);
 		else if (line[i] == '\'' || line[i] == '\"')
