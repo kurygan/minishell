@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:20:06 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/18 06:33:39 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char	*remove_quotes(char *str, t_sys *sys)
 	return (gc_strdup(str, &(sys->garbage)));
 }
 
-char	*process_regular_char(char *content, char *result, int *i, t_gc **garbage)
+char	*process_regular_char(char *content, char *result, int *i, \
+			t_gc **garbage)
 {
 	char	*temp;
 
@@ -77,7 +78,8 @@ char	*process_valid_variable(char *content, char *result, t_sys *sys, int *i)
 	return (result);
 }
 
-char	*process_invalid_variable(char *content, char *result, int *i, t_gc **garbage)
+char	*process_invalid_variable(char *content, char *result, int *i, \
+			t_gc **garbage)
 {
 	char	*temp;
 

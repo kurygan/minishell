@@ -62,7 +62,6 @@ void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
 	}
 	else if (cmd_index > 0 && pipes)
 		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
-
 	if (cmd->outfile)
 	{
 		fd[1] = handle_redir_out(cmd);
@@ -164,9 +163,9 @@ int	count_commands(t_cmd_segment *segments)
 	return (count);
 }
 
-void	wait_pids(pid_t pid, t_sys *sys)
+void	wait_pid(pid_t pid, t_sys *sys)
 {
-	int	status;
+	int status;
 
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
@@ -217,11 +216,13 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		pids[i] = fork();
 		if (pids[i] == 0)
 			exec_child_process(current, pipes, i, cmd_count);
-		wait_pids(pids[i], sys);
+		if (current->next)
+			wait_pid(pids[i], sys);
 		current = current->next;
 		i++;
 	}
 	close_all_pipes(pipes, cmd_count - 1);
+	wait_pid(pids[i], sys);
 }
 
 // Replace your current exec function with this:
