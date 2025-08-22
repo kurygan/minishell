@@ -6,11 +6,11 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/20 11:54:02 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/22 12:18:50 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 bool	is_builtin(char	*cmd)
 {
@@ -20,46 +20,6 @@ bool	is_builtin(char	*cmd)
 		|| !ft_strcmp(cmd, "exit"))
 		return (true);
 	return (false);
-}
-
-static bool	check_n_option(char **options)
-{
-	int	i;
-
-	if (!options)
-		return (false);
-	i = 0;
-	while (options[i])
-	{
-		if (is_option(options[i]))
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-void	exec_echo(t_cmd_segment *cmd)
-{
-	char	**args;
-	bool	print;
-	bool	no_newline;
-
-	no_newline = check_n_option(cmd->options);
-	args = cmd->args;
-	print = false;
-	if (args)
-	{
-		while (*args)
-		{
-			if (print)
-				ft_putchar_fd(' ', 1);
-			print = true;
-			ft_putstr_fd(*args, 1);
-			args++;
-		}
-	}
-	if (!no_newline)
-		ft_putchar_fd('\n', 1);
 }
 
 void	exec_pwd(t_cmd_segment *cmd)

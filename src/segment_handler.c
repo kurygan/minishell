@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 06:32:24 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/22 12:05:42 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str, \
 	int		i;
 	char	**new_args;
 
+	(void)sys;
 	(void)sys;
 	(void)sys;
 	i = 0;

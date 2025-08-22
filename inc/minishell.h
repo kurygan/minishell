@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/20 11:53:40 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/22 20:29:20 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef enum e_token
 	REDIR_APPEND,
 	REDIR_HEREDOC,
 	REDIR_TARGET,
-	OPTIONS,
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	ERROR
@@ -56,7 +55,6 @@ typedef struct s_cmd_segment
 {
 	char					*cmd;
 	char					**args;
-	char					**options;
 	char					*infile;
 	char					*heredoc;
 	char					*outfile;
@@ -133,8 +131,6 @@ void			handle_command_token(t_type *token, t_cmd_segment **current,
 					t_cmd_segment **head, t_sys *sys);
 void			handle_redirection_token(t_type *token,
 					t_cmd_segment **current, t_cmd_segment **head, t_sys *sys);
-void			handle_option_token(t_type *token, t_cmd_segment **current,
-					t_cmd_segment **head, t_sys *sys);
 t_cmd_segment	*convert_tokens(t_sys *sys);
 
 /* signal */
@@ -147,10 +143,9 @@ void			reset_signals(struct termios *orig_termios);
 
 t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
-void			handle_pipe(char *line, int *i, t_type **lst, t_sys *sys);
+void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
-int				is_option(char *word);
 
 /* exec */
 
@@ -158,6 +153,7 @@ void			exec(t_sys *sys);
 bool			is_builtin(char	*cmd);
 void			exec_builtin(t_cmd_segment *cmd);
 void			exec_cd(t_cmd_segment *cmd);
+void			exec_echo(t_cmd_segment *cmd);
 
 /* redir */
 

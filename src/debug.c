@@ -5,79 +5,100 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 02:25:51 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 06:39:10 by emetel           ###   ########.fr       */
+/*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
+/*   Updated: 2025/08/22 20:29:19 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	debug_print_segments(t_cmd_segment *seg)
+static void	print_segment_header(t_cmd_segment *seg, int i)
 {
-	int	i;
+	if (seg->next)
+		printf("┌─ Segment %d ├────────────────\n", i);
+	else
+		printf("┌─ Segment %d └────────────────\n", i);
+}
+
+static void	print_segment_args(char **args)
+{
 	int	j;
 
-	 if (!seg)
-	 {
-		 printf("\n┌─────────────────────────────┐\n");
-		 printf("│        SEGMENTS: NONE       │\n");
-		 printf("└─────────────────────────────┘\n\n");
-		 return ;
-	 }
-	 printf("\n┌─────────────────────────────┐\n");
-	 printf("│         SEGMENTS            │\n");
-	 printf("└─────────────────────────────┘\n");
-	 i = 1;
-	 while (seg)
-	 {
-		 printf("┌─ Segment %d %s\n", i++, seg->next ? "├────────────────"
-			 : "└────────────────");
-		 printf("│  Command  : %s\n", seg->cmd ? seg->cmd : "(null)");
-		 printf("│  Options  : ");
-		 if (!seg->options)
-		 {
-			 printf("(null)\n");
-		 }
-		 else
-		 {
-			 printf("[");
-			 j = 0;
-			 while (seg->options[j])
-			 {
-				 printf("\"%s\"", seg->options[j]);
-				 if (seg->options[j + 1])
-					 printf(", ");
-				 j++;
-			 }
-			 printf("]\n");
-		 }
-		 printf("│  Args     : ");
-		 if (!seg->args)
-		 {
-			 printf("(null)\n");
-		 }
-		 else
-		 {
-			 printf("[");
-			 j = 0;
-			 while (seg->args[j])
-			 {
-				 printf("\"%s\"", seg->args[j]);
-				 if (seg->args[j + 1])
-					 printf(", ");
-				 j++;
-			 }
-			 printf("]\n");
-		 }
-		 printf("│  Infile   : %s\n", seg->infile ? seg->infile : "(null)");
-		 printf("│  Heredoc  : %s\n", seg->heredoc ? seg->heredoc : "(null)");
-		 printf("│  Outfile  : %s\n", seg->outfile ? seg->outfile : "(null)");
-		 printf("│  Append   : %s\n", seg->append_mode ? "YES" : "NO");
-		 printf("│\n");
-		 seg = seg->next;
-	 }
-	 printf("\n");
- }
+	printf("│  Args     : ");
+	if (!args)
+	{
+		printf("(null)\n");
+		return ;
+	}
+	printf("[");
+	j = 0;
+	while (args[j])
+	{
+		printf("\"%s\"", args[j]);
+		if (args[j + 1])
+			printf(", ");
+		j++;
+	}
+	printf("]\n");
+}
+
+static void	print_segment_info(t_cmd_segment *seg)
+{
+	printf("│  Command  : ");
+	if (seg->cmd)
+		printf("%s\n", seg->cmd);
+	else
+		printf("(null)\n");
+	print_segment_args(seg->args);
+	printf("│  Infile   : ");
+	if (seg->infile)
+		printf("%s\n", seg->infile);
+	else
+		printf("(null)\n");
+	printf("│  Heredoc  : ");
+	if (seg->heredoc)
+		printf("%s\n", seg->heredoc);
+	else
+		printf("(null)\n");
+	printf("│  Outfile  : ");
+	if (seg->outfile)
+		printf("%s\n", seg->outfile);
+	else
+		printf("(null)\n");
+	printf("│  Append   : ");
+	if (seg->append_mode)
+		printf("YES\n");
+	else
+		printf("NO\n");
+	printf("│\n");
+}
+
+void	debug_print_segments(t_cmd_segment *segments)
+{
+	t_cmd_segment	*seg;
+	int				i;
+
+	if (!segments)
+	{
+		printf("\n┌─────────────────────────────┐\n");
+		printf("│       SEGMENTS: NONE       │\n");
+		printf("└─────────────────────────────┘\n\n");
+		return ;
+	}
+	printf("\n┌─────────────────────────────┐\n");
+	printf("│         SEGMENTS            │\n");
+	printf("└─────────────────────────────┘\n");
+	seg = segments;
+	i = 1;
+	while (seg)
+	{
+		print_segment_header(seg, i++);
+		print_segment_info(seg);
+		seg = seg->next;
+	}
+	printf("\n");
+}
+
 
 //void	free_segments(t_cmd_segment *segments)
 //{
@@ -98,7 +119,7 @@ void	debug_print_tokens(t_type *tokens)
 	const char	*token_types[] = {
 		"CMD", "ARGS", "PIPE",
 		"REDIR_IN", "REDIR_OUT", "REDIR_APPEND", "REDIR_HEREDOC",
-		"REDIR_TARGET", "OPTIONS", "ERROR"
+		"REDIR_TARGET", "ERROR"
 	};
 
 	if (!tokens)
@@ -116,13 +137,13 @@ void	debug_print_tokens(t_type *tokens)
 	while (1)
 	{
 		printf("├─ Token %3d: ", i++);
-		if (token->token >= 0 && token->token <= 9)
+		if (token->token >= 0 && token->token <= 8)
 			printf("%-13s", token_types[token->token]);
 		else
 			printf("%-13s", "UNKNOWN");
 		printf(" │ '%s'\n", token->str ? token->str : "(null)");
 		if (!(token->next))
-			break;
+			break ;
 		token = token->next;
 	}
 	printf("└─────────────────────────────┘\n\n");

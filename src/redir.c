@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
 /*   Updated: 2025/08/18 06:33:19 by emetel           ###   ########.fr       */
@@ -44,6 +44,8 @@ char	*expand_heredoc(char *line, t_sys *sys)
 		else
 			i++;
 	}
+	if (line_extended[0] == 0)
+		line_extended = line;
 	return (line_extended);
 }
 

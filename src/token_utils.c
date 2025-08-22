@@ -6,55 +6,15 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 07:06:13 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/22 20:29:19 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	is_option(char *word)
+void	handle_pipe(int *i, t_type **lst, t_sys *sys)
 {
-	int	i;
-
-	i = 1;
-	if (!word)
-		return (0);
-	if (word[0] != '-')
-		return (0);
-	if (word[1] == '\0')
-		return (0);
-	while (word[i])
-	{
-		if (word[i] != 'n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	is_quoted_content(char *word)
-{
-	int	i;
-
-	i = 0;
-	if (!word)
-		return (0);
-	while (word[i])
-	{
-		if (word[i] == '\'' || word[i] == '\"')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	handle_pipe(char *line, int *i, t_type **lst, t_sys *sys)
-{
-	char	*symbol;
-
-	(void)line;
-	symbol = ft_strdup("|");
-	*lst = add_token(*lst, symbol, PIPE, sys);
+	*lst = add_token(*lst, "|", PIPE, sys);
 	(*i)++;
 }
 
@@ -98,9 +58,9 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)
 		return ;
-	if (is_option(word) && !is_quoted_content(word))
-		token_type = OPTIONS;
-	else
+	if (!*lst || (*lst)->token == PIPE)
 		token_type = CMD;
+	else
+		token_type = ARGS;
 	*lst = add_token(*lst, word, token_type, sys);
 }

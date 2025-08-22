@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   garbage.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:52:49 by mkettab           #+#    #+#             */
 /*   Updated: 2025/08/18 06:40:48 by emetel           ###   ########.fr       */

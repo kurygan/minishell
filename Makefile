@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
+#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/18 02:36:31 by mkettab          ###   ########.fr        #
+#    Updated: 2025/08/22 20:29:21 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,14 @@ SRCS =	minishell.c \
 		handle_redirection.c \
 		parsing.c \
 		segment_handler.c \
-		segment_options.c \
 		segment.c \
 		signal.c \
 		token_utils.c \
 		token.c \
 		exec.c \
 		debug.c \
-		builtin.c \
+		builtin/builtin.c \
+		builtin/echo.c \
 		redir.c \
 		garbage_collector/gc_free.c \
 		garbage_collector/gc_malloc.c \
