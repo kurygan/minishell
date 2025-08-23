@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/22 20:29:20 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/23 23:11:37 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ bool			is_builtin(char	*cmd);
 void			exec_builtin(t_cmd_segment *cmd);
 void			exec_cd(t_cmd_segment *cmd);
 void			exec_echo(t_cmd_segment *cmd);
+void			exec_pwd(t_cmd_segment *cmd);
 
 /* redir */
 
