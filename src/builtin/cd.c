@@ -19,7 +19,7 @@ void	exec_cd(t_cmd_segment *cmd)
 
 	if (!cmd->args || !cmd->args[0])
 	{
-		home = get_env_value("HOME", cmd->sys->env);
+		home = get_env_value_from_list("HOME", cmd->sys->env_list);
 		if (!home)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);

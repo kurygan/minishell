@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 06:33:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/24 00:00:24 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*process_valid_variable(char *content, char *result, t_sys *sys, int *i)
 			|| content[start] == '_'))
 		start++;
 	temp = extract_var_content(content, i, start, &(sys->garbage));
-	var_value = get_env_value(temp, sys->env);
+	var_value = get_env_value_from_list(temp, sys->env_list);
 	if (var_value)
 		result = gc_strjoin(result, gc_strdup(var_value, &(sys->garbage)), \
 				&(sys->garbage));

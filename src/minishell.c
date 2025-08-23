@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/22 22:26:15 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/24 00:00:23 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	sys->exit_status = 0;
 	sys->env = env;
+	sys->env_list = init_env_list(env, sys);
 	sys->garbage = NULL;
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);

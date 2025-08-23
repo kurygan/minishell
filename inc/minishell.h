@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/23 23:11:37 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/24 00:00:23 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,17 @@ typedef struct s_type
 	struct s_type			*prev;
 }	t_type;
 
+typedef struct s_env_var
+{
+	char				*key;
+	char				*value;
+	struct s_env_var	*next;
+}	t_env_var;
+
 typedef struct s_sys
 {
 	char			**env;
+	t_env_var		*env_list;
 	t_cmd_segment	*command;
 	t_type			*tokens;
 	int				exit_status;
@@ -154,7 +162,21 @@ bool			is_builtin(char	*cmd);
 void			exec_builtin(t_cmd_segment *cmd);
 void			exec_cd(t_cmd_segment *cmd);
 void			exec_echo(t_cmd_segment *cmd);
+void			exec_env(t_cmd_segment *cmd);
 void			exec_pwd(t_cmd_segment *cmd);
+
+/* env management */
+t_env_var		*create_env_var(char *key, char *value, t_sys *sys);
+t_env_var		*parse_env_string(char *env_str, t_sys *sys);
+t_env_var		*init_env_list(char **env, t_sys *sys);
+char			**env_list_to_array(t_env_var *env_list, t_sys *sys);
+t_env_var		*find_env_var(t_env_var *env_list, char *key);
+void			add_env_var(t_env_var **env_list, char *key, char *value, \
+					t_sys *sys);
+void			update_env_var(t_env_var *env_var, char *value, t_sys *sys);
+void			remove_env_var(t_env_var **env_list, char *key, t_sys *sys);
+void			free_env_list(t_env_var *env_list, t_sys *sys);
+char			*get_env_value_from_list(char *var_name, t_env_var *env_list);
 
 /* redir */
 

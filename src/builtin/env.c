@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
+/*   Created: 2025/08/23 23:15:00 by emetel            #+#    #+#             */
 /*   Updated: 2025/08/24 00:00:23 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-bool	is_builtin(char	*cmd)
+void	exec_env(t_cmd_segment *cmd)
 {
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") \
-		|| !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") \
-		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") \
-		|| !ft_strcmp(cmd, "exit"))
-		return (true);
-	return (false);
-}
+	t_env_var	*current;
 
-void	exec_builtin(t_cmd_segment *cmd)
-{
-	if (!(ft_strcmp(cmd->cmd, "echo")))
-		exec_echo(cmd);
-	else if (!(ft_strcmp(cmd->cmd, "pwd")))
-		exec_pwd(cmd);
-	else if (!(ft_strcmp(cmd->cmd, "cd")))
-		exec_cd(cmd);
-	else if (!(ft_strcmp(cmd->cmd, "env")))
-		exec_env(cmd);
+	if (!cmd->sys->env_list)
+		return ;
+	current = cmd->sys->env_list;
+	while (current)
+	{
+		if (current->value)
+		{
+			ft_putstr_fd(current->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putendl_fd(current->value, 1);
+		}
+		current = current->next;
+	}
 }
