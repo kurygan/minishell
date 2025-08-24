@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:17:04 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/24 21:42:23 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,17 @@
 
 char	*expand_var(char *arg, t_sys *sys, int exit_status)
 {
-	int		i;
 	char	*var_name;
 	char	*value;
-	size_t	len;
 
 	if (!arg || arg[0] != '$')
 		return (gc_strdup(arg, &(sys->garbage)));
 	if (arg[1] == '?')
 		return (gc_itoa(exit_status, &(sys->garbage)));
 	var_name = arg + 1;
-	len = ft_strlen(var_name);
-	i = 0;
-	while (sys->env[i])
-	{
-		if (!ft_strncmp(sys->env[i], var_name, len) && sys->env[i][len] == '=')
-		{
-			value = sys->env[i] + len + 1;
-			return (gc_strdup(value, &(sys->garbage)));
-		}
-		i++;
-	}
+	value = get_env_value_from_list(var_name, sys->env_list);
+	if (value)
+		return (gc_strdup(value, &(sys->garbage)));
 	return (gc_strdup("", &(sys->garbage)));
 }
 
