@@ -82,16 +82,13 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		pids[i] = fork();
 		if (pids[i] == 0)
 			exec_child_process(current, pipes, i, cmd_count);
+		if (current->next)
+			wait_pid(pids[i], sys);
 		current = current->next;
 		i++;
 	}
 	close_all_pipes(pipes, cmd_count - 1);
-	i = 0;
-	while (i < cmd_count)
-	{
-		wait_pid(pids[i], sys);
-		i++;
-	}
+	wait_pid(pids[i], sys);
 }
 
 void	exec(t_sys *sys)
