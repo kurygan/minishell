@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:42:04 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:56:07 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,12 @@ void			exec_cd(t_cmd_segment *cmd);
 void			exec_echo(t_cmd_segment *cmd);
 void			exec_env(t_cmd_segment *cmd);
 void			exec_pwd(t_cmd_segment *cmd);
+
+/* cd_utils */
+
+void			update_pwd_variables(t_cmd_segment *cmd, char *old_pwd);
+void			handle_cd_error(char *path);
+int				change_directory(char *path, t_cmd_segment *cmd);
 
 /* exec_utils */
 

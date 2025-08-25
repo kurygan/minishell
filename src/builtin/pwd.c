@@ -14,15 +14,15 @@
 
 void	exec_pwd(t_cmd_segment *cmd)
 {
-	char	*cwd;
+	char	*pwd;
 
-	(void)cmd;
-	cwd = getcwd(NULL, 0);
-	if (cwd == NULL)
+	pwd = get_env_value_from_list("PWD", cmd->sys->env_list);
+	if (!pwd)
 	{
-		perror("pwd");
+		ft_putstr_fd("minishell: pwd: PWD not set\n", 2);
+		cmd->sys->exit_status = 1;
 		return ;
 	}
-	ft_putendl_fd(cwd, 1);
-	free(cwd);
+	ft_putendl_fd(pwd, 1);
+	cmd->sys->exit_status = 0;
 }

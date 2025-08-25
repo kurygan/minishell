@@ -16,7 +16,9 @@ void	exec_cd(t_cmd_segment *cmd)
 {
 	char	*path;
 	char	*home;
+	char	*old_pwd;
 
+	old_pwd = get_env_value_from_list("PWD", cmd->sys->env_list);
 	if (!cmd->args || !cmd->args[0])
 	{
 		home = get_env_value_from_list("HOME", cmd->sys->env_list);
@@ -26,32 +28,15 @@ void	exec_cd(t_cmd_segment *cmd)
 			cmd->sys->exit_status = 1;
 			return ;
 		}
-		if (chdir(home) == -1)
-		{
-			perror("cd");
-			cmd->sys->exit_status = 1;
+		if (!change_directory(home, cmd))
 			return ;
-		}
 	}
 	else
 	{
 		path = cmd->args[0];
-		if (chdir(path) == -1)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": ", 2);
-			if (errno == ENOENT)
-				ft_putstr_fd("No such file or directory\n", 2);
-			else if (errno == EACCES)
-				ft_putstr_fd("Permission denied\n", 2);
-			else if (errno == ENOTDIR)
-				ft_putstr_fd("Not a directory\n", 2);
-			else
-				ft_putstr_fd("Directory error\n", 2);
-			cmd->sys->exit_status = 1;
+		if (!change_directory(path, cmd))
 			return ;
-		}
 	}
+	update_pwd_variables(cmd, old_pwd);
 	cmd->sys->exit_status = 0;
 }
