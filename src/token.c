@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/22 20:29:20 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:41:22 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,29 +105,4 @@ t_type	*tokenize(char *line, t_sys *sys)
 	}
 	assign_cmd_and_args(token_lst, sys);
 	return (token_lst);
-}
-
-t_type	*add_token(t_type *list, char *str, t_token token, t_sys *sys)
-{
-	t_type	*new;
-	t_type	*tmp;
-
-	new = gc_malloc(&(sys->garbage), sizeof(t_type));
-	ft_memset(new, 0, sizeof(t_type));
-	new->str = gc_strdup(str, &(sys->garbage));
-	new->token = token;
-	new->sys = sys;
-	if (!list)
-		return (new);
-	tmp = list;
-	while (1)
-	{
-		if (!tmp->next)
-			break ;
-		tmp = tmp->next;
-	}
-	tmp->next = new;
-	new->prev = tmp;
-	new->next = NULL;
-	return (list);
 }

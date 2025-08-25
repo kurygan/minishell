@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/24 21:36:22 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/25 14:35:33 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS =	minishell.c \
 		token_utils.c \
 		token.c \
 		exec.c \
+		exec_utils.c \
 		debug.c \
 		builtin/env_utils.c \
 		builtin/env_lst.c \

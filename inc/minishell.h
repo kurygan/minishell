@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:29:03 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:42:04 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,15 @@ void			exec_cd(t_cmd_segment *cmd);
 void			exec_echo(t_cmd_segment *cmd);
 void			exec_env(t_cmd_segment *cmd);
 void			exec_pwd(t_cmd_segment *cmd);
+
+/* exec_utils */
+
+char			*get_path(char *cmd, t_sys *sys);
+void			fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, \
+					int **pipes);
+char			**get_args(t_cmd_segment *command);
+int				**create_pipes(int pipe_count, t_sys *sys);
+void			close_all_pipes(int **pipes, int pipe_count);
 
 /* env management */
 t_env_var		*create_env_var(char *key, char *value, t_sys *sys);
