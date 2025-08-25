@@ -6,47 +6,11 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 07:06:13 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:41:22 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-int	is_option(char *word)
-{
-	int	i;
-
-	i = 1;
-	if (!word)
-		return (0);
-	if (word[0] != '-')
-		return (0);
-	if (word[1] == '\0')
-		return (0);
-	while (word[i])
-	{
-		if (word[i] != 'n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	is_quoted_content(char *word)
-{
-	int	i;
-
-	i = 0;
-	if (!word)
-		return (0);
-	while (word[i])
-	{
-		if (word[i] == '\'' || word[i] == '\"')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 void	handle_pipe(int *i, t_type **lst, t_sys *sys)
 {
@@ -94,9 +58,34 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)
 		return ;
-	if (is_option(word) && !is_quoted_content(word))
-		token_type = OPTIONS;
-	else
+	if (!*lst || (*lst)->token == PIPE)
 		token_type = CMD;
+	else
+		token_type = ARGS;
 	*lst = add_token(*lst, word, token_type, sys);
+}
+
+t_type	*add_token(t_type *list, char *str, t_token token, t_sys *sys)
+{
+	t_type	*new;
+	t_type	*tmp;
+
+	new = gc_malloc(&(sys->garbage), sizeof(t_type));
+	ft_memset(new, 0, sizeof(t_type));
+	new->str = gc_strdup(str, &(sys->garbage));
+	new->token = token;
+	new->sys = sys;
+	if (!list)
+		return (new);
+	tmp = list;
+	while (1)
+	{
+		if (!tmp->next)
+			break ;
+		tmp = tmp->next;
+	}
+	tmp->next = new;
+	new->prev = tmp;
+	new->next = NULL;
+	return (list);
 }

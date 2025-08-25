@@ -6,29 +6,11 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 06:33:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:23:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-char	*get_env_value(char *var_name, char **env)
-{
-	int		i;
-	size_t	len;
-
-	if (!var_name || !env)
-		return (NULL);
-	len = ft_strlen(var_name);
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], var_name, len) && env[i][len] == '=')
-			return (env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
 
 char	*remove_quotes(char *str, t_sys *sys)
 {
@@ -70,7 +52,7 @@ char	*process_valid_variable(char *content, char *result, t_sys *sys, int *i)
 			|| content[start] == '_'))
 		start++;
 	temp = extract_var_content(content, i, start, &(sys->garbage));
-	var_value = get_env_value(temp, sys->env);
+	var_value = get_env_value_from_list(temp, sys->env_list);
 	if (var_value)
 		result = gc_strjoin(result, gc_strdup(var_value, &(sys->garbage)), \
 				&(sys->garbage));

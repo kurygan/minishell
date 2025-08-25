@@ -3,39 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:17:04 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/24 22:25:35 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*expand_var(char *arg, t_sys *sys, int exit_status)
+static char	*process_var_expansion(char *arg, int *i, t_sys *sys, \
+				int exit_status)
 {
-	int		i;
+	char	*result;
 	char	*var_name;
 	char	*value;
-	size_t	len;
+	int		start;
+
+	result = gc_strdup("", &(sys->garbage));
+	if (arg[*i + 1] == '?')
+	{
+		value = gc_itoa(exit_status, &(sys->garbage));
+		result = gc_strjoin(result, value, &(sys->garbage));
+		*i += 2;
+	}
+	else
+	{
+		start = *i + 1;
+		while (arg[start] && (ft_isalnum(arg[start])
+				|| arg[start] == '_'))
+			start++;
+		var_name = gc_substr(arg, *i + 1, start - *i - 1, &(sys->garbage));
+		value = get_env_value_from_list(var_name, sys->env_list);
+		if (value)
+			result = gc_strjoin(result, gc_strdup(value, &(sys->garbage)),
+					&(sys->garbage));
+		gc_free(var_name, &(sys->garbage));
+		*i = start;
+	}
+	return (result);
+}
+
+char	*expand_var(char *arg, t_sys *sys, int exit_status)
+{
+	char	*result;
+	char	*temp;
+	int		i;
 
 	if (!arg || arg[0] != '$')
 		return (gc_strdup(arg, &(sys->garbage)));
-	if (arg[1] == '?')
-		return (gc_itoa(exit_status, &(sys->garbage)));
-	var_name = arg + 1;
-	len = ft_strlen(var_name);
+	result = gc_strdup("", &(sys->garbage));
 	i = 0;
-	while (sys->env[i])
+	while (arg[i])
 	{
-		if (!ft_strncmp(sys->env[i], var_name, len) && sys->env[i][len] == '=')
+		if (arg[i] == '$')
 		{
-			value = sys->env[i] + len + 1;
-			return (gc_strdup(value, &(sys->garbage)));
+			temp = process_var_expansion(arg, &i, sys, exit_status);
+			result = gc_strjoin(result, temp, &(sys->garbage));
 		}
-		i++;
+		else
+		{
+			temp = gc_substr(arg, i, 1, &(sys->garbage));
+			result = gc_strjoin(result, temp, &(sys->garbage));
+			i++;
+		}
 	}
-	return (gc_strdup("", &(sys->garbage)));
+	return (result);
 }
 
 void	expand_quoted_str(char **str, t_sys *sys, int exit_status,

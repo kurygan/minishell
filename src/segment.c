@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:34:58 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 03:17:18 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/22 20:29:19 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static void	process_token(t_type *token, t_cmd_segment **current, \
 	else if (token->token == CMD || token->token == ARGS
 		|| token->token == SINGLE_QUOTE || token->token == DOUBLE_QUOTE)
 		handle_command_token(token, current, head, sys);
-	else if (token->token == OPTIONS)
-		handle_option_token(token, current, head, sys);
 	else if (token->token == REDIR_TARGET)
 		handle_redirection_token(token, current, head, sys);
 }

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/20 11:53:40 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:56:07 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef enum e_token
 	REDIR_APPEND,
 	REDIR_HEREDOC,
 	REDIR_TARGET,
-	OPTIONS,
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	ERROR
@@ -56,7 +55,6 @@ typedef struct s_cmd_segment
 {
 	char					*cmd;
 	char					**args;
-	char					**options;
 	char					*infile;
 	char					*heredoc;
 	char					*outfile;
@@ -75,13 +73,22 @@ typedef struct s_type
 	struct s_type			*prev;
 }	t_type;
 
+typedef struct s_env_var
+{
+	char				*key;
+	char				*value;
+	struct s_env_var	*next;
+}	t_env_var;
+
 typedef struct s_sys
 {
 	char			**env;
+	t_env_var		*env_list;
 	t_cmd_segment	*command;
 	t_type			*tokens;
 	int				exit_status;
 	struct s_gc		*garbage;
+	bool			env_was_empty;
 }	t_sys;
 
 /* expander */
@@ -96,7 +103,6 @@ char			*expand_quote(char *arg, t_sys *sys, int exit_status,
 
 /* quote_utils */
 
-char			*get_env_value(char *var_name, char **env);
 char			*remove_quotes(char *str, t_sys *sys);
 char			*process_regular_char(char *content, char *result, int *i, \
 					struct s_gc **garbage);
@@ -133,8 +139,6 @@ void			handle_command_token(t_type *token, t_cmd_segment **current,
 					t_cmd_segment **head, t_sys *sys);
 void			handle_redirection_token(t_type *token,
 					t_cmd_segment **current, t_cmd_segment **head, t_sys *sys);
-void			handle_option_token(t_type *token, t_cmd_segment **current,
-					t_cmd_segment **head, t_sys *sys);
 t_cmd_segment	*convert_tokens(t_sys *sys);
 
 /* signal */
@@ -147,10 +151,9 @@ void			reset_signals(struct termios *orig_termios);
 
 t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
-void	handle_pipe(int *i, t_type **lst, t_sys *sys);
+void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
-int				is_option(char *word);
 
 /* exec */
 
@@ -158,6 +161,37 @@ void			exec(t_sys *sys);
 bool			is_builtin(char	*cmd);
 void			exec_builtin(t_cmd_segment *cmd);
 void			exec_cd(t_cmd_segment *cmd);
+void			exec_echo(t_cmd_segment *cmd);
+void			exec_env(t_cmd_segment *cmd);
+void			exec_pwd(t_cmd_segment *cmd);
+
+/* cd_utils */
+
+void			update_pwd_variables(t_cmd_segment *cmd, char *old_pwd);
+void			handle_cd_error(char *path);
+int				change_directory(char *path, t_cmd_segment *cmd);
+
+/* exec_utils */
+
+char			*get_path(char *cmd, t_sys *sys);
+void			fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, \
+					int **pipes);
+char			**get_args(t_cmd_segment *command);
+int				**create_pipes(int pipe_count, t_sys *sys);
+void			close_all_pipes(int **pipes, int pipe_count);
+
+/* env management */
+t_env_var		*create_env_var(char *key, char *value, t_sys *sys);
+t_env_var		*parse_env_string(char *env_str, t_sys *sys);
+t_env_var		*init_env_list(char **env, t_sys *sys);
+char			**env_list_to_array(t_env_var *env_list, t_sys *sys);
+t_env_var		*find_env_var(t_env_var *env_list, char *key);
+void			add_env_var(t_env_var **env_list, char *key, char *value, \
+					t_sys *sys);
+void			update_env_var(t_env_var *env_var, char *value, t_sys *sys);
+void			remove_env_var(t_env_var **env_list, char *key, t_sys *sys);
+void			free_env_list(t_env_var *env_list, t_sys *sys);
+char			*get_env_value_from_list(char *var_name, t_env_var *env_list);
 
 /* redir */
 
