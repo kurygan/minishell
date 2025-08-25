@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/24 00:00:23 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:29:03 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_sys
 	t_type			*tokens;
 	int				exit_status;
 	struct s_gc		*garbage;
+	bool			env_was_empty;
 }	t_sys;
 
 /* expander */
@@ -102,7 +103,6 @@ char			*expand_quote(char *arg, t_sys *sys, int exit_status,
 
 /* quote_utils */
 
-char			*get_env_value(char *var_name, char **env);
 char			*remove_quotes(char *str, t_sys *sys);
 char			*process_regular_char(char *content, char *result, int *i, \
 					struct s_gc **garbage);

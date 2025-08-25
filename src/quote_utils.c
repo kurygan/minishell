@@ -6,29 +6,11 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/24 00:00:24 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:23:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-char	*get_env_value(char *var_name, char **env)
-{
-	int		i;
-	size_t	len;
-
-	if (!var_name || !env)
-		return (NULL);
-	len = ft_strlen(var_name);
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], var_name, len) && env[i][len] == '=')
-			return (env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
 
 char	*remove_quotes(char *str, t_sys *sys)
 {

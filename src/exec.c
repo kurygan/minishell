@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/24 22:14:35 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:22:45 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,9 @@ static char	*get_path(char *cmd, t_sys *sys)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 		return (gc_strdup(cmd, &(sys->garbage)));
-	path_env = NULL;
-	i = -1;
-	while (sys->env && (sys->env)[++i])
-	{
-		if (!ft_strncmp(sys->env[i], "PATH=", 5))
-		{
-			path_env = sys->env[i] + 5;
-			break ;
-		}
-	}
+	path_env = get_env_value_from_list("PATH", sys->env_list);
 	if (!path_env)
-		return (NULL);
+		return (gc_strdup(cmd, &(sys->garbage)));
 	paths = ft_split(path_env, ':');
 	i = -1;
 	while (paths && paths[++i])
@@ -179,6 +170,7 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 {
 	char	*path;
 	char	**args;
+	char	**env_array;
 
 	fd_redir(cmd, cmd_index, total_cmds, pipes);
 	if (pipes)
@@ -192,7 +184,8 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 	{
 		path = get_path(cmd->cmd, cmd->sys);
 		args = get_args(cmd);
-		execve(path, args, cmd->sys->env);
+		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
+		execve(path, args, env_array);
 		perror("minishell");
 		exit(127);
 	}

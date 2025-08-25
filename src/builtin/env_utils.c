@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:55:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/24 22:14:36 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:25:20 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static t_env_var	*init_default_env(t_sys *sys)
 		return (NULL);
 	add_env_var(&head, "SHLVL", "1", sys);
 	add_env_var(&head, "_", "/usr/bin/env", sys);
+	add_env_var(&head, "PATH", \
+		"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", sys);
 	return (head);
 }
 
