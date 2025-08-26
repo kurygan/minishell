@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   segment_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
 /*   Updated: 2025/08/22 12:05:42 by emetel           ###   ########.fr       */
@@ -15,6 +15,7 @@
 static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str, \
 				t_sys *sys)
 {
+	(void)sys;
 	int		i;
 	char	**new_args;
 

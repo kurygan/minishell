@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:36:50 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/26 20:55:06 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,13 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		exec_builtin(cmd);
 		exit(0);
 	}
-	else
-	{
-		path = get_path(cmd->cmd, cmd->sys);
-		args = get_args(cmd);
-		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
-		execve(path, args, env_array);
-		perror("minishell");
-		exit(127);
-	}
+	// Else delete sinon ca cassait l env -i
+	path = get_path(cmd->cmd, cmd->sys);
+	args = get_args(cmd);
+	env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
+	execve(path, args, env_array);
+	perror("minishell");
+	exit(127);
 }
 
 void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
@@ -95,5 +93,10 @@ void	exec(t_sys *sys)
 {
 	if (!sys->command || !sys->command->cmd)
 		return ;
+	if (count_commands(sys->command) == 1 && is_builtin(sys->command->cmd))
+	{
+		exec_builtin(sys->command);
+		return ;
+	}
 	exec_pipeline(sys->command, sys);
 }

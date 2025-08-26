@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:32:14 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/24 21:36:22 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/26 21:34:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,29 @@ t_env_var	*create_env_var(char *key, char *value, t_sys *sys)
 {
 	t_env_var	*new_var;
 
-	new_var = gc_malloc(&sys->garbage, sizeof(t_env_var));
+	(void)sys;
+	new_var = malloc(sizeof(t_env_var));
 	if (!new_var)
 		return (NULL);
-	new_var->key = gc_strdup(key, &sys->garbage);
+	new_var->key = ft_strdup(key);
 	if (value)
-		new_var->value = gc_strdup(value, &sys->garbage);
+		new_var->value = ft_strdup(value);
 	else
 		new_var->value = NULL;
+	new_var->exported = false;
 	new_var->next = NULL;
 	return (new_var);
 }
 
 void	update_env_var(t_env_var *env_var, char *value, t_sys *sys)
 {
+	(void)sys;
 	if (!env_var)
 		return ;
 	if (env_var->value)
-		gc_free(env_var->value, &sys->garbage);
+		free(env_var->value);
 	if (value)
-		env_var->value = gc_strdup(value, &sys->garbage);
+		env_var->value = ft_strdup(value);
 	else
 		env_var->value = NULL;
 }
@@ -45,16 +48,17 @@ void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 	t_env_var	*current;
 	t_env_var	*prev;
 
+	(void)sys;
 	if (!*env_list || !key)
 		return ;
 	current = *env_list;
 	if (ft_strcmp(current->key, key) == 0)
 	{
 		*env_list = current->next;
-		gc_free(current->key, &sys->garbage);
+		free(current->key);
 		if (current->value)
-			gc_free(current->value, &sys->garbage);
-		gc_free(current, &sys->garbage);
+			free(current->value);
+		free(current);
 		return ;
 	}
 	prev = current;
@@ -64,10 +68,10 @@ void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 		if (ft_strcmp(current->key, key) == 0)
 		{
 			prev->next = current->next;
-			gc_free(current->key, &sys->garbage);
+			free(current->key);
 			if (current->value)
-				gc_free(current->value, &sys->garbage);
-			gc_free(current, &sys->garbage);
+				free(current->value);
+			free(current);
 			return ;
 		}
 		prev = current;
@@ -80,14 +84,15 @@ void	free_env_list(t_env_var *env_list, t_sys *sys)
 	t_env_var	*current;
 	t_env_var	*next;
 
+	(void)sys;
 	current = env_list;
 	while (current)
 	{
 		next = current->next;
-		gc_free(current->key, &sys->garbage);
+		free(current->key);
 		if (current->value)
-			gc_free(current->value, &sys->garbage);
-		gc_free(current, &sys->garbage);
+			free(current->value);
+		free(current);
 		current = next;
 	}
 }

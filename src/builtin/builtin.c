@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:46:05 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/24 00:00:23 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/26 21:17:31 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,6 @@ void	exec_builtin(t_cmd_segment *cmd)
 		exec_cd(cmd);
 	else if (!(ft_strcmp(cmd->cmd, "env")))
 		exec_env(cmd);
+	else if (!(ft_strcmp(cmd->cmd, "export")))
+		exec_export(cmd);
 }
