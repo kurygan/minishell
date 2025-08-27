@@ -79,13 +79,10 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 		if (token->prev->token == REDIR_IN)
 			(*current)->infile = gc_strdup(token->str, &(sys->garbage));
 		if (token->prev->token == REDIR_OUT)
-			(*current)->outfile = gc_strdup(token->str, &(sys->garbage));
+			(*current)->outfiles = add_token((*current)->outfiles, token->str, REDIR_OUT, sys);
 		if (token->prev->token == REDIR_HEREDOC)
 			(*current)->heredoc = gc_strdup(token->str, &(sys->garbage));
 		if (token->prev->token == REDIR_APPEND)
-		{
-			(*current)->outfile = gc_strdup(token->str, &(sys->garbage));
-			(*current)->append_mode = 1;
-		}
+			(*current)->outfiles = add_token((*current)->outfiles, token->str, REDIR_APPEND, sys);
 	}
 }

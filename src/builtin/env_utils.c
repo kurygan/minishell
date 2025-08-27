@@ -24,7 +24,7 @@ t_env_var	*parse_env_string(char *env_str, t_sys *sys)
 	equal_pos = ft_strchr(env_str, '=');
 	if (!equal_pos)
 		return (NULL);
-	key = gc_substr(env_str, 0, equal_pos - env_str, &sys->garbage);
+	key = gc_substr(env_str, 0, equal_pos - env_str, &(sys->garbage));
 	value = gc_strdup(equal_pos + 1, &sys->garbage);
 	env_var = create_env_var(key, value, sys);
 	return (env_var);
@@ -59,8 +59,7 @@ static t_env_var	*init_from_env_array(char **env, t_sys *sys)
 	while (env[i])
 	{
 		current->next = parse_env_string(env[i], sys);
-		if (current->next)
-			current = current->next;
+		current = current->next;
 		i++;
 	}
 	return (head);

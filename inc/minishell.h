@@ -36,6 +36,13 @@
 #  define ECHOCTL 0000001000
 # endif
 
+typedef enum e_token t_token;
+typedef struct s_cmd_segment t_cmd_segment;
+typedef struct s_type t_type;
+typedef struct s_sys t_sys;
+typedef struct s_env_var t_env_var;
+typedef struct s_gc t_gc;
+
 typedef enum e_token
 {
 	CMD,
@@ -53,15 +60,15 @@ typedef enum e_token
 
 typedef struct s_cmd_segment
 {
-	char					*cmd;
-	char					**args;
-	char					*infile;
-	char					*heredoc;
-	char					*outfile;
-	int						append_mode;
-	struct s_sys			*sys;
-	struct s_cmd_segment	*next;
-	struct s_cmd_segment	*prev;
+	char			*cmd;
+	char			**args;
+	char			*infile;
+	char			*heredoc;
+	t_type			*outfiles;
+	int				append_mode;
+	t_sys			*sys;
+	t_cmd_segment	*next;
+	t_cmd_segment	*prev;
 }	t_cmd_segment;
 
 typedef struct s_type
@@ -75,9 +82,9 @@ typedef struct s_type
 
 typedef struct s_env_var
 {
-	char				*key;
-	char				*value;
-	struct s_env_var	*next;
+	char		*key;
+	char		*value;
+	t_env_var	*next;
 }	t_env_var;
 
 typedef struct s_sys
@@ -87,7 +94,7 @@ typedef struct s_sys
 	t_cmd_segment	*command;
 	t_type			*tokens;
 	int				exit_status;
-	struct s_gc		*garbage;
+	t_gc			*garbage;
 	bool			env_was_empty;
 }	t_sys;
 

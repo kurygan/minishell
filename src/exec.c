@@ -59,8 +59,8 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		args = get_args(cmd);
 		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
 		execve(path, args, env_array);
-		perror("minishell");
-		exit(127);
+		printf("Command \'%s\' not found\n", cmd->cmd);
+		exit(0);
 	}
 }
 
@@ -82,13 +82,15 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		pids[i] = fork();
 		if (pids[i] == 0)
 			exec_child_process(current, pipes, i, cmd_count);
-		if (current->next)
+		if (current->next && current->next->heredoc)
 			wait_pid(pids[i], sys);
 		current = current->next;
 		i++;
 	}
 	close_all_pipes(pipes, cmd_count - 1);
-	wait_pid(pids[i], sys);
+	i = 0;
+	while (i < cmd_count)
+		wait_pid(pids[i++], sys);
 }
 
 void	exec(t_sys *sys)

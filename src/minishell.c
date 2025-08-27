@@ -28,10 +28,9 @@ static bool	process_command(t_sys *sys, int *exit_status)
 		add_history(line);
 		sys->tokens = tokenize(line, sys);
 		sys->command = handle_line(sys, *exit_status);
-		debug_print_tokens(sys->tokens);
-		debug_print_segments(sys->command);
+		//debug_print_tokens(sys->tokens);
+		//debug_print_segments(sys->command);
 		exec(sys);
-		gc_carbonize(&(sys->garbage));
 		free(line);
 	}
 	return (false);
@@ -52,10 +51,11 @@ int	main(int ac, char **av, char **env)
 	sys->exit_status = 0;
 	sys->env = env;
 	sys->env_was_empty = (!env || !env[0]);
-	sys->env_list = init_env_list(env, sys);
 	sys->garbage = NULL;
+	sys->env_list = init_env_list(env, sys);
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);
+	gc_carbonize(&(sys->garbage));
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();

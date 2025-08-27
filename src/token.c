@@ -23,12 +23,6 @@ static int	handle_and_check_quote(char *line, int *i, t_type **lst, t_sys *sys)
 	return (0);
 }
 
-static void	handle_pipe_token(t_type *tmp)
-{
-	if (tmp->prev && tmp->prev->token == PIPE)
-		tmp->token = CMD;
-}
-
 static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 {
 	t_type	*tmp;
@@ -39,20 +33,14 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	expect_cmd = 1;
 	while (tmp)
 	{
-		handle_pipe_token(tmp);
+		if (tmp->prev && tmp->prev->token == PIPE)
+			tmp->token = CMD;
 		if (tmp->token == PIPE)
 		{
 			expect_cmd = 1;
 			tmp = tmp->next;
 			continue ;
 		}
-		if (tmp->prev && !(tmp->prev->token == CMD \
-			|| tmp->prev->token == REDIR_TARGET \
-			|| tmp->prev->token == REDIR_IN || tmp->prev->token == REDIR_OUT \
-			|| tmp->prev->token == REDIR_APPEND \
-			|| tmp->prev->token == REDIR_HEREDOC \
-			|| tmp->prev->token == PIPE))
-			tmp->token = ARGS;
 		if (tmp->token == CMD || tmp->token == SINGLE_QUOTE
 			|| tmp->token == DOUBLE_QUOTE)
 		{
@@ -61,8 +49,6 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 			else
 				tmp->token = ARGS;
 		}
-		else if (tmp->token == PIPE)
-			expect_cmd = 1;
 		tmp = tmp->next;
 	}
 }

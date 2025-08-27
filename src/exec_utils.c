@@ -53,7 +53,7 @@ void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
 	}
 	else if (cmd_index > 0 && pipes)
 		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
-	if (cmd->outfile)
+	if (cmd->outfiles)
 	{
 		fd[1] = handle_redir_out(cmd);
 		if (fd[1] != -1)
