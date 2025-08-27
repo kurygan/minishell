@@ -47,9 +47,9 @@ void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status)
 {
 	t_type	*outfiles;
 
-	outfiles = segments->outfiles;
 	while (segments)
 	{
+		outfiles = segments->outfiles;
 		expand_single_str(&segments->cmd, sys, exit_status);
 		expand_str_array(segments->args, sys, exit_status);
 		expand_single_str(&segments->infile, sys, exit_status);

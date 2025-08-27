@@ -20,13 +20,13 @@ int	ft_putstr(char *str)
 		return (ft_putstr("(null)"));
 	count = ft_strlen(str);
 	while (*str)
-		write(1, str++, 1);
+		write(2, str++, 1);
 	return (count);
 }
 
 int	ft_putchar(char c)
 {
-	write(1, &c, 1);
+	write(2, &c, 1);
 	return (1);
 }
 
@@ -37,6 +37,6 @@ int	ft_putptr(void *ptr)
 	converted = (uintptr_t) ptr;
 	if (!ptr)
 		return (ft_putstr("(nil)"));
-	write(1, "0x", 2);
+	write(2, "0x", 2);
 	return (ft_puthex((unsigned long)converted, 1) + 2);
 }

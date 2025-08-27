@@ -116,16 +116,17 @@ int	handle_redir_in(t_cmd_segment *cmd, t_sys *sys)
 int	handle_redir_out(t_cmd_segment *cmd)
 {
 	int	pipe_fd[2];
-	t_type* outfiles = cmd->outfiles;
+	t_type* outfiles;
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	close(pipe_fd[0]);
 	if (!cmd->outfiles)
 		return (close(pipe_fd[1]), -1);
+	outfiles = cmd->outfiles;
 	while (outfiles){
-		if (outfiles->token == REDIR_APPEND)
+		if (outfiles && outfiles->token == REDIR_APPEND)
 			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
-		else if (outfiles->token == REDIR_OUT)
+		else if (outfiles && outfiles->token == REDIR_OUT)
 			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
 		if (pipe_fd[1] == -1){
 			ft_putstr_fd("Error: Permission Denied", STDERR_FILENO);

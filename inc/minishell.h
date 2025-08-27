@@ -65,7 +65,6 @@ typedef struct s_cmd_segment
 	char			*infile;
 	char			*heredoc;
 	t_type			*outfiles;
-	int				append_mode;
 	t_sys			*sys;
 	t_cmd_segment	*next;
 	t_cmd_segment	*prev;
@@ -91,6 +90,7 @@ typedef struct s_sys
 {
 	char			**env;
 	t_env_var		*env_list;
+	t_gc			*env_gc;
 	t_cmd_segment	*command;
 	t_type			*tokens;
 	int				exit_status;

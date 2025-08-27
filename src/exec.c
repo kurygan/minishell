@@ -58,9 +58,11 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		path = get_path(cmd->cmd, cmd->sys);
 		args = get_args(cmd);
 		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
-		execve(path, args, env_array);
-		printf("Command \'%s\' not found\n", cmd->cmd);
-		exit(0);
+		if (execve(path, args, env_array))
+		{
+			ft_printf("%s: command not found", cmd->cmd);
+			exit(127);
+		}
 	}
 }
 
@@ -90,7 +92,11 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 	close_all_pipes(pipes, cmd_count - 1);
 	i = 0;
 	while (i < cmd_count)
-		wait_pid(pids[i++], sys);
+	{
+		if (kill(pids[i], 0) == 0)
+			wait_pid(pids[i], sys);
+		i++;
+	}
 }
 
 void	exec(t_sys *sys)

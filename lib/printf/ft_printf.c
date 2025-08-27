@@ -51,7 +51,7 @@ int	ft_printf(const char *s, ...)
 		}
 		else
 		{
-			write(1, s, 1);
+			write(2, s, 1);
 			final_len++;
 		}
 		if (*s)

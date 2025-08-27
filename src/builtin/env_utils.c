@@ -24,8 +24,8 @@ t_env_var	*parse_env_string(char *env_str, t_sys *sys)
 	equal_pos = ft_strchr(env_str, '=');
 	if (!equal_pos)
 		return (NULL);
-	key = gc_substr(env_str, 0, equal_pos - env_str, &(sys->garbage));
-	value = gc_strdup(equal_pos + 1, &sys->garbage);
+	key = gc_substr(env_str, 0, ft_strlen(env_str) - ft_strlen(equal_pos), &sys->env_gc);
+	value = gc_strdup(equal_pos + 1, &sys->env_gc);
 	env_var = create_env_var(key, value, sys);
 	return (env_var);
 }

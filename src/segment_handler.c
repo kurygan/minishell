@@ -15,13 +15,9 @@
 static void	add_arg_to_segment(t_cmd_segment *current, const char *arg_str, \
 				t_sys *sys)
 {
-	(void)sys;
 	int		i;
 	char	**new_args;
 
-	(void)sys;
-	(void)sys;
-	(void)sys;
 	i = 0;
 	if (current->args)
 	{
@@ -69,8 +65,8 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 	if (!*current)
 	{
 		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
-		if (*current)
-			(*current)->sys = sys;
+		(*current)->sys = sys;
+		(*current)->outfiles = NULL;
 		if (!*head)
 			*head = *current;
 	}
