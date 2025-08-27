@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:32:14 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/26 21:34:27 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 13:20:57 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,41 @@ void	update_env_var(t_env_var *env_var, char *value, t_sys *sys)
 		env_var->value = NULL;
 }
 
+static void	remove_first_env_var(t_env_var **env_list, t_sys *sys)
+{
+	t_env_var	*current;
+
+	(void)sys;
+	current = *env_list;
+	*env_list = current->next;
+	free(current->key);
+	if (current->value)
+		free(current->value);
+	free(current);
+}
+
+static void	remove_middle_env_var(t_env_var *prev, t_env_var *current,
+			t_sys *sys)
+{
+	(void)sys;
+	prev->next = current->next;
+	free(current->key);
+	if (current->value)
+		free(current->value);
+	free(current);
+}
+
 void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 {
 	t_env_var	*current;
 	t_env_var	*prev;
 
-	(void)sys;
 	if (!*env_list || !key)
 		return ;
 	current = *env_list;
 	if (ft_strcmp(current->key, key) == 0)
 	{
-		*env_list = current->next;
-		free(current->key);
-		if (current->value)
-			free(current->value);
-		free(current);
+		remove_first_env_var(env_list, sys);
 		return ;
 	}
 	prev = current;
@@ -67,11 +86,7 @@ void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
-			prev->next = current->next;
-			free(current->key);
-			if (current->value)
-				free(current->value);
-			free(current);
+			remove_middle_env_var(prev, current, sys);
 			return ;
 		}
 		prev = current;

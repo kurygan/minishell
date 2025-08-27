@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:29:03 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 13:23:09 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	exit_status = 0;
+	ft_memset(&orig_termios, 0, sizeof(struct termios));
 	sys = malloc(sizeof(t_sys));
 	if (!sys)
 		return (1);
@@ -56,6 +57,8 @@ int	main(int ac, char **av, char **env)
 	sys->garbage = NULL;
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);
+	free_env_list(sys->env_list, sys);
+	gc_carbonize(&sys->garbage);
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();

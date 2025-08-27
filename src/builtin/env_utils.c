@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:55:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/26 21:43:55 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 13:20:56 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_env_var	*parse_env_string(char *env_str, t_sys *sys)
 	char		*value;
 	t_env_var	*env_var;
 
+	(void)sys;
 	if (!env_str)
 		return (NULL);
 	equal_pos = ft_strchr(env_str, '=');
