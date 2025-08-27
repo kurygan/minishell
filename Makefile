@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/27 15:30:43 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/27 19:07:04 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS =	minishell.c \
 		signal.c \
 		token_utils.c \
 		token.c \
+		token_helpers.c \
 		exec.c \
 		exec_utils.c \
 		debug.c \

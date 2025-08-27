@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/26 20:55:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 19:14:29 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		exec_builtin(cmd);
 		exit(0);
 	}
-	// Else delete sinon ca cassait l env -i
 	path = get_path(cmd->cmd, cmd->sys);
 	args = get_args(cmd);
 	env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
@@ -91,11 +90,21 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 
 void	exec(t_sys *sys)
 {
+	int	saved_stdin;
+	int	saved_stdout;
+
 	if (!sys->command || !sys->command->cmd)
 		return ;
 	if (count_commands(sys->command) == 1 && is_builtin(sys->command->cmd))
 	{
+		saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
+		fd_redir(sys->command, 0, 1, NULL);
 		exec_builtin(sys->command);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
 		return ;
 	}
 	exec_pipeline(sys->command, sys);
