@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/27 13:37:16 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:55:39 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void			add_env_var_exported(t_env_var **env_list, char *key, \
 void			update_env_var(t_env_var *env_var, char *value, t_sys *sys);
 void			remove_env_var(t_env_var **env_list, char *key, t_sys *sys);
 void			free_env_list(t_env_var *env_list, t_sys *sys);
+void			free_env_list_safe(t_env_var *env_list);
 char			*get_env_value_from_list(char *var_name, t_env_var *env_list);
 
 /* export management */
@@ -207,6 +208,14 @@ void			add_or_update_var(t_env_var **env_list, char *key, \
 					char *value, t_sys *sys);
 void			process_export_arg(char *arg, t_env_var **env_list, t_sys *sys, \
 					bool *error_occurred);
+
+/* unset management*/
+
+void			exec_unset(t_cmd_segment *cmd);
+
+/* exit management*/
+
+void			exec_exit(t_cmd_segment *cmd);
 
 /* redir */
 

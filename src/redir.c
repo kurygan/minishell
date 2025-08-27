@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/18 06:33:19 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:55:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*expand_heredoc(char *line, t_sys *sys)
 			i++;
 	}
 	if (line_extended[0] == 0)
-		line_extended = line;
+		line_extended = gc_strdup(line, &(sys->garbage));
 	return (line_extended);
 }
 
@@ -57,7 +57,6 @@ int	handle_heredoc(char *delimiter, t_sys *sys)
 	char	*unquoted_del;
 	int		i;
 
-	(void)sys;
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	i = 0;

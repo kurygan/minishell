@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/26 21:17:32 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/27 15:30:43 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ SRCS =	minishell.c \
 		builtin/env.c \
 		builtin/export.c \
 		builtin/export_utils.c \
+		builtin/unset.c \
+		builtin/exit.c \
 		redir.c \
 		garbage_collector/gc_free.c \
 		garbage_collector/gc_malloc.c \

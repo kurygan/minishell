@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/27 13:23:09 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:55:37 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	main(int ac, char **av, char **env)
 	sys = malloc(sizeof(t_sys));
 	if (!sys)
 		return (1);
+	ft_memset(sys, 0, sizeof(t_sys));
 	sys->exit_status = 0;
 	sys->env = env;
 	sys->env_was_empty = (!env || !env[0]);
@@ -57,7 +58,7 @@ int	main(int ac, char **av, char **env)
 	sys->garbage = NULL;
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);
-	free_env_list(sys->env_list, sys);
+	free_env_list_safe(sys->env_list);
 	gc_carbonize(&sys->garbage);
 	free(sys);
 	reset_signals(&orig_termios);

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:32:14 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/27 13:20:57 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:55:39 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,11 @@ void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 	}
 }
 
-void	free_env_list(t_env_var *env_list, t_sys *sys)
+void	free_env_list_safe(t_env_var *env_list)
 {
 	t_env_var	*current;
 	t_env_var	*next;
 
-	(void)sys;
 	current = env_list;
 	while (current)
 	{
@@ -110,4 +109,10 @@ void	free_env_list(t_env_var *env_list, t_sys *sys)
 		free(current);
 		current = next;
 	}
+}
+
+void	free_env_list(t_env_var *env_list, t_sys *sys)
+{
+	(void)sys;
+	free_env_list_safe(env_list);
 }

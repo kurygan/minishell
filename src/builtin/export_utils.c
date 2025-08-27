@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 20:55:06 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/27 13:37:15 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 18:52:47 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,6 @@ static void	sort_env_array(t_env_var **array, int size)
 	}
 }
 
-static void	fill_export_array(t_env_var *env_list, t_env_var **array)
-{
-	t_env_var	*current;
-	int			i;
-
-	current = env_list;
-	i = 0;
-	while (current)
-	{
-		if (current->exported)
-		{
-			array[i] = current;
-			i++;
-		}
-		current = current->next;
-	}
-}
-
 static void	print_sorted_export_list(t_env_var **array, int count)
 {
 	int	j;
@@ -95,12 +77,33 @@ void	print_export_list(t_env_var *env_list, t_sys *sys)
 {
 	t_env_var	**array;
 	int			count;
+	int			i;
+	t_env_var	*current;
+	t_env_var	*temp;
 
 	count = count_exported_vars(env_list);
 	if (count == 0)
 		return ;
 	array = gc_malloc(&sys->garbage, sizeof(t_env_var *) * count);
-	fill_export_array(env_list, array);
+	current = env_list;
+	i = 0;
+	while (current)
+	{
+		if (current->exported)
+		{
+			temp = gc_malloc(&sys->garbage, sizeof(t_env_var));
+			temp->key = gc_strdup(current->key, &sys->garbage);
+			if (current->value)
+				temp->value = gc_strdup(current->value, &sys->garbage);
+			else
+				temp->value = NULL;
+			temp->exported = current->exported;
+			temp->next = NULL;
+			array[i] = temp;
+			i++;
+		}
+		current = current->next;
+	}
 	sort_env_array(array, count);
 	print_sorted_export_list(array, count);
 }
