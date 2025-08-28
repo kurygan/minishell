@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:55:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/27 15:55:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 14:37:02 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,15 @@ static t_env_var	*init_from_env_array(char **env, t_sys *sys)
 
 t_env_var	*init_env_list(char **env, t_sys *sys)
 {
+	t_env_var	*env_list;
+
 	if (!env || !env[0])
-		return (init_default_env(sys));
-	return (init_from_env_array(env, sys));
+		env_list = init_default_env(sys);
+	else
+		env_list = init_from_env_array(env, sys);
+	if (env_list)
+		increment_shlvl(env_list, sys);
+	return (env_list);
 }
 
 void	add_env_var(t_env_var **env_list, char *key, char *value, t_sys *sys)

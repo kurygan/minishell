@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/27 19:07:04 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/28 14:37:03 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS =	minishell.c \
 		exec.c \
 		exec_utils.c \
 		debug.c \
+		shlvl.c \
 		builtin/env_utils.c \
 		builtin/env_lst.c \
 		builtin/builtin.c \

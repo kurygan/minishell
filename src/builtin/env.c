@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:15:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/26 21:30:20 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 14:37:02 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	exec_env(t_cmd_segment *cmd)
 	{
 		if (current->value)
 		{
-			// Ne pas afficher PATH si l'environnement était vide au départ
 			if (!(cmd->sys->env_was_empty && \
 				ft_strcmp(current->key, "PATH") == 0))
 			{
@@ -106,3 +105,5 @@ char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
 	env_array[i] = NULL;
 	return (env_array);
 }
+
+
