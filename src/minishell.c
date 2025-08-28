@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 17:54:27 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 20:21:59 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,22 @@ static bool	process_command(t_sys *sys, int *exit_status)
 			return (sys->exit_status);
 		}
 		add_history(line);
+		if (check_unclosed_quotes(line))
+		{
+			ft_putstr_fd("minishell: syntax error: unclosed quotes\n", 2);
+			sys->exit_status = 2;
+			free(line);
+			continue ;
+		}
 		sys->tokens = tokenize(line, sys);
+		if (!sys->tokens)
+		{
+			free(line);
+			continue ;
+		}
 		sys->command = handle_line(sys, *exit_status);
-		debug_print_tokens(sys->tokens);
-		debug_print_segments(sys->command);
+		// debug_print_tokens(sys->tokens);
+		// debug_print_segments(sys->command);
 		exec(sys);
 		sys->command = NULL;
 		sys->tokens = NULL;

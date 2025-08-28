@@ -6,11 +6,33 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/26 23:23:13 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 20:21:58 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+bool	check_unclosed_quotes(char *line)
+{
+	int		i;
+	char	quote;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' || line[i] == '\"')
+		{
+			quote = line[i];
+			i++;
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
+				return (true);
+		}
+		i++;
+	}
+	return (false);
+}
 
 void	handle_pipe(int *i, t_type **lst, t_sys *sys)
 {

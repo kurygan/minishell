@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 17:51:57 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 20:21:59 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,8 @@ void			reset_signals(struct termios *orig_termios);
 
 /* token */
 
-t_type			*tokenize(char *line, t_sys *sys);
+bool		check_unclosed_quotes(char *line);
+t_type		*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
