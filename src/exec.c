@@ -58,7 +58,7 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
 		if (execve(path, args, env_array))
 		{
-			ft_printf("%s: command not found", cmd->cmd);
+			ft_printf("%s: command not found\n", cmd->cmd);
 			exit(127);
 		}
 	}

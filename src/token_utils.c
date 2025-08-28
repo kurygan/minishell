@@ -98,7 +98,7 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)
 		return ;
-	if (!*lst || (*lst)->token == PIPE)
+	if (!*lst || (*lst)->token == PIPE || is_redirection_token((*lst)->token))
 		token_type = CMD;
 	else
 		token_type = ARGS;
