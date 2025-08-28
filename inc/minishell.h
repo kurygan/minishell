@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:56:07 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:51:57 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,10 @@ typedef struct s_type
 
 typedef struct s_env_var
 {
-	char		*key;
-	char		*value;
-	t_env_var	*next;
+	char				*key;
+	char				*value;
+	bool				exported;
+	struct s_env_var	*next;
 }	t_env_var;
 
 typedef struct s_sys
@@ -161,6 +162,8 @@ t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
+bool			is_redirection_token(t_token token);
+bool			should_become_args(t_type *tmp);
 
 /* exec */
 
@@ -195,10 +198,35 @@ char			**env_list_to_array(t_env_var *env_list, t_sys *sys);
 t_env_var		*find_env_var(t_env_var *env_list, char *key);
 void			add_env_var(t_env_var **env_list, char *key, char *value, \
 					t_sys *sys);
+void			add_env_var_exported(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
 void			update_env_var(t_env_var *env_var, char *value, t_sys *sys);
 void			remove_env_var(t_env_var **env_list, char *key, t_sys *sys);
 void			free_env_list(t_env_var *env_list, t_sys *sys);
+void			free_env_list_safe(t_env_var *env_list);
 char			*get_env_value_from_list(char *var_name, t_env_var *env_list);
+void			increment_shlvl(t_env_var *env_list, t_sys *sys);
+void			print_shlvl_warning(int level);
+
+/* export management */
+void			exec_export(t_cmd_segment *cmd);
+bool			is_valid_identifier(char *str);
+char			*extract_key_value(char *arg, char **value, t_sys *sys);
+void			insert_env_var_sorted(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
+void			print_export_list(t_env_var *env_list, t_sys *sys);
+void			add_or_update_var(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
+void			process_export_arg(char *arg, t_env_var **env_list, t_sys *sys, \
+					bool *error_occurred);
+
+/* unset management*/
+
+void			exec_unset(t_cmd_segment *cmd);
+
+/* exit management*/
+
+void			exec_exit(t_cmd_segment *cmd);
 
 /* redir */
 

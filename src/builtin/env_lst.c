@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_lst.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:32:14 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/24 21:36:22 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:55:35 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ t_env_var	*create_env_var(char *key, char *value, t_sys *sys)
 		new_var->value = gc_strdup(value, &sys->env_gc);
 	else
 		new_var->value = NULL;
+	new_var->exported = false;
 	new_var->next = NULL;
 	return (new_var);
 }
 
 void	update_env_var(t_env_var *env_var, char *value, t_sys *sys)
 {
+	(void)sys;
 	if (!env_var)
 		return ;
 	if (env_var->value)
@@ -38,6 +40,30 @@ void	update_env_var(t_env_var *env_var, char *value, t_sys *sys)
 		env_var->value = gc_strdup(value, &sys->env_gc);
 	else
 		env_var->value = NULL;
+}
+
+static void	remove_first_env_var(t_env_var **env_list, t_sys *sys)
+{
+	t_env_var	*current;
+
+	(void)sys;
+	current = *env_list;
+	*env_list = current->next;
+	free(current->key);
+	if (current->value)
+		free(current->value);
+	free(current);
+}
+
+static void	remove_middle_env_var(t_env_var *prev, t_env_var *current,
+			t_sys *sys)
+{
+	(void)sys;
+	prev->next = current->next;
+	free(current->key);
+	if (current->value)
+		free(current->value);
+	free(current);
 }
 
 void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
@@ -75,7 +101,7 @@ void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 	}
 }
 
-void	free_env_list(t_env_var *env_list, t_sys *sys)
+void	free_env_list_safe(t_env_var *env_list)
 {
 	t_env_var	*current;
 	t_env_var	*next;
@@ -90,4 +116,10 @@ void	free_env_list(t_env_var *env_list, t_sys *sys)
 		gc_free(current, &sys->env_gc);
 		current = next;
 	}
+}
+
+void	free_env_list(t_env_var *env_list, t_sys *sys)
+{
+	(void)sys;
+	free_env_list_safe(env_list);
 }

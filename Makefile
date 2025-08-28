@@ -6,7 +6,7 @@
 #    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/28 17:46:47 by mkettab          ###   ########.fr        #
+#    Updated: 2025/08/28 17:51:35 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,11 @@ SRCS =	minishell.c \
 		signal.c \
 		token_utils.c \
 		token.c \
+		token_helpers.c \
 		exec.c \
 		exec_utils.c \
 		debug.c \
+		shlvl.c \
 		builtin/env_utils.c \
 		builtin/env_lst.c \
 		builtin/builtin.c \
@@ -48,6 +50,10 @@ SRCS =	minishell.c \
 		builtin/cd.c \
 		builtin/cd_utils.c \
 		builtin/env.c \
+		builtin/export.c \
+		builtin/export_utils.c \
+		builtin/unset.c \
+		builtin/exit.c \
 		redir.c \
 		garbage_collector/gc_free.c \
 		garbage_collector/gc_malloc.c \
