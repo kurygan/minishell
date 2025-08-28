@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:55:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 17:55:41 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 21:04:04 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_env_var	*parse_env_string(char *env_str, t_sys *sys)
 	equal_pos = ft_strchr(env_str, '=');
 	if (!equal_pos)
 		return (NULL);
-	key = gc_substr(env_str, 0, ft_strlen(env_str) - ft_strlen(equal_pos), &sys->env_gc);
+	key = gc_substr(env_str, 0, ft_strlen(env_str) - ft_strlen(equal_pos), \
+			&sys->env_gc);
 	value = gc_strdup(equal_pos + 1, &sys->env_gc);
 	env_var = create_env_var(key, value, sys);
 	if (ft_strcmp(key, "_") != 0)

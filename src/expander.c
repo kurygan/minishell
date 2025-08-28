@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/22 20:29:19 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:06:47 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status)
 		expand_single_str(&segments->cmd, sys, exit_status);
 		expand_str_array(segments->args, sys, exit_status);
 		expand_single_str(&segments->infile, sys, exit_status);
-		while (outfiles){
+		while (outfiles)
+		{
 			expand_single_str(&(outfiles->str), sys, exit_status);
 			outfiles = outfiles->next;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/27 15:55:39 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:03:30 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 		if (token->prev->token == REDIR_IN)
 			(*current)->infile = gc_strdup(token->str, &(sys->garbage));
 		if (token->prev->token == REDIR_OUT)
-			(*current)->outfiles = add_token((*current)->outfiles, token->str, REDIR_OUT, sys);
+			(*current)->outfiles = add_token((*current)->outfiles, token->str, \
+									REDIR_OUT, sys);
 		if (token->prev->token == REDIR_HEREDOC)
 			(*current)->heredoc = gc_strdup(token->str, &(sys->garbage));
 		if (token->prev->token == REDIR_APPEND)
-			(*current)->outfiles = add_token((*current)->outfiles, token->str, REDIR_APPEND, sys);
+			(*current)->outfiles = add_token((*current)->outfiles, token->str, \
+									REDIR_APPEND, sys);
 	}
 }

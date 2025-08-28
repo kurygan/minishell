@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:15:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 14:37:02 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:03:04 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,3 @@ char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
 	env_array[i] = NULL;
 	return (env_array);
 }
-
-

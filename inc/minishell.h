@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 20:21:59 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:02:17 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@
 #  define ECHOCTL 0000001000
 # endif
 
-typedef enum e_token t_token;
-typedef struct s_cmd_segment t_cmd_segment;
-typedef struct s_type t_type;
-typedef struct s_sys t_sys;
-typedef struct s_env_var t_env_var;
-typedef struct s_gc t_gc;
+typedef enum e_token			t_token;
+typedef struct s_cmd_segment	t_cmd_segment;
+typedef struct s_type			t_type;
+typedef struct s_sys			t_sys;
+typedef struct s_env_var		t_env_var;
+typedef struct s_gc				t_gc;
 
 typedef enum e_token
 {
@@ -157,8 +157,8 @@ void			reset_signals(struct termios *orig_termios);
 
 /* token */
 
-bool		check_unclosed_quotes(char *line);
-t_type		*tokenize(char *line, t_sys *sys);
+bool			check_unclosed_quotes(char *line);
+t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
@@ -179,7 +179,6 @@ void			exec_pwd(t_cmd_segment *cmd);
 /* cd_utils */
 
 void			update_pwd_variables(t_cmd_segment *cmd, char *old_pwd);
-void			handle_cd_error(char *path);
 int				change_directory(char *path, t_cmd_segment *cmd);
 
 /* exec_utils */
