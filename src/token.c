@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 17:54:56 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 18:00:29 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,6 @@ static int	handle_and_check_quote(char *line, int *i, t_type **lst, t_sys *sys)
 // 	else if (tmp->token == PIPE)
 // 		*expect_cmd = 1;
 // }
-
-static void	handle_pipe_token(t_type *tmp, int *expect_cmd)
-{
-	if (tmp->prev && tmp->prev->token == PIPE)
-	{
-		tmp->token = CMD;
-		*expect_cmd = 0;
-	}
-}
 
 static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 {

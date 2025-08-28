@@ -6,7 +6,7 @@
 /*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:32:14 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 17:55:35 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 18:00:58 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,6 @@ void	update_env_var(t_env_var *env_var, char *value, t_sys *sys)
 		env_var->value = NULL;
 }
 
-static void	remove_first_env_var(t_env_var **env_list, t_sys *sys)
-{
-	t_env_var	*current;
-
-	(void)sys;
-	current = *env_list;
-	*env_list = current->next;
-	free(current->key);
-	if (current->value)
-		free(current->value);
-	free(current);
-}
-
-static void	remove_middle_env_var(t_env_var *prev, t_env_var *current,
-			t_sys *sys)
-{
-	(void)sys;
-	prev->next = current->next;
-	free(current->key);
-	if (current->value)
-		free(current->value);
-	free(current);
-}
-
 void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 {
 	t_env_var	*current;
@@ -99,27 +75,4 @@ void	remove_env_var(t_env_var **env_list, char *key, t_sys *sys)
 		prev = current;
 		current = current->next;
 	}
-}
-
-void	free_env_list_safe(t_env_var *env_list)
-{
-	t_env_var	*current;
-	t_env_var	*next;
-
-	current = env_list;
-	while (current)
-	{
-		next = current->next;
-		gc_free(current->key, &sys->env_gc);
-		if (current->value)
-			gc_free(current->value, &sys->env_gc);
-		gc_free(current, &sys->env_gc);
-		current = next;
-	}
-}
-
-void	free_env_list(t_env_var *env_list, t_sys *sys)
-{
-	(void)sys;
-	free_env_list_safe(env_list);
 }

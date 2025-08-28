@@ -13,6 +13,11 @@
 			"cwd": "/home/mkettab/Documents/minishell",
 			"binaryPath": "/home/mkettab/Documents/minishell/minishell",
 			"binaryArgs": []
+		},
+		{
+			"cwd": "/Users/tylerlover911/Projects/minishell",
+			"binaryPath": "/Users/tylerlover911/Projects/minishell/minishell",
+			"binaryArgs": []
 		}
 	]
 }
