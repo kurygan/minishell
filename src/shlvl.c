@@ -37,11 +37,8 @@ void	increment_shlvl(t_env_var *env_list, t_sys *sys)
 		}
 		else
 			current_level++;
-		new_level_str = ft_itoa(current_level);
+		new_level_str = gc_itoa(current_level, &sys->env_gc);
 		if (new_level_str)
-		{
-			free(shlvl_var->value);
 			shlvl_var->value = new_level_str;
-		}
 	}
 }

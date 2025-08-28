@@ -12,10 +12,9 @@
 
 #include "../inc/minishell.h"
 
-static void	handle_pipe_token(t_type *token, t_cmd_segment **current, \
+static void	handle_pipe_token(t_cmd_segment **current, \
 				t_cmd_segment **head, t_sys *sys)
 {
-	(void)token;
 	if (*current)
 	{
 		(*current)->next = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
@@ -38,7 +37,7 @@ static void	process_token(t_type *token, t_cmd_segment **current, \
 				t_cmd_segment **head, t_sys *sys)
 {
 	if (token->token == PIPE)
-		handle_pipe_token(token, current, head, sys);
+		handle_pipe_token(current, head, sys);
 	else if (token->token == CMD || token->token == ARGS
 		|| token->token == SINGLE_QUOTE || token->token == DOUBLE_QUOTE)
 		handle_command_token(token, current, head, sys);

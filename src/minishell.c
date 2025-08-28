@@ -28,8 +28,8 @@ static bool	process_command(t_sys *sys, int *exit_status)
 		add_history(line);
 		sys->tokens = tokenize(line, sys);
 		sys->command = handle_line(sys, *exit_status);
-		//debug_print_tokens(sys->tokens);
-		//debug_print_segments(sys->command);
+		debug_print_tokens(sys->tokens);
+		debug_print_segments(sys->command);
 		exec(sys);
 		sys->command = NULL;
 		sys->tokens = NULL;

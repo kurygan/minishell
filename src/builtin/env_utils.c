@@ -30,8 +30,6 @@ t_env_var	*parse_env_string(char *env_str, t_sys *sys)
 	env_var = create_env_var(key, value, sys);
 	if (ft_strcmp(key, "_") != 0)
 		env_var->exported = true;
-	free(key);
-	free(value);
 	return (env_var);
 }
 
