@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:36:50 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:53:56 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		path = get_path(cmd->cmd, cmd->sys);
 		args = get_args(cmd);
 		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
-		execve(path, args, env_array);
-		perror("minishell");
-		exit(127);
+		if (execve(path, args, env_array))
+		{
+			ft_printf("%s: command not found", cmd->cmd);
+			exit(127);
+		}
 	}
 }
 
@@ -82,18 +84,38 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		pids[i] = fork();
 		if (pids[i] == 0)
 			exec_child_process(current, pipes, i, cmd_count);
-		if (current->next)
+		if (current->next && current->next->heredoc)
 			wait_pid(pids[i], sys);
 		current = current->next;
 		i++;
 	}
 	close_all_pipes(pipes, cmd_count - 1);
-	wait_pid(pids[i], sys);
+	i = 0;
+	while (i < cmd_count)
+	{
+		if (kill(pids[i], 0) == 0)
+			wait_pid(pids[i], sys);
+		i++;
+	}
 }
 
 void	exec(t_sys *sys)
 {
+	int	saved_stdfd[2];
+
 	if (!sys->command || !sys->command->cmd)
 		return ;
+	if (count_commands(sys->command) == 1 && is_builtin(sys->command->cmd))
+	{
+		saved_stdfd[0] = dup(STDIN_FILENO);
+		saved_stdfd[1] = dup(STDOUT_FILENO);
+		fd_redir(sys->command, 0, 1, NULL);
+		exec_builtin(sys->command);
+		dup2(saved_stdfd[0], STDIN_FILENO);
+		dup2(saved_stdfd[1], STDOUT_FILENO);
+		close(saved_stdfd[0]);
+		close(saved_stdfd[1]);
+		return ;
+	}
 	exec_pipeline(sys->command, sys);
 }

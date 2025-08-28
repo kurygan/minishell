@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:15:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/25 14:29:12 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:03:04 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	exec_env(t_cmd_segment *cmd)
 	{
 		if (current->value)
 		{
-			// Ne pas afficher PATH si l'environnement était vide au départ
 			if (!(cmd->sys->env_was_empty && \
 				ft_strcmp(current->key, "PATH") == 0))
 			{
@@ -79,7 +78,8 @@ char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
 	current = env_list;
 	while (current)
 	{
-		count++;
+		if (current->exported)
+			count++;
 		current = current->next;
 	}
 	env_array = gc_malloc(&sys->garbage, sizeof(char *) * (count + 1));
@@ -89,15 +89,18 @@ char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
 	i = 0;
 	while (current)
 	{
-		if (current->value)
+		if (current->exported && current->value)
 		{
 			env_array[i] = gc_strjoin(gc_strjoin(current->key, "=", \
 				&sys->garbage), current->value, &sys->garbage);
+			i++;
 		}
-		else
+		else if (current->exported)
+		{
 			env_array[i] = gc_strdup(current->key, &sys->garbage);
+			i++;
+		}
 		current = current->next;
-		i++;
 	}
 	env_array[i] = NULL;
 	return (env_array);

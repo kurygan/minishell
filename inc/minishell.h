@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:56:07 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:02:17 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@
 #  define ECHOCTL 0000001000
 # endif
 
+typedef enum e_token			t_token;
+typedef struct s_cmd_segment	t_cmd_segment;
+typedef struct s_type			t_type;
+typedef struct s_sys			t_sys;
+typedef struct s_env_var		t_env_var;
+typedef struct s_gc				t_gc;
+
 typedef enum e_token
 {
 	CMD,
@@ -53,15 +60,14 @@ typedef enum e_token
 
 typedef struct s_cmd_segment
 {
-	char					*cmd;
-	char					**args;
-	char					*infile;
-	char					*heredoc;
-	char					*outfile;
-	int						append_mode;
-	struct s_sys			*sys;
-	struct s_cmd_segment	*next;
-	struct s_cmd_segment	*prev;
+	char			*cmd;
+	char			**args;
+	char			*infile;
+	char			*heredoc;
+	t_type			*outfiles;
+	t_sys			*sys;
+	t_cmd_segment	*next;
+	t_cmd_segment	*prev;
 }	t_cmd_segment;
 
 typedef struct s_type
@@ -77,6 +83,7 @@ typedef struct s_env_var
 {
 	char				*key;
 	char				*value;
+	bool				exported;
 	struct s_env_var	*next;
 }	t_env_var;
 
@@ -84,10 +91,11 @@ typedef struct s_sys
 {
 	char			**env;
 	t_env_var		*env_list;
+	t_gc			*env_gc;
 	t_cmd_segment	*command;
 	t_type			*tokens;
 	int				exit_status;
-	struct s_gc		*garbage;
+	t_gc			*garbage;
 	bool			env_was_empty;
 }	t_sys;
 
@@ -149,11 +157,14 @@ void			reset_signals(struct termios *orig_termios);
 
 /* token */
 
+bool			check_unclosed_quotes(char *line);
 t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
+bool			is_redirection_token(t_token token);
+bool			should_become_args(t_type *tmp);
 
 /* exec */
 
@@ -168,7 +179,6 @@ void			exec_pwd(t_cmd_segment *cmd);
 /* cd_utils */
 
 void			update_pwd_variables(t_cmd_segment *cmd, char *old_pwd);
-void			handle_cd_error(char *path);
 int				change_directory(char *path, t_cmd_segment *cmd);
 
 /* exec_utils */
@@ -188,10 +198,35 @@ char			**env_list_to_array(t_env_var *env_list, t_sys *sys);
 t_env_var		*find_env_var(t_env_var *env_list, char *key);
 void			add_env_var(t_env_var **env_list, char *key, char *value, \
 					t_sys *sys);
+void			add_env_var_exported(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
 void			update_env_var(t_env_var *env_var, char *value, t_sys *sys);
 void			remove_env_var(t_env_var **env_list, char *key, t_sys *sys);
 void			free_env_list(t_env_var *env_list, t_sys *sys);
+void			free_env_list_safe(t_env_var *env_list);
 char			*get_env_value_from_list(char *var_name, t_env_var *env_list);
+void			increment_shlvl(t_env_var *env_list, t_sys *sys);
+void			print_shlvl_warning(int level);
+
+/* export management */
+void			exec_export(t_cmd_segment *cmd);
+bool			is_valid_identifier(char *str);
+char			*extract_key_value(char *arg, char **value, t_sys *sys);
+void			insert_env_var_sorted(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
+void			print_export_list(t_env_var *env_list, t_sys *sys);
+void			add_or_update_var(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
+void			process_export_arg(char *arg, t_env_var **env_list, t_sys *sys, \
+					bool *error_occurred);
+
+/* unset management*/
+
+void			exec_unset(t_cmd_segment *cmd);
+
+/* exit management*/
+
+void			exec_exit(t_cmd_segment *cmd);
 
 /* redir */
 

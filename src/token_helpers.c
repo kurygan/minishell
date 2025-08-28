@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gc_strjoin.c                                       :+:      :+:    :+:   */
+/*   token_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 21:21:14 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 21:02:35 by emetel           ###   ########.fr       */
+/*   Created: 2025/08/27 16:00:00 by emetel            #+#    #+#             */
+/*   Updated: 2025/08/27 19:07:04 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/garbage.h"
+#include "../inc/minishell.h"
 
-char	*gc_strjoin(char *s1, char *s2, t_gc **garbage)
+bool	is_redirection_token(t_token token)
 {
-	size_t	j;
-	char	*joined;
+	return (token == REDIR_IN || token == REDIR_OUT \
+		|| token == REDIR_APPEND || token == REDIR_HEREDOC \
+		|| token == REDIR_TARGET);
+}
 
-	if (!s1 || !s2)
-		return (NULL);
-	joined = gc_malloc(garbage, sizeof(char) * (ft_strlen(s1) + \
-			ft_strlen(s2) + 1));
-	j = 0;
-	if (!joined)
-		return (NULL);
-	while (*s1)
-		joined[j++] = *s1++;
-	while (*s2)
-		joined[j++] = *s2++;
-	joined[j] = 0;
-	return (joined);
+bool	should_become_args(t_type *tmp)
+{
+	return (tmp->prev && !(tmp->prev->token == CMD || tmp->prev->token == PIPE \
+		|| !is_redirection_token(tmp->token)));
 }

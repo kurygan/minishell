@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 12:10:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/22 20:15:52 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 20:28:00 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ static void	process_echo_arg(char *arg, bool *print, bool *options_ended, \
 	else
 	{
 		*options_ended = true;
-		if (*print)
+		if (*print && arg && arg[0] != '\0')
 			ft_putchar_fd(' ', 1);
-		*print = true;
-		ft_putstr_fd(arg, 1);
+		if (arg && arg[0] != '\0')
+		{
+			*print = true;
+			ft_putstr_fd(arg, 1);
+		}
 	}
 }
 

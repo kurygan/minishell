@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/25 14:29:03 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 20:21:59 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,25 @@ static bool	process_command(t_sys *sys, int *exit_status)
 			return (sys->exit_status);
 		}
 		add_history(line);
+		if (check_unclosed_quotes(line))
+		{
+			ft_putstr_fd("minishell: syntax error: unclosed quotes\n", 2);
+			sys->exit_status = 2;
+			free(line);
+			continue ;
+		}
 		sys->tokens = tokenize(line, sys);
+		if (!sys->tokens)
+		{
+			free(line);
+			continue ;
+		}
 		sys->command = handle_line(sys, *exit_status);
 		// debug_print_tokens(sys->tokens);
 		// debug_print_segments(sys->command);
 		exec(sys);
+		sys->command = NULL;
+		sys->tokens = NULL;
 		gc_carbonize(&(sys->garbage));
 		free(line);
 	}
@@ -46,16 +60,20 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	exit_status = 0;
+	ft_memset(&orig_termios, 0, sizeof(struct termios));
 	sys = malloc(sizeof(t_sys));
 	if (!sys)
 		return (1);
+	ft_memset(sys, 0, sizeof(t_sys));
 	sys->exit_status = 0;
 	sys->env = env;
 	sys->env_was_empty = (!env || !env[0]);
-	sys->env_list = init_env_list(env, sys);
 	sys->garbage = NULL;
+	sys->env_gc = NULL;
+	sys->env_list = init_env_list(env, sys);
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);
+	gc_carbonize(&(sys->env_gc));
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();

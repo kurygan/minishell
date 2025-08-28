@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 16:12:30 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/17 02:26:28 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/27 15:55:39 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ static char	*handle_exit_status(char *result, int exit_status, int *i, \
 {
 	char	*temp;
 
-	temp = ft_itoa(exit_status);
+	temp = gc_itoa(exit_status, garbage);
 	result = gc_strjoin(result, temp, garbage);
-	gc_free(temp, garbage);
 	*i += 2;
 	return (result);
 }

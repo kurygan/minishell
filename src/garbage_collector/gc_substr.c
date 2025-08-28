@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 00:47:29 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/22 12:03:24 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:02:31 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*gc_substr(char const *s, unsigned int start, size_t len,
 	subbed = gc_malloc(garbage, sizeof(char) * len + 1);
 	while (i < start && non_const_s[i])
 		i++;
-	ft_strlcpy(subbed, &non_const_s[i], len + 1);
+	ft_memcpy(subbed, s + start, len);
+	subbed[len] = 0;
 	return (subbed);
 }

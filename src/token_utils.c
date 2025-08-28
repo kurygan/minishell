@@ -6,11 +6,33 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/25 14:41:22 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 20:21:58 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+bool	check_unclosed_quotes(char *line)
+{
+	int		i;
+	char	quote;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' || line[i] == '\"')
+		{
+			quote = line[i];
+			i++;
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
+				return (true);
+		}
+		i++;
+	}
+	return (false);
+}
 
 void	handle_pipe(int *i, t_type **lst, t_sys *sys)
 {
@@ -49,12 +71,30 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	int		start;
 	char	*word;
 	t_token	token_type;
+	int		in_assignment;
+	char	quote;
 
 	start = *i;
+	in_assignment = 0;
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>'
-		&& line[*i] != '\'' && line[*i] != '\"')
-		(*i)++;
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+	{
+		if (line[*i] == '=')
+			in_assignment = 1;
+		if (in_assignment && (line[*i] == '\'' || line[*i] == '\"'))
+		{
+			quote = line[*i];
+			(*i)++;
+			while (line[*i] && line[*i] != quote)
+				(*i)++;
+			if (line[*i])
+				(*i)++;
+		}
+		else if (!in_assignment && (line[*i] == '\'' || line[*i] == '\"'))
+			break ;
+		else
+			(*i)++;
+	}
 	word = gc_substr(line, start, *i - start, &(sys->garbage));
 	if (!word)
 		return ;
