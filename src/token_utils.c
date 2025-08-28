@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 20:21:58 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 00:18:41 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	handle_pipe(int *i, t_type **lst, t_sys *sys)
 void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	int		start;
-	char	*word;
+	char	*word[2];
 	char	quote;
 	t_token	token_type;
 
 	quote = line[*i];
-	start = *i;
 	(*i)++;
+	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
 	if (!line[*i])
@@ -57,13 +57,19 @@ void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 		*i = start;
 		return ;
 	}
-	word = gc_substr(line, start, (*i - start) + 1, &(sys->garbage));
+	word[0] = gc_substr(line, start, *i - start, &(sys->garbage));
+	(*i)++;
+	start = *i;
+	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+		(*i)++;
+	word[1] = gc_substr(line, start, *i - start, &(sys->garbage));
+	word[0] = gc_strjoin(word[0], word[1], &(sys->garbage));
 	if (quote == '\'')
 		token_type = SINGLE_QUOTE;
 	else
 		token_type = DOUBLE_QUOTE;
-	*lst = add_token(*lst, word, token_type, sys);
-	(*i)++;
+	*lst = add_token(*lst, word[0], token_type, sys);
 }
 
 void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
@@ -72,7 +78,6 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 	char	*word;
 	t_token	token_type;
 	int		in_assignment;
-	char	quote;
 
 	start = *i;
 	in_assignment = 0;
@@ -83,15 +88,12 @@ void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)
 			in_assignment = 1;
 		if (in_assignment && (line[*i] == '\'' || line[*i] == '\"'))
 		{
-			quote = line[*i];
 			(*i)++;
-			while (line[*i] && line[*i] != quote)
+			while (line[*i] && line[*i] != line[*i - 1])
 				(*i)++;
 			if (line[*i])
 				(*i)++;
 		}
-		else if (!in_assignment && (line[*i] == '\'' || line[*i] == '\"'))
-			break ;
 		else
 			(*i)++;
 	}
