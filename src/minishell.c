@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 20:21:59 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/27 19:10:22 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static bool	process_command(t_sys *sys, int *exit_status)
+static bool	process_command(t_sys *sys)
 {
 	char			*line;
 
-	while (!sys->exit_status)
+	while (1)
 	{
 		line = readline("[petitcoquillage]$ ");
 		if (!line)
 		{
 			printf("exit\n");
-			sys->exit_status = 1;
 			return (sys->exit_status);
 		}
 		add_history(line);
@@ -34,14 +33,9 @@ static bool	process_command(t_sys *sys, int *exit_status)
 			continue ;
 		}
 		sys->tokens = tokenize(line, sys);
-		if (!sys->tokens)
-		{
-			free(line);
-			continue ;
-		}
-		sys->command = handle_line(sys, *exit_status);
-		// debug_print_tokens(sys->tokens);
-		// debug_print_segments(sys->command);
+		sys->command = handle_line(sys);
+		//debug_print_tokens(sys->tokens);
+		//debug_print_segments(sys->command);
 		exec(sys);
 		sys->command = NULL;
 		sys->tokens = NULL;
@@ -53,13 +47,11 @@ static bool	process_command(t_sys *sys, int *exit_status)
 
 int	main(int ac, char **av, char **env)
 {
-	int				exit_status;
 	struct termios	orig_termios;
 	t_sys			*sys;
 
 	(void)ac;
 	(void)av;
-	exit_status = 0;
 	ft_memset(&orig_termios, 0, sizeof(struct termios));
 	sys = malloc(sizeof(t_sys));
 	if (!sys)
@@ -72,10 +64,10 @@ int	main(int ac, char **av, char **env)
 	sys->env_gc = NULL;
 	sys->env_list = init_env_list(env, sys);
 	setup_signals(&orig_termios);
-	process_command(sys, &exit_status);
+	process_command(sys);
 	gc_carbonize(&(sys->env_gc));
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();
-	return (exit_status);
+	return (sys->exit_status);
 }

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   gc_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
 /*   Updated: 2025/08/28 21:02:43 by emetel           ###   ########.fr       */
@@ -16,7 +16,7 @@ void	*gc_malloc(t_gc **garbage, size_t size)
 {
 	t_gc		*temp;
 	t_gc		*last;
-	void		*mem;
+	void	*mem;
 
 	temp = malloc(sizeof(t_gc));
 	if (!temp)

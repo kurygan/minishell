@@ -16,11 +16,11 @@ bool	is_redirection_token(t_token token)
 {
 	return (token == REDIR_IN || token == REDIR_OUT \
 		|| token == REDIR_APPEND || token == REDIR_HEREDOC \
-		|| token == REDIR_TARGET);
+		|| token == REDIR_TARGET || token == CMD);
 }
 
 bool	should_become_args(t_type *tmp)
 {
-	return (tmp->prev && !(tmp->prev->token == CMD || tmp->prev->token == PIPE \
-		|| !is_redirection_token(tmp->token)));
+	return (tmp->prev && (tmp->prev->token == PIPE \
+		|| is_redirection_token(tmp->token)));
 }

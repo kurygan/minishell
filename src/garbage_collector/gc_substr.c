@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   gc_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 00:47:29 by mkettab           #+#    #+#             */
 /*   Updated: 2025/08/28 21:02:31 by emetel           ###   ########.fr       */

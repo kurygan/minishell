@@ -12,10 +12,12 @@
 
 #include "../inc/minishell.h"
 
-t_cmd_segment	*handle_line(t_sys *sys, int exit_status)
+t_cmd_segment	*handle_line(t_sys *sys)
 {
 	t_cmd_segment	*segments;
+	int				exit_status;
 
+	exit_status = sys->exit_status;
 	segments = convert_tokens(sys);
 	expand_variables(segments, sys, exit_status);
 	return (segments);

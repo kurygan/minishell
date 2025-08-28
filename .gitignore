@@ -55,4 +55,5 @@ dkms.conf
 build/
 en.subject.pdf
 minishell
+test.c
 mpanic/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 21:02:17 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:51:57 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int				handle_redir_out(t_cmd_segment *cmd);
 
 /* parsing */
 
-t_cmd_segment	*handle_line(t_sys *sys, int exit_status);
+t_cmd_segment	*handle_line(t_sys *sys);
 
 /* segment */
 
