@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   segment_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 01:56:30 by emetel            #+#    #+#             */
 /*   Updated: 2025/08/27 15:55:39 by emetel           ###   ########.fr       */
@@ -65,8 +65,8 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 	if (!*current)
 	{
 		*current = gc_calloc(&(sys->garbage), sizeof(t_cmd_segment));
-		if (*current)
-			(*current)->sys = sys;
+		(*current)->sys = sys;
+		(*current)->outfiles = NULL;
 		if (!*head)
 			*head = *current;
 	}
@@ -75,13 +75,10 @@ void	handle_redirection_token(t_type *token, t_cmd_segment **current,
 		if (token->prev->token == REDIR_IN)
 			(*current)->infile = gc_strdup(token->str, &(sys->garbage));
 		if (token->prev->token == REDIR_OUT)
-			(*current)->outfile = gc_strdup(token->str, &(sys->garbage));
+			(*current)->outfiles = add_token((*current)->outfiles, token->str, REDIR_OUT, sys);
 		if (token->prev->token == REDIR_HEREDOC)
 			(*current)->heredoc = gc_strdup(token->str, &(sys->garbage));
 		if (token->prev->token == REDIR_APPEND)
-		{
-			(*current)->outfile = gc_strdup(token->str, &(sys->garbage));
-			(*current)->append_mode = 1;
-		}
+			(*current)->outfiles = add_token((*current)->outfiles, token->str, REDIR_APPEND, sys);
 	}
 }

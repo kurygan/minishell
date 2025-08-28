@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/27 19:10:22 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:54:27 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ static bool	process_command(t_sys *sys, int *exit_status)
 		add_history(line);
 		sys->tokens = tokenize(line, sys);
 		sys->command = handle_line(sys, *exit_status);
-		//debug_print_tokens(sys->tokens);
-		//debug_print_segments(sys->command);
+		debug_print_tokens(sys->tokens);
+		debug_print_segments(sys->command);
 		exec(sys);
+		sys->command = NULL;
+		sys->tokens = NULL;
 		gc_carbonize(&(sys->garbage));
 		free(line);
 	}
@@ -54,12 +56,12 @@ int	main(int ac, char **av, char **env)
 	sys->exit_status = 0;
 	sys->env = env;
 	sys->env_was_empty = (!env || !env[0]);
-	sys->env_list = init_env_list(env, sys);
 	sys->garbage = NULL;
+	sys->env_gc = NULL;
+	sys->env_list = init_env_list(env, sys);
 	setup_signals(&orig_termios);
 	process_command(sys, &exit_status);
-	free_env_list_safe(sys->env_list);
-	gc_carbonize(&sys->garbage);
+	gc_carbonize(&(sys->env_gc));
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();

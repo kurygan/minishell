@@ -61,16 +61,10 @@ static void	print_segment_info(t_cmd_segment *seg)
 	else
 		printf("(null)\n");
 	printf("│  Outfile  : ");
-	if (seg->outfile)
-		printf("%s\n", seg->outfile);
+	if (seg->outfiles)
+		printf("%p\n", seg->outfiles);
 	else
 		printf("(null)\n");
-	printf("│  Append   : ");
-	if (seg->append_mode)
-		printf("YES\n");
-	else
-		printf("NO\n");
-	printf("│\n");
 }
 
 void	debug_print_segments(t_cmd_segment *segments)

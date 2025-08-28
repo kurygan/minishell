@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   gc_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:21:14 by mkettab           #+#    #+#             */
 /*   Updated: 2025/08/26 21:18:04 by emetel           ###   ########.fr       */

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   gc_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 23:21:26 by mkettab           #+#    #+#             */
 /*   Updated: 2025/08/26 21:18:22 by emetel           ###   ########.fr       */

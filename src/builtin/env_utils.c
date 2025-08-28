@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:55:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 14:37:02 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:55:41 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,11 @@ t_env_var	*parse_env_string(char *env_str, t_sys *sys)
 	equal_pos = ft_strchr(env_str, '=');
 	if (!equal_pos)
 		return (NULL);
-	key = ft_substr(env_str, 0, equal_pos - env_str);
-	value = ft_strdup(equal_pos + 1);
+	key = gc_substr(env_str, 0, ft_strlen(env_str) - ft_strlen(equal_pos), &sys->env_gc);
+	value = gc_strdup(equal_pos + 1, &sys->env_gc);
 	env_var = create_env_var(key, value, sys);
 	if (ft_strcmp(key, "_") != 0)
 		env_var->exported = true;
-	free(key);
-	free(value);
 	return (env_var);
 }
 
@@ -65,8 +63,7 @@ static t_env_var	*init_from_env_array(char **env, t_sys *sys)
 	while (env[i])
 	{
 		current->next = parse_env_string(env[i], sys);
-		if (current->next)
-			current = current->next;
+		current = current->next;
 		i++;
 	}
 	return (head);
