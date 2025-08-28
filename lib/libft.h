@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:08:04 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/11 02:44:36 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 22:06:14 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void				line_gen(char **str, t_list *buf);
 void				lst_free(t_list *lst);
 
 int					ft_intlen(long j);
+long long			ft_atoll(char const *str, bool *error);
 int					ft_putchar(char c);
 int					ft_inthexlen(unsigned long c);
 int					ft_putint(long d);
