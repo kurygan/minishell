@@ -3,15 +3,27 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
+#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/25 14:56:23 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/28 17:46:47 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g3
+FLAGS = -Wall -Wextra -Werror -g3 
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	READLINE_DIR := $(shell brew --prefix readline 2>/dev/null)
+	ifneq ($(READLINE_DIR),)
+		CFLAGS += -I$(READLINE_DIR)/include
+		LDFLAGS += -L$(READLINE_DIR)/lib
+	endif
+	READLINE_LIB = -lreadline
+else
+	READLINE_LIB = -lreadline
+endif
 
 SRCS =	minishell.c \
 		expander.c \
@@ -56,11 +68,11 @@ LIB_NAME = lib/lib.a
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(FLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS_PREF)
 	@make all -C lib
-	@$(CC) $(FLAGS) -lreadline $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
+	@$(CC) $(FLAGS) $(LDFLAGS) $(READLINE_LIB) $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
 	@echo "|🛠️| Program compiled"
 
 all: $(NAME)
