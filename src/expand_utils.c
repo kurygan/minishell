@@ -20,10 +20,11 @@ static char	*process_var_expansion(char *arg, int *i, t_sys *sys, \
 	char	*value;
 	int		start;
 
+	(void)exit_status;
 	result = gc_strdup("", &(sys->garbage));
 	if (arg[*i + 1] == '?')
 	{
-		value = gc_itoa(exit_status, &(sys->garbage));
+		value = gc_itoa(sys->exit_status, &(sys->garbage));
 		result = gc_strjoin(result, value, &(sys->garbage));
 		*i += 2;
 	}

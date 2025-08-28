@@ -139,7 +139,7 @@ int				handle_redir_out(t_cmd_segment *cmd);
 
 /* parsing */
 
-t_cmd_segment	*handle_line(t_sys *sys, int exit_status);
+t_cmd_segment	*handle_line(t_sys *sys);
 
 /* segment */
 

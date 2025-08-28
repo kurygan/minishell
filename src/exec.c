@@ -27,15 +27,13 @@ int	count_commands(t_cmd_segment *segments)
 	return (count);
 }
 
-void	wait_pid(pid_t pid, t_sys *sys)
+void	wait_pid(pid_t pid, t_sys *sys, int i, int total)
 {
 	int	status;
 
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
+	if (total == 0 || i == total)
 		sys->exit_status = WEXITSTATUS(status);
-	else
-		sys->exit_status = 1;
 }
 
 void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
@@ -60,7 +58,7 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
 		if (execve(path, args, env_array))
 		{
-			ft_printf("%s: command not found", cmd->cmd);
+			ft_printf("%s: command not found\n", cmd->cmd);
 			exit(127);
 		}
 	}
@@ -85,7 +83,7 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		if (pids[i] == 0)
 			exec_child_process(current, pipes, i, cmd_count);
 		if (current->next && current->next->heredoc)
-			wait_pid(pids[i], sys);
+			wait_pid(pids[i], sys, i, cmd_count - 1);
 		current = current->next;
 		i++;
 	}
@@ -93,8 +91,7 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 	i = 0;
 	while (i < cmd_count)
 	{
-		if (kill(pids[i], 0) == 0)
-			wait_pid(pids[i], sys);
+		wait_pid(pids[i], sys, i, cmd_count - 1);
 		i++;
 	}
 }
