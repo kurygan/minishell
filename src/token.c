@@ -33,7 +33,7 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	expect_cmd = 1;
 	while (tmp)
 	{
-		if (tmp->prev && tmp->prev->token == PIPE)
+		if (tmp->prev && tmp->prev->token == PIPE && !is_redirection_token(tmp->token))
 			tmp->token = CMD;
 		if (tmp->token == PIPE)
 		{

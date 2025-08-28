@@ -62,7 +62,7 @@ static void	print_segment_info(t_cmd_segment *seg)
 		printf("(null)\n");
 	printf("│  Outfile  : ");
 	if (seg->outfiles)
-		printf("%p\n", seg->outfiles);
+		printf("%s\n", seg->outfiles[2].str);
 	else
 		printf("(null)\n");
 }

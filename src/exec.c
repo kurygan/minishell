@@ -46,12 +46,9 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 	fd_redir(cmd, cmd_index, total_cmds, pipes);
 	if (pipes)
 		close_all_pipes(pipes, total_cmds - 1);
-	if (is_builtin(cmd->cmd))
-	{
+	if (cmd->cmd && is_builtin(cmd->cmd))
 		exec_builtin(cmd);
-		exit(0);
-	}
-	else
+	else if (cmd->cmd)
 	{
 		path = get_path(cmd->cmd, cmd->sys);
 		args = get_args(cmd);
@@ -59,9 +56,10 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		if (execve(path, args, env_array))
 		{
 			ft_printf("%s: command not found\n", cmd->cmd);
-			exit(127);
+			cmd->sys->exit_status = 127;
 		}
 	}
+	exit(cmd->sys->exit_status);
 }
 
 void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
@@ -100,7 +98,7 @@ void	exec(t_sys *sys)
 {
 	int	saved_stdfd[2];
 
-	if (!sys->command || !sys->command->cmd)
+	if (!sys->command)
 		return ;
 	if (count_commands(sys->command) == 1 && is_builtin(sys->command->cmd))
 	{

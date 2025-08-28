@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 17:51:57 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/28 23:57:32 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # ifndef ECHOCTL
 #  define ECHOCTL 0000001000
 # endif
+# define trou "true"
 
 typedef enum e_token			t_token;
 typedef struct s_cmd_segment	t_cmd_segment;
@@ -212,10 +213,13 @@ void			print_shlvl_warning(int level);
 void			exec_export(t_cmd_segment *cmd);
 bool			is_valid_identifier(char *str);
 char			*extract_key_value(char *arg, char **value, t_sys *sys);
+char			*handle_plus_equal(char *arg, char **value, t_sys *sys);
 void			insert_env_var_sorted(t_env_var **env_list, char *key, \
 					char *value, t_sys *sys);
 void			print_export_list(t_env_var *env_list, t_sys *sys);
 void			add_or_update_var(t_env_var **env_list, char *key, \
+					char *value, t_sys *sys);
+void			add_or_append_var(t_env_var **env_list, char *key, \
 					char *value, t_sys *sys);
 void			process_export_arg(char *arg, t_env_var **env_list, t_sys *sys, \
 					bool *error_occurred);
