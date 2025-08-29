@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 14:30:11 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 19:38:59 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	is_numeric(char *str)
 static void	handle_numeric_error(t_cmd_segment *cmd, char *arg)
 {
 	ft_printf("exit: %s: numeric argument required\n", arg);
-	cmd->sys->exit_status = 255;
+	cmd->sys->exit_status = 2;
 	exit(cmd->sys->exit_status);
 }
 

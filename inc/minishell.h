@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/29 17:23:27 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 19:29:43 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@
 # ifndef ECHOCTL
 #  define ECHOCTL 0000001000
 # endif
-# define trou "true"
 
 typedef enum e_token			t_token;
 typedef struct s_cmd_segment	t_cmd_segment;
