@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
+#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/28 17:51:35 by mkettab          ###   ########.fr        #
+#    Updated: 2025/08/29 20:43:06 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS =	minishell.c \
 		expand_quote.c \
 		quote_utils.c \
 		expand_utils.c \
+		expand_tilde.c \
 		handle_redirection.c \
 		parsing.c \
 		segment_handler.c \

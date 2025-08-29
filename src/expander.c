@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 17:23:27 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 20:43:05 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 		*str = process_quoted_arg(original, sys, exit_status);
 	else if (original[0] == '$')
 		expand_variable_str(str, sys, exit_status);
+	else if (original[0] == '~')
+		*str = expand_tilde(original, sys);
 }
 
 static void	expand_str_array(char **str, t_sys *sys, int exit_status)

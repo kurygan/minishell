@@ -15,6 +15,7 @@
 static void	handle_cd_home(t_cmd_segment *cmd)
 {
 	char	*home;
+	char	*old_pwd;
 
 	home = get_env_value_from_list("HOME", cmd->sys->env_list);
 	if (!home)
@@ -23,8 +24,9 @@ static void	handle_cd_home(t_cmd_segment *cmd)
 		cmd->sys->exit_status = 1;
 		return ;
 	}
+	old_pwd = get_env_value_from_list("PWD", cmd->sys->env_list);
 	if (change_directory(home, cmd))
-		update_pwd_variables(cmd, NULL);
+		update_pwd_variables(cmd, old_pwd);
 }
 
 static void	handle_cd_oldpwd(t_cmd_segment *cmd)

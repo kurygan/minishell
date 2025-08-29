@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/29 19:29:43 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 20:43:06 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ char			*extract_quoted_target(char *line, int *i, char quote, \
 /* expand_utils */
 
 char			*expand_var(char *arg, t_sys *sys, int exit_status);
+char			*expand_tilde(char *arg, t_sys *sys);
 char			*process_quoted_arg(char *arg, t_sys *sys, int exit_status);
 char			*expand_variables_in_dquotes(char *content, t_sys *sys,
 					int exit_status);
