@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 21:06:47 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 17:23:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 	original = *str;
 	len = ft_strlen(original);
 	if (original[0] == '\'' && original[len - 1] == '\'')
-		expand_quoted_str(str, sys, exit_status, 1);
+		*str = process_quoted_arg(original, sys, exit_status);
 	else if (original[0] == '\"' && original[len - 1] == '\"')
-		expand_quoted_str(str, sys, exit_status, 0);
+		*str = process_quoted_arg(original, sys, exit_status);
 	else if (original[0] == '$')
 		expand_variable_str(str, sys, exit_status);
 }

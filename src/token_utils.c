@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 00:18:41 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 17:23:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,34 @@ void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 	else
 		token_type = DOUBLE_QUOTE;
 	*lst = add_token(*lst, word[0], token_type, sys);
+}
+
+char	*extract_quoted_arg(char *line, int *i, char quote, t_sys *sys)
+{
+	int		start;
+	char	*target[2];
+	char	*result;
+
+	start = *i;
+	(*i)++;
+	while (line[*i] && line[*i] != quote)
+		(*i)++;
+	target[0] = gc_substr(line, start, *i - start + 1, &sys->garbage);
+	(*i)++;
+	start = *i;
+	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+		(*i)++;
+	if (start < *i)
+	{
+		target[1] = gc_substr(line, start, *i - start, &(sys->garbage));
+		result = gc_strjoin(target[0], target[1], &(sys->garbage));
+	}
+	else
+		result = target[0];
+	if (line[*i])
+		(*i)++;
+	return (result);
 }
 
 void	handle_word(char *line, int *i, t_type **lst, t_sys *sys)

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 23:57:32 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 17:23:27 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,9 @@ char			*extract_quoted_target(char *line, int *i, char quote, \
 /* expand_utils */
 
 char			*expand_var(char *arg, t_sys *sys, int exit_status);
+char			*process_quoted_arg(char *arg, t_sys *sys, int exit_status);
+char			*expand_variables_in_dquotes(char *content, t_sys *sys,
+					int exit_status);
 void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
 					int is_single);
 void			expand_variable_str(char **str, t_sys *sys, int exit_status);
@@ -163,6 +166,7 @@ t_type			*tokenize(char *line, t_sys *sys);
 t_type			*add_token(t_type *list, char *str, t_token token, t_sys *sys);
 void			handle_pipe(int *i, t_type **lst, t_sys *sys);
 void			handle_quote(char *line, int *i, t_type **lst, t_sys *sys);
+char			*extract_quoted_arg(char *line, int *i, char quote, t_sys *sys);
 void			handle_word(char *line, int *i, t_type **lst, t_sys *sys);
 bool			is_redirection_token(t_token token);
 bool			should_become_args(t_type *tmp);

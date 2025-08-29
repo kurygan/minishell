@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/27 15:38:35 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 17:26:00 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,37 @@ char	*extract_var_content(char *content, int *i, int start, t_gc **garbage)
 	temp = gc_substr(content, *i + 1, start - *i - 1, garbage);
 	*i = start;
 	return (temp);
+}
+
+char	*process_quoted_arg(char *arg, t_sys *sys, int exit_status)
+{
+	char	*result;
+	char	quote_type;
+	size_t	len;
+	char	*content;
+
+	if (!arg)
+		return (gc_strdup("", &(sys->garbage)));
+	len = ft_strlen(arg);
+	if (len < 2)
+		return (gc_strdup(arg, &(sys->garbage)));
+	if (arg[0] == '\'' && arg[len - 1] == '\'')
+		quote_type = '\'';
+	else if (arg[0] == '\"' && arg[len - 1] == '\"')
+		quote_type = '\"';
+	else
+		return (gc_strdup(arg, &(sys->garbage)));
+	if (quote_type == '\'')
+	{
+		result = gc_substr(arg, 1, len - 2, &(sys->garbage));
+		return (result);
+	}
+	if (quote_type == '\"')
+	{
+		content = gc_substr(arg, 1, len - 2, &(sys->garbage));
+		result = expand_variables_in_dquotes(content, sys, exit_status);
+		gc_free(content, &(sys->garbage));
+		return (result);
+	}
+	return (gc_strdup(arg, &(sys->garbage)));
 }

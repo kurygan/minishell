@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 21:06:23 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 17:27:06 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ int	handle_redir_in(t_cmd_segment *cmd, t_sys *sys)
 
 int	handle_redir_out(t_cmd_segment *cmd)
 {
-	int		pipe_fd[2];
-	t_type	*outfiles;
-	struct stat statbuf;
+	int			pipe_fd[2];
+	t_type		*outfiles;
+	struct stat	statbuf;
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
@@ -127,9 +127,11 @@ int	handle_redir_out(t_cmd_segment *cmd)
 	while (outfiles)
 	{
 		if (outfiles && outfiles->token == REDIR_APPEND)
-			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, \
+							0644);
 		else if (outfiles && outfiles->token == REDIR_OUT)
-			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_TRUNC, \
+							0644);
 		if (pipe_fd[1] == -1)
 		{
 			if (stat(outfiles->str, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
