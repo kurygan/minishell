@@ -116,6 +116,7 @@ int	handle_redir_out(t_cmd_segment *cmd)
 {
 	int		pipe_fd[2];
 	t_type	*outfiles;
+	struct stat statbuf;
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
@@ -126,12 +127,15 @@ int	handle_redir_out(t_cmd_segment *cmd)
 	while (outfiles)
 	{
 		if (outfiles && outfiles->token == REDIR_APPEND)
-			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
+			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (outfiles && outfiles->token == REDIR_OUT)
-			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
+			pipe_fd[1] = open(outfiles->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (pipe_fd[1] == -1)
 		{
-			ft_putstr_fd("Error: Permission Denied", STDERR_FILENO);
+			if (stat(outfiles->str, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+				ft_printf("%s: Is a directory\n", outfiles->str);
+			else
+				ft_printf("%s: Permission Denied\n", outfiles->str);
 			break ;
 		}
 		outfiles = outfiles->next;

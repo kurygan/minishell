@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 22:05:37 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 14:30:11 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,14 @@ void	exec_exit(t_cmd_segment *cmd)
 {
 	long long	exit_code;
 	bool		error;
+	char		*double_dash;
 
+	// ft_putendl_fd("exit", 2);
 	if (!cmd->args || !cmd->args[0])
+		exit(cmd->sys->exit_status);
+	double_dash = "--";
+	if (ft_strncmp(cmd->args[0], double_dash, 2) == 0
+		&& ft_strlen(cmd->args[0]) == 2)
 		exit(cmd->sys->exit_status);
 	if (!is_numeric(cmd->args[0]))
 		handle_numeric_error(cmd, cmd->args[0]);

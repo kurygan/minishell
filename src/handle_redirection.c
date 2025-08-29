@@ -42,16 +42,38 @@ static t_token	identify_redirection_type(char *line, int *i, char **symbol, \
 char	*extract_quoted_target(char *line, int *i, char quote, t_sys *sys)
 {
 	int		start;
-	char	*target;
+	char	*target[2];
 
 	(*i)++;
 	start = *i;
+	target[0] = gc_strdup("", &sys->garbage);
 	while (line[*i] && line[*i] != quote)
+	{
+		if (line[*i] == '\'' && quote != '\'')
+		{
+			target[1] = gc_substr(line, start, *i - start, &sys->garbage);
+			target[0] = gc_strjoin(target[0], target[1], &sys->garbage);
+			(*i)++;
+			start = *i;
+		}
+		else
+			(*i)++;
+	}
+	target[1] = gc_substr(line, start, *i - start, &sys->garbage);
+	target[0] = gc_strjoin(target[0], target[1], &sys->garbage);
+	(*i)++;
+	start = *i;
+	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 		(*i)++;
-	target = gc_substr(line, start, *i - start, &(sys->garbage));
+	if (start < *i)
+	{
+		target[1] = gc_substr(line, start, *i - start, &(sys->garbage));
+		target[0] = gc_strjoin(target[0], target[1], &(sys->garbage));
+	}
 	if (line[*i])
 		(*i)++;
-	return (target);
+	return (target[0]);
 }
 
 static char	*extract_unquoted_target(char *line, int *i, t_sys *sys)

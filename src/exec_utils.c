@@ -50,6 +50,8 @@ void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
 		}
+		else
+			exit(1);
 	}
 	else if (cmd_index > 0 && pipes)
 		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
@@ -61,6 +63,8 @@ void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
 			dup2(fd[1], STDOUT_FILENO);
 			close (fd[1]);
 		}
+		else
+			exit(1);
 	}
 	else if (cmd_index < total_cmds - 1 && pipes)
 		dup2(pipes[cmd_index][1], STDOUT_FILENO);

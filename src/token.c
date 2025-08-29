@@ -15,12 +15,12 @@
 static int	handle_and_check_quote(char *line, int *i, t_type **lst, t_sys *sys)
 {
 	int	old_i;
+	char *quoted_thing;
 
 	old_i = *i;
-	handle_quote(line, i, lst, sys);
-	if (*i == old_i)
-		return (1);
-	return (0);
+	quoted_thing = extract_quoted_target(line, i, line[*i], sys);
+	add_token((*lst), quoted_thing, ARGS, sys);
+	return 0;
 }
 
 static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
