@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 15:11:22 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 15:16:35 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,17 @@ static int	handle_unclosed_quotes(char *line, t_sys *sys)
 	return (0);
 }
 
-static void	execute_command_line(char *line, t_sys *sys)
+static bool	execute_command_line(char *line, t_sys *sys)
 {
 	sys->tokens = tokenize(line, sys);
+	if (check_synthax_error(sys, line))
+		return (false);
 	sys->command = handle_line(sys);
 	exec(sys);
 	sys->command = NULL;
 	sys->tokens = NULL;
 	gc_carbonize(&(sys->garbage));
+	return (true);
 }
 
 static bool	process_command(t_sys *sys)
@@ -59,9 +62,8 @@ static bool	process_command(t_sys *sys)
 		add_history(line);
 		if (handle_unclosed_quotes(line, sys))
 			continue ;
-		if (check_synthax_error(sys, line))
-			continue ;
-		execute_command_line(line, sys);
+		if (!execute_command_line(line, sys))
+			continue;
 		free(line);
 	}
 	return (false);
