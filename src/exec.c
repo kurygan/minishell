@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 12:43:31 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 13:23:16 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,23 @@ void	wait_pid(pid_t pid, t_sys *sys, int i, int total)
 
 	waitpid(pid, &status, 0);
 	if (total == 0 || i == total)
-		sys->exit_status = WEXITSTATUS(status);
+	{
+		if (WIFSIGNALED(status))
+		{
+			int sig = WTERMSIG(status);
+			if (sig == SIGINT)
+				sys->exit_status = 130;
+			else if (sig == SIGQUIT)
+			{
+				sys->exit_status = 131;
+				write(STDOUT_FILENO, "\n", 1);  // Add newline after ^Quit
+			}
+			else
+				sys->exit_status = 128 + sig;
+		}
+		else
+			sys->exit_status = WEXITSTATUS(status);
+	}
 }
 
 void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
@@ -43,6 +59,8 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 	char	**args;
 	char	**env_array;
 
+	// Set default signal behavior for child processes
+	setup_exec_signals();
 	fd_redir(cmd, cmd_index, total_cmds, pipes);
 	if (pipes)
 		close_all_pipes(pipes, total_cmds - 1);
@@ -100,6 +118,8 @@ void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
 		wait_pid(pids[i], sys, i, cmd_count - 1);
 		i++;
 	}
+	// Restore interactive signals after execution
+	setup_interactive_signals();
 }
 
 void	exec(t_sys *sys)
@@ -118,6 +138,8 @@ void	exec(t_sys *sys)
 		dup2(saved_stdfd[1], STDOUT_FILENO);
 		close(saved_stdfd[0]);
 		close(saved_stdfd[1]);
+		// Restore interactive signals after builtin execution
+		setup_interactive_signals();
 		return ;
 	}
 	exec_pipeline(sys->command, sys);

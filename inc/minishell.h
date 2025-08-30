@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 11:53:49 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 13:21:33 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ typedef struct s_sys
 	bool			env_was_empty;
 }	t_sys;
 
+// Global variable for signal handling
+extern int g_signal_received;
+
 /* expander */
 
 void			expand_variables(t_cmd_segment *segments, t_sys *sys,
@@ -158,6 +161,8 @@ t_cmd_segment	*convert_tokens(t_sys *sys);
 void			sigint_handler(int sig);
 void			setup_signals(struct termios *orig_termios);
 void			reset_signals(struct termios *orig_termios);
+void			setup_exec_signals(void);
+void			setup_interactive_signals(void);
 
 /* token */
 

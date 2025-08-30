@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 12:51:02 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 13:16:47 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ static bool	process_command(t_sys *sys)
 
 	while (1)
 	{
+		// Check if a signal was received and update exit status
+		if (g_signal_received)
+		{
+			sys->exit_status = g_signal_received;
+			g_signal_received = 0;  // Reset the signal flag
+		}
+		
 		line = readline("[petitcoquillage]$ ");
 		if (!line)
 		{
