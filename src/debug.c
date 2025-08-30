@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 11:53:49 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 12:51:02 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	debug_print_tokens(t_type *tokens)
 	while (1)
 	{
 		printf("├─ Token %3d: ", i++);
-		if (token->token >= 0 && token->token <= 8)
+		if (token->token >= 0 && token->token <= 10)
 			printf("%-13s", token_types[token->token]);
 		else
 			printf("%-13s", "UNKNOWN");

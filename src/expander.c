@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 12:33:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 12:51:02 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,10 @@ void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status)
 	while (segments)
 	{
 		outfiles = segments->outfiles;
-		// Handle quoted tokens specifically
-		if (segments->cmd && (segments->cmd[0] == '\'' || segments->cmd[0] == '\"'))
+		// Handle fully quoted tokens specifically
+		if (segments->cmd && 
+			((segments->cmd[0] == '\'' && segments->cmd[ft_strlen(segments->cmd) - 1] == '\'') ||
+			 (segments->cmd[0] == '\"' && segments->cmd[ft_strlen(segments->cmd) - 1] == '\"')))
 			expand_quoted_token(&segments->cmd, sys, exit_status);
 		else
 			expand_single_str(&segments->cmd, sys, exit_status);

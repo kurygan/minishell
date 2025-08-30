@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 11:22:37 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 12:43:31 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 	fd_redir(cmd, cmd_index, total_cmds, pipes);
 	if (pipes)
 		close_all_pipes(pipes, total_cmds - 1);
-	if (cmd->cmd && is_builtin(cmd->cmd))
+	if (cmd->cmd && cmd->cmd[0] != '\0' && is_builtin(cmd->cmd))
 		exec_builtin(cmd);
-	else if (cmd->cmd)
+	else if (cmd->cmd && cmd->cmd[0] != '\0')
 	{
 		if (!get_env_value_from_list("PATH", cmd->sys->env_list))
 		{
@@ -108,7 +108,7 @@ void	exec(t_sys *sys)
 
 	if (!sys->command)
 		return ;
-	if (count_commands(sys->command) == 1 && is_builtin(sys->command->cmd))
+	if (count_commands(sys->command) == 1 && sys->command->cmd && sys->command->cmd[0] != '\0' && is_builtin(sys->command->cmd))
 	{
 		saved_stdfd[0] = dup(STDIN_FILENO);
 		saved_stdfd[1] = dup(STDOUT_FILENO);
