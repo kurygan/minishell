@@ -72,24 +72,6 @@ char	*expand_var(char *arg, t_sys *sys, int exit_status)
 	return (result);
 }
 
-void	expand_quoted_str(char **str, t_sys *sys, int exit_status,
-	int is_single)
-{
-	char	*expanded;
-
-	expanded = expand_quote(*str, sys, exit_status, is_single);
-	gc_free(*str, &(sys->garbage));
-	*str = expanded;
-}
-
-void	expand_variable_str(char **str, t_sys *sys, int exit_status)
-{
-	char	*expanded;
-
-	expanded = expand_var(*str, sys, exit_status);
-	*str = expanded;
-}
-
 char	*extract_var_content(char *content, int *i, int start, t_gc **garbage)
 {
 	char	*temp;
@@ -97,37 +79,4 @@ char	*extract_var_content(char *content, int *i, int start, t_gc **garbage)
 	temp = gc_substr(content, *i + 1, start - *i - 1, garbage);
 	*i = start;
 	return (temp);
-}
-
-char	*process_quoted_arg(char *arg, t_sys *sys, int exit_status)
-{
-	char	*result;
-	char	quote_type;
-	size_t	len;
-	char	*content;
-
-	if (!arg)
-		return (gc_strdup("", &(sys->garbage)));
-	len = ft_strlen(arg);
-	if (len < 2)
-		return (gc_strdup(arg, &(sys->garbage)));
-	if (arg[0] == '\'' && arg[len - 1] == '\'')
-		quote_type = '\'';
-	else if (arg[0] == '\"' && arg[len - 1] == '\"')
-		quote_type = '\"';
-	else
-		return (gc_strdup(arg, &(sys->garbage)));
-	if (quote_type == '\'')
-	{
-		result = gc_substr(arg, 1, len - 2, &(sys->garbage));
-		return (result);
-	}
-	if (quote_type == '\"')
-	{
-		content = gc_substr(arg, 1, len - 2, &(sys->garbage));
-		result = expand_variables_in_dquotes(content, sys, exit_status);
-		gc_free(content, &(sys->garbage));
-		return (result);
-	}
-	return (gc_strdup(arg, &(sys->garbage)));
 }

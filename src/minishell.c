@@ -63,7 +63,7 @@ static bool	process_command(t_sys *sys)
 		if (handle_unclosed_quotes(line, sys))
 			continue ;
 		if (!execute_command_line(line, sys))
-			continue;
+			continue ;
 		free(line);
 	}
 	return (false);

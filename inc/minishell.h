@@ -131,12 +131,10 @@ char			*extract_quoted_target(char *line, int *i, char quote, \
 
 char			*expand_var(char *arg, t_sys *sys, int exit_status);
 char			*expand_tilde(char *arg, t_sys *sys);
-char			*process_quoted_arg(char *arg, t_sys *sys, int exit_status);
 char			*expand_variables_in_dquotes(char *content, t_sys *sys,
 					int exit_status);
-void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
-					int is_single);
-void			expand_variable_str(char **str, t_sys *sys, int exit_status);
+char			*extract_var_content(char *content, int *i, int start, \
+					t_gc **garbage);
 
 /* expand_utils2 */
 
@@ -147,7 +145,13 @@ int				process_quoted_part(char *str, int *i, char **result, \
 					t_sys *sys);
 int				process_unquoted_part(char *str, int *i, char **result, \
 					t_sys *sys);
-char			*extract_var_content(char *content, int *i, int start, \
+
+/* expand_utils3 */
+
+char			*process_quoted_arg(char *arg, t_sys *sys, int exit_status);
+void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
+					int is_single);
+void			expand_variable_str(char **str, t_sys *sys, int exit_status);
 					struct s_gc **garbage);
 
 /* handle_redirection */
