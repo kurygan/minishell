@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 20:55:06 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 21:40:30 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 14:39:40 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,52 +167,6 @@ void	process_plus_equal(char *arg, t_env_var **env_list, t_sys *sys, \
 		value = remove_quotes(value, sys);
 	}
 	add_or_append_var(env_list, key, value, sys);
-}
-
-void	process_export_arg(char *arg, t_env_var **env_list, t_sys *sys, \
-			bool *error_occurred)
-{
-	char		*key;
-	char		*value;
-	char		*equal_pos;
-	char		*identifier;
-
-	if (ft_strnstr(arg, "+=", ft_strlen(arg)))
-	{
-		process_plus_equal(arg, env_list, sys, error_occurred);
-		return ;
-	}
-	equal_pos = ft_strchr(arg, '=');
-	if (equal_pos)
-	{
-		identifier = gc_substr(arg, 0, equal_pos - arg, &(sys->garbage));
-		if (!is_valid_identifier(identifier))
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			*error_occurred = true;
-			return ;
-		}
-		key = extract_key_value(arg, &value, sys);
-		add_or_update_var(env_list, key, value, sys);
-		return ;
-	}
-	else
-	{
-		if (!is_valid_identifier(arg))
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			*error_occurred = true;
-			return ;
-		}
-		key = gc_strdup(arg, &(sys->garbage));
-		value = NULL;
-		add_or_update_var(env_list, key, value, sys);
-		return ;
-	}
 }
 
 void	exec_export(t_cmd_segment *cmd)

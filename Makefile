@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/30 11:53:49 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/30 15:01:41 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS =	minishell.c \
 		quote_utils.c \
 		quote_processing.c \
 		expand_utils.c \
+		expand_utils2.c \
 		expand_tilde.c \
 		handle_redirection.c \
 		parsing.c \
@@ -35,11 +36,15 @@ SRCS =	minishell.c \
 		segment.c \
 		signal.c \
 		token_utils.c \
+		token_utils2.c \
+		token_utils3.c \
+		token_utils4.c \
 		token.c \
 		token_helpers.c \
 		exec.c \
+		exec2.c \
 		exec_utils.c \
-		debug.c \
+		exec_utils2.c \
 		shlvl.c \
 		synthax_detection.c \
 		builtin/env_utils.c \
@@ -52,9 +57,13 @@ SRCS =	minishell.c \
 		builtin/env.c \
 		builtin/export.c \
 		builtin/export_utils.c \
+		builtin/export_utils2.c \
+		builtin/export_utils3.c \
 		builtin/unset.c \
 		builtin/exit.c \
 		redir.c \
+		redir2.c \
+		redir3.c \
 		garbage_collector/gc_free.c \
 		garbage_collector/gc_malloc.c \
 		garbage_collector/gc_strdup.c \

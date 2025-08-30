@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 13:23:16 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 14:58:25 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@ int	count_commands(t_cmd_segment *segments)
 void	wait_pid(pid_t pid, t_sys *sys, int i, int total)
 {
 	int	status;
+	int	sig;
 
 	waitpid(pid, &status, 0);
 	if (total == 0 || i == total)
 	{
 		if (WIFSIGNALED(status))
 		{
-			int sig = WTERMSIG(status);
+			sig = WTERMSIG(status);
 			if (sig == SIGINT)
 				sys->exit_status = 130;
 			else if (sig == SIGQUIT)
 			{
 				sys->exit_status = 131;
-				write(STDOUT_FILENO, "\n", 1);  // Add newline after ^Quit
+				write(STDOUT_FILENO, "\n", 1);
 			}
 			else
 				sys->exit_status = 128 + sig;
@@ -52,14 +53,33 @@ void	wait_pid(pid_t pid, t_sys *sys, int i, int total)
 	}
 }
 
-void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
-			int total_cmds)
+static void	exec_external_command(t_cmd_segment *cmd)
 {
 	char	*path;
 	char	**args;
 	char	**env_array;
 
-	// Set default signal behavior for child processes
+	if (!get_env_value_from_list("PATH", cmd->sys->env_list))
+	{
+		ft_printf("%s: No such file or directory\n", cmd->cmd);
+		cmd->sys->exit_status = 127;
+	}
+	else
+	{
+		path = get_path(cmd->cmd, cmd->sys);
+		args = get_args(cmd);
+		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
+		if (execve(path, args, env_array))
+		{
+			ft_printf("%s: command not found\n", cmd->cmd);
+			cmd->sys->exit_status = 127;
+		}
+	}
+}
+
+void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
+			int total_cmds)
+{
 	setup_exec_signals();
 	fd_redir(cmd, cmd_index, total_cmds, pipes);
 	if (pipes)
@@ -67,79 +87,18 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 	if (cmd->cmd && cmd->cmd[0] != '\0' && is_builtin(cmd->cmd))
 		exec_builtin(cmd);
 	else if (cmd->cmd && cmd->cmd[0] != '\0')
-	{
-		if (!get_env_value_from_list("PATH", cmd->sys->env_list))
-		{
-			ft_printf("%s: No such file or directory\n", cmd->cmd);
-			cmd->sys->exit_status = 127;
-		}
-		else
-		{
-			path = get_path(cmd->cmd, cmd->sys);
-			args = get_args(cmd);
-			env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
-			if (execve(path, args, env_array))
-			{
-				ft_printf("%s: command not found\n", cmd->cmd);
-				cmd->sys->exit_status = 127;
-			}
-		}
-	}
+		exec_external_command(cmd);
 	exit(cmd->sys->exit_status);
-}
-
-void	exec_pipeline(t_cmd_segment *segments, t_sys *sys)
-{
-	t_cmd_segment	*current;
-	int				cmd_count;
-	int				**pipes;
-	pid_t			*pids;
-	int				i;
-
-	cmd_count = count_commands(segments);
-	current = segments;
-	pipes = create_pipes(cmd_count - 1, sys);
-	pids = gc_malloc(&(sys->garbage), sizeof(pid_t) * cmd_count);
-	i = 0;
-	while (current)
-	{
-		pids[i] = fork();
-		if (pids[i] == 0)
-			exec_child_process(current, pipes, i, cmd_count);
-		if (current->next && current->next->heredoc)
-			wait_pid(pids[i], sys, i, cmd_count - 1);
-		current = current->next;
-		i++;
-	}
-	close_all_pipes(pipes, cmd_count - 1);
-	i = 0;
-	while (i < cmd_count)
-	{
-		wait_pid(pids[i], sys, i, cmd_count - 1);
-		i++;
-	}
-	// Restore interactive signals after execution
-	setup_interactive_signals();
 }
 
 void	exec(t_sys *sys)
 {
-	int	saved_stdfd[2];
-
 	if (!sys->command)
 		return ;
-	if (count_commands(sys->command) == 1 && sys->command->cmd && sys->command->cmd[0] != '\0' && is_builtin(sys->command->cmd))
+	if (count_commands(sys->command) == 1 && sys->command->cmd \
+			&& sys->command->cmd[0] != '\0' && is_builtin(sys->command->cmd))
 	{
-		saved_stdfd[0] = dup(STDIN_FILENO);
-		saved_stdfd[1] = dup(STDOUT_FILENO);
-		fd_redir(sys->command, 0, 1, NULL);
-		exec_builtin(sys->command);
-		dup2(saved_stdfd[0], STDIN_FILENO);
-		dup2(saved_stdfd[1], STDOUT_FILENO);
-		close(saved_stdfd[0]);
-		close(saved_stdfd[1]);
-		// Restore interactive signals after builtin execution
-		setup_interactive_signals();
+		exec_single_builtin(sys->command);
 		return ;
 	}
 	exec_pipeline(sys->command, sys);

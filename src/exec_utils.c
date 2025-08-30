@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/25 14:35:33 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 14:58:25 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,37 @@ char	*get_path(char *cmd, t_sys *sys)
 	return (ft_freetab(paths), gc_strdup(cmd, &(sys->garbage)));
 }
 
-void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
+static void	handle_input_redir(t_cmd_segment *cmd, int cmd_index, int **pipes)
 {
-	int	fd[2];
+	int	fd;
 
 	if (cmd->infile || cmd->heredoc)
 	{
-		fd[0] = handle_redir_in(cmd, cmd->sys);
-		if (fd[0] != -1)
+		fd = handle_redir_in(cmd, cmd->sys);
+		if (fd != -1)
 		{
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
 		}
 		else
 			exit(1);
 	}
 	else if (cmd_index > 0 && pipes)
 		dup2(pipes[cmd_index - 1][0], STDIN_FILENO);
+}
+
+static void	handle_output_redir(t_cmd_segment *cmd, int cmd_index, \
+	int total_cmds, int **pipes)
+{
+	int	fd;
+
 	if (cmd->outfiles)
 	{
-		fd[1] = handle_redir_out(cmd);
-		if (fd[1] != -1)
+		fd = handle_redir_out(cmd);
+		if (fd != -1)
 		{
-			dup2(fd[1], STDOUT_FILENO);
-			close (fd[1]);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
 		}
 		else
 			exit(1);
@@ -70,21 +77,18 @@ void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
 		dup2(pipes[cmd_index][1], STDOUT_FILENO);
 }
 
+void	fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, int **pipes)
+{
+	handle_input_redir(cmd, cmd_index, pipes);
+	handle_output_redir(cmd, cmd_index, total_cmds, pipes);
+}
+
 char	**get_args(t_cmd_segment *command)
 {
 	char	**args;
-	char	**temp;
 	int		arg_count;
-	int		i;
 
-	arg_count = 0;
-	i = 0;
-	if (command->args)
-	{
-		temp = command->args;
-		while (temp[arg_count])
-			arg_count++;
-	}
+	arg_count = count_args(command->args);
 	if (arg_count == 0)
 	{
 		args = gc_malloc(&(command->sys->garbage), sizeof(char *) * 2);
@@ -92,53 +96,6 @@ char	**get_args(t_cmd_segment *command)
 		args[1] = NULL;
 	}
 	else
-	{
-		args = gc_malloc(&(command->sys->garbage), \
-			sizeof(char *) * (arg_count + 2));
-		args[i++] = command->cmd;
-		while (i <= arg_count && temp[i - 1])
-		{
-			args[i] = temp[i - 1];
-			i++;
-		}
-		args[i] = NULL;
-	}
+		args = build_args_array(command, arg_count);
 	return (args);
-}
-
-int	**create_pipes(int pipe_count, t_sys *sys)
-{
-	int	**pipes;
-	int	i;
-
-	if (pipe_count == 0)
-		return (NULL);
-	pipes = gc_malloc(&(sys->garbage), sizeof(int *) * pipe_count);
-	i = 0;
-	while (i < pipe_count)
-	{
-		pipes[i] = gc_malloc(&(sys->garbage), sizeof(int) * 2);
-		if (pipe(pipes[i]) == -1)
-		{
-			perror("pipe");
-			return (NULL);
-		}
-		i++;
-	}
-	return (pipes);
-}
-
-void	close_all_pipes(int **pipes, int pipe_count)
-{
-	int	i;
-
-	i = 0;
-	while (i < pipe_count)
-	{
-		if (pipes[i][0] > 0)
-			close(pipes[i][0]);
-		if (pipes[i][1] > 0)
-			close(pipes[i][1]);
-		i++;
-	}
 }

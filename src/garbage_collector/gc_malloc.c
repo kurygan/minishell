@@ -6,16 +6,24 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 22:56:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/29 17:24:49 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 14:28:52 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/garbage.h"
 
+void	add_gc_tok(t_gc **garbage, t_gc *new)
+{
+	t_gc	*last;
+
+	last = gc_getlast(garbage);
+	last->next = new;
+	new->prev = last;
+}
+
 void	*gc_malloc(t_gc **garbage, size_t size)
 {
 	t_gc		*temp;
-	t_gc		*last;
 	void		*mem;
 
 	temp = malloc(sizeof(t_gc));
@@ -38,11 +46,7 @@ void	*gc_malloc(t_gc **garbage, size_t size)
 	if (!garbage || !*garbage)
 		*garbage = temp;
 	else
-	{
-		last = gc_getlast(garbage);
-		last->next = temp;
-		temp->prev = last;
-	}
+		add_gc_tok(garbage, temp);
 	return (mem);
 }
 

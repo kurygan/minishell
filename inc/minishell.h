@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 13:53:28 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 15:01:40 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,15 @@ typedef struct s_sys
 }	t_sys;
 
 // Global variable for signal handling
-extern int		g_signal_received;
+extern int			g_signal_received;
 
 /* expander */
 
 void			expand_variables(t_cmd_segment *segments, t_sys *sys,
 					int exit_status);
+int				count_exported_vars(t_env_var *env_list);
+void			sort_env_array(t_env_var **array, int size);
+void			print_sorted_export_list(t_env_var **array, int count);
 
 /* expand_quote */
 
@@ -134,6 +137,16 @@ char			*expand_variables_in_dquotes(char *content, t_sys *sys,
 void			expand_quoted_str(char **str, t_sys *sys, int exit_status,
 					int is_single);
 void			expand_variable_str(char **str, t_sys *sys, int exit_status);
+
+/* expand_utils2 */
+
+int				has_mixed_quotes(char *original);
+int				check_mixed_quotes_in_quoted(char *original, int *i);
+int				check_mixed_quotes_in_unquoted(char *original, int *i);
+int				process_quoted_part(char *str, int *i, char **result, \
+					t_sys *sys);
+int				process_unquoted_part(char *str, int *i, char **result, \
+					t_sys *sys);
 char			*extract_var_content(char *content, int *i, int start, \
 					struct s_gc **garbage);
 
@@ -200,6 +213,14 @@ void			fd_redir(t_cmd_segment *cmd, int cmd_index, int total_cmds, \
 char			**get_args(t_cmd_segment *command);
 int				**create_pipes(int pipe_count, t_sys *sys);
 void			close_all_pipes(int **pipes, int pipe_count);
+int				count_args(char **args);
+char			**build_args_array(t_cmd_segment *command, int arg_count);
+void			exec_pipeline(t_cmd_segment *segments, t_sys *sys);
+void			exec_single_builtin(t_cmd_segment *command);
+int				count_commands(t_cmd_segment *segments);
+void			wait_pid(pid_t pid, t_sys *sys, int i, int total);
+void			exec_child_process(t_cmd_segment *cmd, int **pipes, \
+					int cmd_index, int total_cmds);
 
 /* env management */
 t_env_var		*create_env_var(char *key, char *value, t_sys *sys);
@@ -246,16 +267,13 @@ void			exec_exit(t_cmd_segment *cmd);
 
 int				handle_heredoc(char *delimiter, t_sys *sys);
 
-/* debug */
-
-void			debug_print_segments(t_cmd_segment *seg);
-void			debug_print_tokens(t_type *tokens);
-
 /* redir */
 
 int				handle_redir_out(t_cmd_segment *cmd);
 int				handle_redir_in(t_cmd_segment *cmd, t_sys *sys);
 int				handle_heredoc(char *delimiter, t_sys *sys);
+void			process_heredoc_line(char *line, char *delimiter, \
+					int pipe_fd, t_sys *sys);
 char			*expand_heredoc(char *line, t_sys *sys);
 
 /*error management*/

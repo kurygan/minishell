@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 13:16:47 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 14:39:40 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ static bool	process_command(t_sys *sys)
 
 	while (1)
 	{
-		// Check if a signal was received and update exit status
 		if (g_signal_received)
 		{
 			sys->exit_status = g_signal_received;
-			g_signal_received = 0;  // Reset the signal flag
+			g_signal_received = 0;
 		}
-		
 		line = readline("[petitcoquillage]$ ");
 		if (!line)
 		{
@@ -43,8 +41,6 @@ static bool	process_command(t_sys *sys)
 		if (check_synthax_error(sys, line))
 			continue ;
 		sys->command = handle_line(sys);
-		// debug_print_tokens(sys->tokens);
-		// debug_print_segments(sys->command);
 		exec(sys);
 		sys->command = NULL;
 		sys->tokens = NULL;
