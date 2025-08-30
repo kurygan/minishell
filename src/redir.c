@@ -6,47 +6,53 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:33:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/29 17:27:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 13:52:10 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+static char	*process_dollar_var(char *line, int *i, int *start, t_sys *sys)
+{
+	char	*result;
+
+	*start = *i;
+	(*i)++;
+	while (ft_isalnum(line[*i]) || line[*i] == '_')
+		(*i)++;
+	result = expand_var(gc_substr(line, *start, *i, &(sys->garbage)), \
+			sys, sys->exit_status);
+	*start = *i;
+	return (result);
+}
+
 char	*expand_heredoc(char *line, t_sys *sys)
 {
 	int		i;
 	int		start;
-	char	*line_extended;
-	char	*var_expanded;
+	char	*result;
 
-	i = 0;
-	start = 0;
-	line_extended = gc_strdup("", &(sys->garbage));
+	(void)0, i = 0, start = 0;
+	result = gc_strdup("", &(sys->garbage));
 	while (line[i])
 	{
 		if (line[i] == '$')
 		{
 			if (i > start)
-			{
-				line_extended = gc_strjoin(line_extended, \
-								gc_substr(line, start, i, &(sys->garbage)), \
-								&(sys->garbage));
-				start = i;
-			}
-			i++;
-			while (ft_isalnum(line[i]) || line[i] == '_')
-				i++;
-			var_expanded = expand_var(gc_substr(line, start, i, \
-							&(sys->garbage)), sys, sys->exit_status);
-			line_extended = gc_strjoin(line_extended, \
-							var_expanded, &(sys->garbage));
+				result = gc_strjoin(result, gc_substr(line, start, i, \
+						&(sys->garbage)), &(sys->garbage));
+			result = gc_strjoin(result, process_dollar_var(line, &i, \
+					&start, sys), &(sys->garbage));
 		}
 		else
 			i++;
 	}
-	if (line_extended[0] == 0)
-		line_extended = gc_strdup(line, &(sys->garbage));
-	return (line_extended);
+	if (i > start)
+		result = gc_strjoin(result, gc_substr(line, start, i, \
+				&(sys->garbage)), &(sys->garbage));
+	if (!result[0])
+		result = gc_strdup(line, &(sys->garbage));
+	return (result);
 }
 
 int	handle_heredoc(char *delimiter, t_sys *sys)

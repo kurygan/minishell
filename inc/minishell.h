@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 13:21:33 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 13:53:28 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_sys
 }	t_sys;
 
 // Global variable for signal handling
-extern int g_signal_received;
+extern int		g_signal_received;
 
 /* expander */
 
