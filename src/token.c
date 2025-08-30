@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 21:28:11 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/30 11:53:53 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	handle_and_check_quote(char *line, int *i, t_type **lst, t_sys *sys)
 		token_type = SINGLE_QUOTE;
 	else
 		token_type = DOUBLE_QUOTE;
-	add_token((*lst), quoted_thing, token_type, sys);
+	*lst = add_token((*lst), quoted_thing, token_type, sys);
 	return (0);
 }
 
@@ -37,7 +37,8 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	while (tmp)
 	{
 		if (tmp->prev && tmp->token != PIPE && \
-			!is_redirection_token(tmp->token) && tmp->token != REDIR_TARGET)
+			!is_redirection_token(tmp->token) && tmp->token != REDIR_TARGET
+			&& tmp->token != SINGLE_QUOTE && tmp->token != DOUBLE_QUOTE)
 			tmp->token = CMD;
 		if (tmp->token == PIPE)
 		{

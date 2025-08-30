@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 21:40:30 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 11:53:53 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,15 @@ void	handle_quote(char *line, int *i, t_type **lst, t_sys *sys)
 	word[0] = gc_substr(line, start, *i - start, &(sys->garbage));
 	(*i)++;
 	start = *i;
-	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
-		(*i)++;
-	word[1] = gc_substr(line, start, *i - start, &(sys->garbage));
-	word[0] = gc_strjoin(word[0], word[1], &(sys->garbage));
+	// Only concatenate if there's no space immediately after the quotes
+	if (line[start] != ' ' && line[start] != '\t')
+	{
+		while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
+			&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+			(*i)++;
+		word[1] = gc_substr(line, start, *i - start, &(sys->garbage));
+		word[0] = gc_strjoin(word[0], word[1], &(sys->garbage));
+	}
 	if (quote == '\'')
 		token_type = SINGLE_QUOTE;
 	else
@@ -85,18 +89,24 @@ char	*extract_quoted_arg(char *line, int *i, char quote, t_sys *sys)
 	target[0] = gc_substr(line, start, *i - start + 1, &sys->garbage);
 	(*i)++;
 	start = *i;
-	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
-		(*i)++;
-	if (start < *i)
+	// Only concatenate if there's no space immediately after the quotes
+	if (line[start] != ' ' && line[start] != '\t')
 	{
-		target[1] = gc_substr(line, start, *i - start, &(sys->garbage));
-		result = gc_strjoin(target[0], target[1], &(sys->garbage));
+		while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
+			&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+			(*i)++;
+		if (start < *i)
+		{
+			target[1] = gc_substr(line, start, *i - start, &(sys->garbage));
+			result = gc_strjoin(target[0], target[1], &(sys->garbage));
+		}
+		else
+			result = target[0];
+		if (line[*i])
+			(*i)++;
 	}
 	else
 		result = target[0];
-	if (line[*i])
-		(*i)++;
 	return (result);
 }
 

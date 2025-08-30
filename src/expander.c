@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:50:01 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 20:43:05 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 11:53:49 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ static void	expand_single_str(char **str, t_sys *sys, int exit_status)
 		*str = expand_tilde(original, sys);
 }
 
+static void	expand_quoted_token(char **str, t_sys *sys, int exit_status)
+{
+	char	*original;
+	size_t	len;
+
+	if (!*str)
+		return ;
+	original = *str;
+	len = ft_strlen(original);
+	if (original[0] == '\'' && original[len - 1] == '\'')
+		*str = process_quoted_arg(original, sys, exit_status);
+	else if (original[0] == '\"' && original[len - 1] == '\"')
+		*str = process_quoted_arg(original, sys, exit_status);
+}
+
 static void	expand_str_array(char **str, t_sys *sys, int exit_status)
 {
 	int		i;
@@ -52,7 +67,11 @@ void	expand_variables(t_cmd_segment *segments, t_sys *sys, int exit_status)
 	while (segments)
 	{
 		outfiles = segments->outfiles;
-		expand_single_str(&segments->cmd, sys, exit_status);
+		// Handle quoted tokens specifically
+		if (segments->cmd && (segments->cmd[0] == '\'' || segments->cmd[0] == '\"'))
+			expand_quoted_token(&segments->cmd, sys, exit_status);
+		else
+			expand_single_str(&segments->cmd, sys, exit_status);
 		expand_str_array(segments->args, sys, exit_status);
 		expand_single_str(&segments->infile, sys, exit_status);
 		while (outfiles)

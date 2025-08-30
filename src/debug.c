@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 01:08:22 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/22 20:29:19 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 11:53:49 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	debug_print_tokens(t_type *tokens)
 	const char	*token_types[] = {
 		"CMD", "ARGS", "PIPE",
 		"REDIR_IN", "REDIR_OUT", "REDIR_APPEND", "REDIR_HEREDOC",
-		"REDIR_TARGET", "ERROR"
+		"REDIR_TARGET", "SINGLE_QUOTE", "DOUBLE_QUOTE", "ERROR"
 	};
 
 	if (!tokens)
