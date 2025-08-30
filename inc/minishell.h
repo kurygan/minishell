@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 15:01:40 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 15:07:53 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,5 +278,12 @@ char			*expand_heredoc(char *line, t_sys *sys);
 
 /*error management*/
 bool			check_synthax_error(t_sys *sys, char *line);
+int				check_initial_pipe(t_sys *sys);
+int				check_token_syntax(t_type *current);
+void			handle_syntax_error(t_sys *sys, char *line);
+bool			double_pipe_check(t_type *token);
+bool			pipe_and_redir_check(t_type *token);
+t_sys			*init_system(char **env);
+int				cleanup_and_exit(t_sys *sys, struct termios *orig_termios);
 
 #endif

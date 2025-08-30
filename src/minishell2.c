@@ -1,35 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   synthax_detection.c                                :+:      :+:    :+:   */
+/*   minishell2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/29 19:42:52 by mkettab           #+#    #+#             */
+/*   Created: 2025/08/30 15:30:00 by emetel            #+#    #+#             */
 /*   Updated: 2025/08/30 15:07:55 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-bool	check_synthax_error(t_sys *sys, char *line)
+t_sys	*init_system(char **env)
 {
-	t_type	*current;
-	int		is_error;
+	t_sys	*sys;
 
-	current = sys->tokens;
-	if (!sys->tokens)
-		return (false);
-	is_error = check_initial_pipe(sys);
-	while (current && !is_error)
-	{
-		is_error = check_token_syntax(current);
-		if (!is_error && current->next)
-			current = current->next;
-		else
-			break ;
-	}
-	if (is_error)
-		handle_syntax_error(sys, line);
-	return (is_error);
+	sys = malloc(sizeof(t_sys));
+	if (!sys)
+		return (NULL);
+	ft_memset(sys, 0, sizeof(t_sys));
+	sys->exit_status = 0;
+	sys->env = env;
+	sys->env_was_empty = (!env || !env[0]);
+	sys->garbage = NULL;
+	sys->env_gc = NULL;
+	sys->env_list = init_env_list(env, sys);
+	return (sys);
+}
+
+int	cleanup_and_exit(t_sys *sys, struct termios *orig_termios)
+{
+	int	exit_status;
+
+	gc_carbonize(&(sys->env_gc));
+	exit_status = sys->exit_status;
+	free(sys);
+	reset_signals(orig_termios);
+	clear_history();
+	return (exit_status);
 }

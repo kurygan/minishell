@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/30 15:01:41 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/30 15:07:55 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 SRCS =	minishell.c \
+		minishell2.c \
 		expander.c \
 		expand_quote.c \
 		quote_utils.c \
@@ -47,6 +48,7 @@ SRCS =	minishell.c \
 		exec_utils2.c \
 		shlvl.c \
 		synthax_detection.c \
+		synthax_detection2.c \
 		builtin/env_utils.c \
 		builtin/env_lst.c \
 		builtin/builtin.c \
