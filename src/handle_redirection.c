@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:48:46 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/18 06:33:51 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 15:42:06 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,39 +41,11 @@ static t_token	identify_redirection_type(char *line, int *i, char **symbol, \
 
 char	*extract_quoted_target(char *line, int *i, char quote, t_sys *sys)
 {
-	int		start;
-	char	*target[2];
+	char	*target;
 
-	(*i)++;
-	start = *i;
-	target[0] = gc_strdup("", &sys->garbage);
-	while (line[*i] && line[*i] != quote)
-	{
-		if (line[*i] == '\'' && quote != '\'')
-		{
-			target[1] = gc_substr(line, start, *i - start, &sys->garbage);
-			target[0] = gc_strjoin(target[0], target[1], &sys->garbage);
-			(*i)++;
-			start = *i;
-		}
-		else
-			(*i)++;
-	}
-	target[1] = gc_substr(line, start, *i - start, &sys->garbage);
-	target[0] = gc_strjoin(target[0], target[1], &sys->garbage);
-	(*i)++;
-	start = *i;
-	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
-		(*i)++;
-	if (start < *i)
-	{
-		target[1] = gc_substr(line, start, *i - start, &(sys->garbage));
-		target[0] = gc_strjoin(target[0], target[1], &(sys->garbage));
-	}
-	if (line[*i])
-		(*i)++;
-	return (target[0]);
+	target = extract_quoted_redir_content(line, i, quote, sys);
+	target = append_unquoted_suffix(line, i, target, sys);
+	return (target);
 }
 
 static char	*extract_unquoted_target(char *line, int *i, t_sys *sys)

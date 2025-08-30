@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:37:06 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 15:01:41 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	handle_plus_equal_local(char *arg, t_env_var **env_list, t_sys *sys,
 }
 
 void	process_export_arg(char *arg, t_env_var **env_list, t_sys *sys,
-	bool *error_occurred)
+			bool *error_occurred)
 {
 	if (ft_strnstr(arg, "+=", ft_strlen(arg)))
 	{

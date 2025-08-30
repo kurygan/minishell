@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 20:55:06 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 14:39:40 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/30 16:04:47 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,40 +73,36 @@ void	print_sorted_export_list(t_env_var **array, int count)
 	}
 }
 
-static char	*skip_leading_whitespace(char *raw_value, char **value)
+static char	*process_raw_value_export(char *raw_value, t_sys *sys)
 {
-	while (*raw_value == ' ' || *raw_value == '\t')
-		raw_value++;
-	if (!*raw_value)
+	if (raw_value && (*raw_value == ' ' || *raw_value == '\t'))
 	{
-		*value = NULL;
-		return (NULL);
+		while (*raw_value == ' ' || *raw_value == '\t')
+			raw_value++;
+		if (!*raw_value)
+			return (NULL);
 	}
-	return (raw_value);
+	return (remove_quotes(raw_value, sys));
 }
 
-char	*handle_plus_equal(char *arg, char **value, t_sys *sys)
+char	*extract_key_value(char *arg, char **value, t_sys *sys)
 {
 	char		*equal_pos;
+	char		*plus_equal_pos;
 	char		*key;
 	char		*raw_value;
-	char		*append_value;
-	t_env_var	*existing_var;
 
+	plus_equal_pos = ft_strnstr(arg, "+=", ft_strlen(arg));
 	equal_pos = ft_strchr(arg, '=');
-	key = gc_substr(arg, 0, equal_pos - 1 - arg, &(sys->garbage));
-	raw_value = gc_strdup(equal_pos + 2, &(sys->garbage));
-	if (raw_value && (*raw_value == ' ' || *raw_value == '\t'))
-		raw_value = skip_leading_whitespace(raw_value, value);
-	if (raw_value == NULL)
-		return (key);
-	append_value = remove_quotes(raw_value, sys);
-	existing_var = find_env_var(sys->env_list, key);
-	if (existing_var && existing_var->value && append_value)
-		*value = gc_strjoin(existing_var->value, append_value, &(sys->env_gc));
-	else if (append_value)
-		*value = gc_strdup(append_value, &(sys->env_gc));
-	else
+	if (!equal_pos)
+	{
 		*value = NULL;
+		return (gc_strdup(arg, &(sys->garbage)));
+	}
+	if (plus_equal_pos && plus_equal_pos == equal_pos)
+		return (handle_plus_equal(arg, value, sys));
+	key = gc_substr(arg, 0, equal_pos - arg, &(sys->garbage));
+	raw_value = gc_strdup(equal_pos + 1, &(sys->garbage));
+	*value = process_raw_value_export(raw_value, sys);
 	return (key);
 }

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:15:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 21:03:04 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,44 +35,10 @@ void	exec_env(t_cmd_segment *cmd)
 	}
 }
 
-t_env_var	*find_env_var(t_env_var *env_list, char *key)
+static int	count_exported_vars_local(t_env_var *env_list)
 {
-	t_env_var	*current;
-
-	if (!key)
-		return (NULL);
-	current = env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->key, key) == 0)
-			return (current);
-		current = current->next;
-	}
-	return (NULL);
-}
-
-char	*get_env_value_from_list(char *var_name, t_env_var *env_list)
-{
-	t_env_var	*current;
-
-	if (!var_name || !env_list)
-		return (NULL);
-	current = env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->key, var_name) == 0)
-			return (current->value);
-		current = current->next;
-	}
-	return (NULL);
-}
-
-char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
-{
-	char		**env_array;
 	t_env_var	*current;
 	int			count;
-	int			i;
 
 	count = 0;
 	current = env_list;
@@ -82,9 +48,14 @@ char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
 			count++;
 		current = current->next;
 	}
-	env_array = gc_malloc(&sys->garbage, sizeof(char *) * (count + 1));
-	if (!env_array)
-		return (NULL);
+	return (count);
+}
+
+static void	fill_env_array(char **env_array, t_env_var *env_list, t_sys *sys)
+{
+	t_env_var	*current;
+	int			i;
+
 	current = env_list;
 	i = 0;
 	while (current)
@@ -103,5 +74,17 @@ char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
 		current = current->next;
 	}
 	env_array[i] = NULL;
+}
+
+char	**env_list_to_array(t_env_var *env_list, t_sys *sys)
+{
+	char		**env_array;
+	int			count;
+
+	count = count_exported_vars_local(env_list);
+	env_array = gc_malloc(&sys->garbage, sizeof(char *) * (count + 1));
+	if (!env_array)
+		return (NULL);
+	fill_env_array(env_array, env_list, sys);
 	return (env_array);
 }

@@ -6,7 +6,7 @@
 #    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/30 15:07:55 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,11 @@ SRCS =	minishell.c \
 		quote_processing.c \
 		expand_utils.c \
 		expand_utils2.c \
+		expand_utils3.c \
+		expand_utils4.c \
 		expand_tilde.c \
 		handle_redirection.c \
+		handle_redirection2.c \
 		parsing.c \
 		segment_handler.c \
 		segment.c \
@@ -50,6 +53,8 @@ SRCS =	minishell.c \
 		synthax_detection.c \
 		synthax_detection2.c \
 		builtin/env_utils.c \
+		builtin/env_utils2.c \
+		builtin/env2.c \
 		builtin/env_lst.c \
 		builtin/builtin.c \
 		builtin/echo.c \
@@ -61,6 +66,8 @@ SRCS =	minishell.c \
 		builtin/export_utils.c \
 		builtin/export_utils2.c \
 		builtin/export_utils3.c \
+		builtin/export_utils4.c \
+		builtin/export_utils5.c \
 		builtin/unset.c \
 		builtin/exit.c \
 		redir.c \

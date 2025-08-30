@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:30:31 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 14:31:34 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,34 @@ static void	fill_array_with_exported_vars(t_env_var **array,
 		}
 		current = current->next;
 	}
+}
+
+void	insert_env_var_sorted(t_env_var **env_list, char *key, char *value, \
+			t_sys *sys)
+{
+	t_env_var	*new_var;
+	t_env_var	*current;
+	t_env_var	*prev;
+
+	new_var = create_env_var(key, value, sys);
+	new_var->exported = true;
+	if (!new_var)
+		return ;
+	if (!*env_list || ft_strcmp(new_var->key, (*env_list)->key) < 0)
+	{
+		new_var->next = *env_list;
+		*env_list = new_var;
+		return ;
+	}
+	current = *env_list;
+	prev = NULL;
+	while (current && ft_strcmp(new_var->key, current->key) > 0)
+	{
+		prev = current;
+		current = current->next;
+	}
+	prev->next = new_var;
+	new_var->next = current;
 }
 
 void	print_export_list(t_env_var *env_list, t_sys *sys)

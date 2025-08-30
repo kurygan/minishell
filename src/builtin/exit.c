@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 15:01:59 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/30 16:06:20 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ static void	handle_numeric_error(t_cmd_segment *cmd, char *arg)
 	exit(cmd->sys->exit_status);
 }
 
-void	exec_exit(t_cmd_segment *cmd)
+static int	get_exit_arg_index(t_cmd_segment *cmd)
 {
-	long long	exit_code;
-	bool		error;
-	int			arg_index;
+	int	arg_index;
 
-	// ft_putendl_fd("exit", 2);
-	if (!cmd->args || !cmd->args[0])
-		exit(cmd->sys->exit_status);
 	arg_index = 0;
 	if (ft_strcmp(cmd->args[arg_index], "--") == 0)
 		arg_index++;
+	return (arg_index);
+}
+
+static int	validate_exit_args(t_cmd_segment *cmd, int arg_index)
+{
 	if (!cmd->args[arg_index])
 		exit(cmd->sys->exit_status);
 	if (!is_numeric(cmd->args[arg_index]))
@@ -63,8 +63,23 @@ void	exec_exit(t_cmd_segment *cmd)
 	{
 		ft_putendl_fd("exit: too many arguments", 2);
 		cmd->sys->exit_status = 1;
-		return ;
+		return (1);
 	}
+	return (0);
+}
+
+void	exec_exit(t_cmd_segment *cmd)
+{
+	long long	exit_code;
+	bool		error;
+	int			arg_index;
+
+	ft_putendl_fd("exit", 2);
+	if (!cmd->args || !cmd->args[0])
+		exit(cmd->sys->exit_status);
+	arg_index = get_exit_arg_index(cmd);
+	if (validate_exit_args(cmd, arg_index))
+		return ;
 	error = false;
 	exit_code = ft_atoll(cmd->args[arg_index], &error);
 	if (error)

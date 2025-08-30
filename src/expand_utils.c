@@ -3,46 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 14:39:40 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/30 15:42:06 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+static char	*expand_regular_var(char *arg, int *i, t_sys *sys)
+{
+	char	*var_name;
+	char	*value;
+	char	*result;
+	int		start;
+
+	start = *i + 1;
+	while (arg[start] && (ft_isalnum(arg[start]) || arg[start] == '_'))
+		start++;
+	var_name = gc_substr(arg, *i + 1, start - *i - 1, &(sys->garbage));
+	value = get_env_value_from_list(var_name, sys->env_list);
+	if (value)
+		result = gc_strdup(value, &(sys->garbage));
+	else
+		result = gc_strdup("", &(sys->garbage));
+	gc_free(var_name, &(sys->garbage));
+	*i = start;
+	return (result);
+}
+
 static char	*process_var_expansion(char *arg, int *i, t_sys *sys, \
 				int exit_status)
 {
-	char	*result;
-	char	*var_name;
-	char	*value;
-	int		start;
-
 	(void)exit_status;
-	result = gc_strdup("", &(sys->garbage));
 	if (arg[*i + 1] == '?')
-	{
-		value = gc_itoa(sys->exit_status, &(sys->garbage));
-		result = gc_strjoin(result, value, &(sys->garbage));
-		*i += 2;
-	}
+		return (expand_exit_status_var(i, sys));
 	else
-	{
-		start = *i + 1;
-		while (arg[start] && (ft_isalnum(arg[start])
-				|| arg[start] == '_'))
-			start++;
-		var_name = gc_substr(arg, *i + 1, start - *i - 1, &(sys->garbage));
-		value = get_env_value_from_list(var_name, sys->env_list);
-		if (value)
-			result = gc_strjoin(result, gc_strdup(value, &(sys->garbage)),
-					&(sys->garbage));
-		gc_free(var_name, &(sys->garbage));
-		*i = start;
-	}
-	return (result);
+		return (expand_regular_var(arg, i, sys));
+}
+
+static char	*process_single_char(char *arg, int *i, t_sys *sys)
+{
+	char	*temp;
+
+	temp = gc_substr(arg, *i, 1, &(sys->garbage));
+	(*i)++;
+	return (temp);
 }
 
 char	*expand_var(char *arg, t_sys *sys, int exit_status)
@@ -64,19 +71,9 @@ char	*expand_var(char *arg, t_sys *sys, int exit_status)
 		}
 		else
 		{
-			temp = gc_substr(arg, i, 1, &(sys->garbage));
+			temp = process_single_char(arg, &i, sys);
 			result = gc_strjoin(result, temp, &(sys->garbage));
-			i++;
 		}
 	}
 	return (result);
-}
-
-char	*extract_var_content(char *content, int *i, int start, t_gc **garbage)
-{
-	char	*temp;
-
-	temp = gc_substr(content, *i + 1, start - *i - 1, garbage);
-	*i = start;
-	return (temp);
 }
