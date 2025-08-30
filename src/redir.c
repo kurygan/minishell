@@ -102,9 +102,9 @@ int	handle_redir_in(t_cmd_segment *cmd, t_sys *sys)
 		if (pipe_fd[0] < 0)
 		{
 			if (access(cmd->infile, F_OK) == 0)
-				printf("Permission Denied\n");
+				ft_printf("%s: Permission denied\n", cmd->infile);
 			else
-				printf("Error: No such file\n");
+				ft_printf("%s: No such file or directory\n", cmd->infile);
 		}
 	}
 	else if (cmd->heredoc)
@@ -137,7 +137,7 @@ int	handle_redir_out(t_cmd_segment *cmd)
 			if (stat(outfiles->str, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
 				ft_printf("%s: Is a directory\n", outfiles->str);
 			else
-				ft_printf("%s: Permission Denied\n", outfiles->str);
+				ft_printf("%s: Permission denied\n", outfiles->str);
 			break ;
 		}
 		outfiles = outfiles->next;

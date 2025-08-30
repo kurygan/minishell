@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
+#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/08/29 20:43:06 by emetel           ###   ########.fr        #
+#    Updated: 2025/08/29 21:10:58 by mkettab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g3 
+FLAGS = -Wall -Wextra -Werror -g3
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
@@ -20,9 +20,6 @@ ifeq ($(UNAME_S),Darwin)
 		CFLAGS += -I$(READLINE_DIR)/include
 		LDFLAGS += -L$(READLINE_DIR)/lib
 	endif
-	READLINE_LIB = -lreadline
-else
-	READLINE_LIB = -lreadline
 endif
 
 SRCS =	minishell.c \
@@ -43,6 +40,7 @@ SRCS =	minishell.c \
 		exec_utils.c \
 		debug.c \
 		shlvl.c \
+		synthax_detection.c \
 		builtin/env_utils.c \
 		builtin/env_lst.c \
 		builtin/builtin.c \
@@ -79,7 +77,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 
 $(NAME): $(OBJS_PREF)
 	@make all -C lib
-	@$(CC) $(FLAGS) $(LDFLAGS) $(READLINE_LIB) $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
+	@$(CC) $(FLAGS) -lreadline $(LDFLAGS) $(OBJS_PREF) $(LIB_NAME) -o $(NAME)
 	@echo "|🛠️| Program compiled"
 
 all: $(NAME)
@@ -98,6 +96,6 @@ re: fclean all
 
 valgrind: $(NAME)
 	@echo "|🔍| Running valgrind with readline suppression..."
-	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+	valgrind --tool=memcheck --leak-check=full --track-origins=yes --suppressions=readline.supp ./$(NAME)
 
 .PHONY: all clean fclean re valgrind

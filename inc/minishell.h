@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/29 20:43:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 21:40:30 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,5 +251,8 @@ int				handle_redir_out(t_cmd_segment *cmd);
 int				handle_redir_in(t_cmd_segment *cmd, t_sys *sys);
 int				handle_heredoc(char *delimiter, t_sys *sys);
 char			*expand_heredoc(char *line, t_sys *sys);
+
+/*error management*/
+bool			check_synthax_error(t_sys *sys, char *line);
 
 #endif

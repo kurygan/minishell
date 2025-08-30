@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/27 19:10:22 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 21:38:28 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ static bool	process_command(t_sys *sys)
 			continue ;
 		}
 		sys->tokens = tokenize(line, sys);
+		if (check_synthax_error(sys, line))
+			continue ;
 		sys->command = handle_line(sys);
-		//debug_print_tokens(sys->tokens);
-		//debug_print_segments(sys->command);
+		// debug_print_tokens(sys->tokens);
+		// debug_print_segments(sys->command);
 		exec(sys);
 		sys->command = NULL;
 		sys->tokens = NULL;
@@ -49,6 +51,7 @@ int	main(int ac, char **av, char **env)
 {
 	struct termios	orig_termios;
 	t_sys			*sys;
+	int				exit_status;
 
 	(void)ac;
 	(void)av;
@@ -66,8 +69,9 @@ int	main(int ac, char **av, char **env)
 	setup_signals(&orig_termios);
 	process_command(sys);
 	gc_carbonize(&(sys->env_gc));
+	exit_status = sys->exit_status;
 	free(sys);
 	reset_signals(&orig_termios);
 	clear_history();
-	return (sys->exit_status);
+	return (exit_status);
 }

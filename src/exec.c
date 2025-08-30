@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/28 17:53:56 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/08/30 11:22:37 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,21 @@ void	exec_child_process(t_cmd_segment *cmd, int **pipes, int cmd_index, \
 		exec_builtin(cmd);
 	else if (cmd->cmd)
 	{
-		path = get_path(cmd->cmd, cmd->sys);
-		args = get_args(cmd);
-		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
-		if (execve(path, args, env_array))
+		if (!get_env_value_from_list("PATH", cmd->sys->env_list))
 		{
-			ft_printf("%s: command not found\n", cmd->cmd);
+			ft_printf("%s: No such file or directory\n", cmd->cmd);
 			cmd->sys->exit_status = 127;
+		}
+		else
+		{
+			path = get_path(cmd->cmd, cmd->sys);
+			args = get_args(cmd);
+			env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
+			if (execve(path, args, env_array))
+			{
+				ft_printf("%s: command not found\n", cmd->cmd);
+				cmd->sys->exit_status = 127;
+			}
 		}
 	}
 	exit(cmd->sys->exit_status);

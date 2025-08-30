@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 02:42:19 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/29 19:30:21 by emetel           ###   ########.fr       */
+/*   Updated: 2025/08/29 21:28:11 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ static void	assign_cmd_and_args(t_type *token_lst, t_sys *sys)
 	expect_cmd = 1;
 	while (tmp)
 	{
-		if (tmp->prev && tmp->prev->token == PIPE \
-			&& !is_redirection_token(tmp->token))
+		if (tmp->prev && tmp->token != PIPE && \
+			!is_redirection_token(tmp->token) && tmp->token != REDIR_TARGET)
 			tmp->token = CMD;
 		if (tmp->token == PIPE)
 		{
-			if (tmp->token == PIPE)
-				expect_cmd = 1;
+			expect_cmd = 1;
 			tmp = tmp->next;
 			continue ;
 		}
