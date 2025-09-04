@@ -16,7 +16,7 @@ void	exec_pwd(t_cmd_segment *cmd)
 {
 	char	*pwd;
 
-	pwd = get_env_value_from_list("PWD", cmd->sys->env_list);
+	pwd = get_current_working_directory(cmd->sys);
 	if (!pwd)
 	{
 		ft_putstr_fd("minishell: pwd: PWD not set\n", 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 16:04:47 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/04 22:31:51 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void				exec_cd(t_cmd_segment *cmd);
 void				exec_echo(t_cmd_segment *cmd);
 void				exec_env(t_cmd_segment *cmd);
 void				exec_pwd(t_cmd_segment *cmd);
+char				*get_current_working_directory(t_sys *sys);
 
 /* cd_utils */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tylerlover911 <tylerlover911@student.42    +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:13:47 by mkettab           #+#    #+#             */
-/*   Updated: 2025/03/21 00:52:34 by tylerlover9      ###   ########.fr       */
+/*   Updated: 2025/09/04 22:32:39 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int	ft_inthexlen(unsigned long c)
 	count = 0;
 	if (c == 0)
 		return (1);
-	if (c < 0)
-		count++;
 	while (c != 0)
 	{
 		c /= 16;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
+/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/28 21:03:44 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/04 22:30:41 by mkettab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	change_directory(char *path, t_cmd_segment *cmd)
 	return (1);
 }
 
-static char	*get_current_working_directory(t_sys *sys)
+char	*get_current_working_directory(t_sys *sys)
 {
 	char	cwd[4096];
 
