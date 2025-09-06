@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 03:15:09 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 14:58:25 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:06:25 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	exec_external_command(t_cmd_segment *cmd)
 	char	**args;
 	char	**env_array;
 
-	if (!get_env_value_from_list("PATH", cmd->sys->env_list))
+	if (!get_env_value_from_both_lists("PATH", cmd->sys))
 	{
 		ft_printf("%s: No such file or directory\n", cmd->cmd);
 		cmd->sys->exit_status = 127;
@@ -68,7 +68,7 @@ static void	exec_external_command(t_cmd_segment *cmd)
 	{
 		path = get_path(cmd->cmd, cmd->sys);
 		args = get_args(cmd);
-		env_array = env_list_to_array(cmd->sys->env_list, cmd->sys);
+		env_array = env_list_to_array(cmd->sys->export_list, cmd->sys);
 		if (execve(path, args, env_array))
 		{
 			ft_printf("%s: command not found\n", cmd->cmd);

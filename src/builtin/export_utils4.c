@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 16:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 15:20:01 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*handle_plus_equal(char *arg, char **value, t_sys *sys)
 	if (raw_value == NULL)
 		return (key);
 	append_value = remove_quotes(raw_value, sys);
-	existing_var = find_env_var(sys->env_list, key);
+	existing_var = find_env_var(sys->export_list, key);
 	*value = get_plus_equal_final_value(append_value, existing_var, sys);
 	return (key);
 }

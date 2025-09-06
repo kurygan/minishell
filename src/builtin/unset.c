@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:23:38 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/27 15:39:20 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:06:26 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	process_unset_arg(char *arg, t_cmd_segment *cmd)
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (false);
 	}
-	remove_env_var(&cmd->sys->env_list, arg, cmd->sys);
+	remove_env_var(&cmd->sys->export_list, arg, cmd->sys);
 	return (true);
 }
 

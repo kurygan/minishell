@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 15:07:55 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:06:26 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_sys	*init_system(char **env)
 	sys->env_was_empty = (!env || !env[0]);
 	sys->garbage = NULL;
 	sys->env_gc = NULL;
-	sys->env_list = init_env_list(env, sys);
+	sys->export_list = init_env_list(env, sys);
+	sys->cd_pwd_vars = init_cd_pwd_vars(sys);
 	return (sys);
 }
 

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 20:55:06 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:06:26 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ void	exec_export(t_cmd_segment *cmd)
 
 	if (!cmd->args || !cmd->args[0])
 	{
-		print_export_list(cmd->sys->env_list, cmd->sys);
+		print_export_list(cmd->sys->export_list, cmd->sys);
 		return ;
 	}
 	error_occurred = false;
 	i = 0;
 	while (cmd->args[i])
 	{
-		process_export_arg(cmd->args[i], &cmd->sys->env_list, cmd->sys, \
+		process_export_arg(cmd->args[i], &cmd->sys->export_list, cmd->sys, \
 			&error_occurred);
 		i++;
 	}

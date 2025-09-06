@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 14:58:25 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:06:26 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_path(char *cmd, t_sys *sys)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 		return (gc_strdup(cmd, &(sys->garbage)));
-	path_env = get_env_value_from_list("PATH", sys->env_list);
+	path_env = get_env_value_from_both_lists("PATH", sys);
 	if (!path_env)
 		return (gc_strdup(cmd, &(sys->garbage)));
 	paths = ft_split(path_env, ':');

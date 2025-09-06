@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:00:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 15:42:06 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 15:02:34 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*expand_regular_var(char *arg, int *i, t_sys *sys)
 	while (arg[start] && (ft_isalnum(arg[start]) || arg[start] == '_'))
 		start++;
 	var_name = gc_substr(arg, *i + 1, start - *i - 1, &(sys->garbage));
-	value = get_env_value_from_list(var_name, sys->env_list);
+	value = get_env_value_for_expansion(var_name, sys);
 	if (value)
 		result = gc_strdup(value, &(sys->garbage));
 	else

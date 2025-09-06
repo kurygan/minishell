@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 16:06:20 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 15:23:07 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	exec_exit(t_cmd_segment *cmd)
 	bool		error;
 	int			arg_index;
 
-	ft_putendl_fd("exit", 2);
+	// ft_putendl_fd("exit", 2);
 	if (!cmd->args || !cmd->args[0])
 		exit(cmd->sys->exit_status);
 	arg_index = get_exit_arg_index(cmd);

@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 15:45:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:14:02 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,26 @@ char	*get_env_value_from_list(char *var_name, t_env_var *env_list)
 		current = current->next;
 	}
 	return (NULL);
+}
+
+char	*get_env_value_from_both_lists(char *var_name, t_sys *sys)
+{
+	char	*value;
+
+	if (!var_name || !sys)
+		return (NULL);
+	value = get_env_value_from_list(var_name, sys->export_list);
+	if (value)
+		return (value);
+	value = get_cd_pwd_var_value(sys->cd_pwd_vars, var_name);
+	if (value)
+		return (value);
+	return (NULL);
+}
+
+char	*get_env_value_for_expansion(char *var_name, t_sys *sys)
+{
+	if (!var_name || !sys)
+		return (NULL);
+	return (get_env_value_from_list(var_name, sys->export_list));
 }

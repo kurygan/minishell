@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/09/04 22:31:51 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/09/06 15:02:34 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ typedef struct s_env_var
 typedef struct s_sys
 {
 	char			**env;
-	t_env_var		*env_list;
+	t_env_var		*export_list;
+	t_env_var		*cd_pwd_vars;
 	t_gc			*env_gc;
 	t_cmd_segment	*command;
 	t_type			*tokens;
@@ -256,8 +257,20 @@ void				free_env_list(t_env_var *env_list, t_sys *sys);
 void				free_env_list_safe(t_env_var *env_list);
 char				*get_env_value_from_list(char *var_name, \
 						t_env_var *env_list);
+char				*get_env_value_from_both_lists(char *var_name, t_sys *sys);
+char				*get_env_value_for_expansion(char *var_name, t_sys *sys);
 void				increment_shlvl(t_env_var *env_list, t_sys *sys);
 void				print_shlvl_warning(int level);
+
+/* cd_pwd vars management */
+t_env_var			*init_cd_pwd_vars(t_sys *sys);
+void				add_cd_pwd_var(t_env_var **cd_pwd_vars, char *key, \
+						char *value, t_sys *sys);
+void				update_cd_pwd_var(t_env_var *cd_pwd_var, char *value, \
+					t_sys *sys);
+t_env_var			*find_cd_pwd_var(t_env_var *cd_pwd_vars, char *key);
+char				*get_cd_pwd_var_value(t_env_var *cd_pwd_vars, char *key);
+void				free_cd_pwd_vars(t_env_var *cd_pwd_vars, t_sys *sys);
 
 /* export management */
 void				exec_export(t_cmd_segment *cmd);

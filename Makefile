@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+         #
+#    By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 04:27:27 by emetel            #+#    #+#              #
-#    Updated: 2025/09/04 22:33:00 by mkettab          ###   ########.fr        #
+#    Updated: 2025/09/06 15:22:08 by emetel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRCS =	minishell.c \
 		synthax_detection.c \
 		synthax_detection2.c \
 		builtin/env_utils.c \
+		builtin/env_parsing.c \
 		builtin/env_utils2.c \
 		builtin/env2.c \
 		builtin/env_lst.c \
@@ -70,6 +71,8 @@ SRCS =	minishell.c \
 		builtin/export_utils5.c \
 		builtin/unset.c \
 		builtin/exit.c \
+		builtin/sys_vars.c \
+		builtin/cd_pwd_utils.c \
 		redir.c \
 		redir2.c \
 		redir3.c \

@@ -6,32 +6,11 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:55:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 15:22:08 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-t_env_var	*parse_env_string(char *env_str, t_sys *sys)
-{
-	char		*equal_pos;
-	char		*key;
-	char		*value;
-	t_env_var	*env_var;
-
-	(void)sys;
-	if (!env_str)
-		return (NULL);
-	equal_pos = ft_strchr(env_str, '=');
-	if (!equal_pos)
-		return (NULL);
-	key = gc_substr(env_str, 0, equal_pos - env_str, &sys->env_gc);
-	value = gc_strdup(equal_pos + 1, &sys->env_gc);
-	env_var = create_env_var(key, value, sys);
-	if (ft_strcmp(key, "_") != 0)
-		env_var->exported = true;
-	return (env_var);
-}
 
 static t_env_var	*init_default_env(t_sys *sys)
 {
@@ -49,21 +28,48 @@ static t_env_var	*init_default_env(t_sys *sys)
 	return (head);
 }
 
+static void	add_parsed_var_to_list(t_env_var **head, t_env_var **current, \
+		t_env_var *parsed_var)
+{
+	if (!*head)
+	{
+		*head = parsed_var;
+		*current = *head;
+	}
+	else
+	{
+		(*current)->next = parsed_var;
+		*current = (*current)->next;
+	}
+}
+
+static void	cleanup_oldpwd_var(t_env_var *parsed_var, t_sys *sys)
+{
+	gc_free(parsed_var->key, &sys->env_gc);
+	if (parsed_var->value)
+		gc_free(parsed_var->value, &sys->env_gc);
+	gc_free(parsed_var, &sys->env_gc);
+}
+
 static t_env_var	*init_from_env_array(char **env, t_sys *sys)
 {
 	t_env_var	*head;
 	t_env_var	*current;
 	int			i;
+	t_env_var	*parsed_var;
 
-	head = parse_env_string(env[0], sys);
-	if (!head)
-		return (NULL);
-	current = head;
-	i = 1;
+	head = NULL;
+	i = 0;
 	while (env[i])
 	{
-		current->next = parse_env_string(env[i], sys);
-		current = current->next;
+		parsed_var = parse_env_string(env[i], sys);
+		if (parsed_var)
+		{
+			if (ft_strcmp(parsed_var->key, "OLDPWD") != 0)
+				add_parsed_var_to_list(&head, &current, parsed_var);
+			else
+				cleanup_oldpwd_var(parsed_var, sys);
+		}
 		i++;
 	}
 	return (head);

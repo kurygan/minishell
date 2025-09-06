@@ -17,14 +17,14 @@ static void	handle_cd_home(t_cmd_segment *cmd)
 	char	*home;
 	char	*old_pwd;
 
-	home = get_env_value_from_list("HOME", cmd->sys->env_list);
+	home = get_env_value_from_list("HOME", cmd->sys->export_list);
 	if (!home)
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		cmd->sys->exit_status = 1;
 		return ;
 	}
-	old_pwd = get_env_value_from_list("PWD", cmd->sys->env_list);
+	old_pwd = get_cd_pwd_var_value(cmd->sys->cd_pwd_vars, "PWD");
 	if (change_directory(home, cmd))
 		update_pwd_variables(cmd, old_pwd);
 }
@@ -33,7 +33,7 @@ static void	handle_cd_oldpwd(t_cmd_segment *cmd)
 {
 	char	*oldpwd;
 
-	oldpwd = get_env_value_from_list("OLDPWD", cmd->sys->env_list);
+	oldpwd = get_cd_pwd_var_value(cmd->sys->cd_pwd_vars, "OLDPWD");
 	if (!oldpwd)
 	{
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
@@ -51,7 +51,7 @@ static void	handle_cd_path(t_cmd_segment *cmd, char *path)
 {
 	char	*old_pwd;
 
-	old_pwd = get_env_value_from_list("PWD", cmd->sys->env_list);
+	old_pwd = get_cd_pwd_var_value(cmd->sys->cd_pwd_vars, "PWD");
 	if (change_directory(path, cmd))
 		update_pwd_variables(cmd, old_pwd);
 }
@@ -60,6 +60,10 @@ void	exec_cd(t_cmd_segment *cmd)
 {
 	if (!cmd->args || !cmd->args[0])
 		handle_cd_home(cmd);
+	else if (cmd->args[0][0] == '\0')
+	{
+		cmd->sys->exit_status = 0;
+	}
 	else if (ft_strcmp(cmd->args[0], "-") == 0)
 		handle_cd_oldpwd(cmd);
 	else

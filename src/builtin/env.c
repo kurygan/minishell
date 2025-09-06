@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 23:15:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/08/30 16:04:38 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:06:26 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	exec_env(t_cmd_segment *cmd)
 {
 	t_env_var	*current;
 
-	if (!cmd->sys->env_list)
+	if (!cmd->sys->export_list)
 		return ;
-	current = cmd->sys->env_list;
+	current = cmd->sys->export_list;
 	while (current)
 	{
 		if (current->value)

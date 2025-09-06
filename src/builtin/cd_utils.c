@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/09/04 22:30:41 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/09/06 14:15:15 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,20 @@ void	update_pwd_variables(t_cmd_segment *cmd, char *old_pwd)
 		return ;
 	if (old_pwd)
 	{
-		old_pwd_var = find_env_var(cmd->sys->env_list, "OLDPWD");
+		old_pwd_var = find_cd_pwd_var(cmd->sys->cd_pwd_vars, "OLDPWD");
 		if (old_pwd_var)
-			update_env_var(old_pwd_var, old_pwd, cmd->sys);
+			update_cd_pwd_var(old_pwd_var, old_pwd, cmd->sys);
 		else
-			add_env_var_exported(&cmd->sys->env_list, "OLDPWD", old_pwd, \
-				cmd->sys);
+			add_cd_pwd_var(&cmd->sys->cd_pwd_vars, "OLDPWD", old_pwd, cmd->sys);
 	}
-	pwd_var = find_env_var(cmd->sys->env_list, "PWD");
+	pwd_var = find_cd_pwd_var(cmd->sys->cd_pwd_vars, "PWD");
+	if (pwd_var)
+		update_cd_pwd_var(pwd_var, new_pwd, cmd->sys);
+	else
+		add_cd_pwd_var(&cmd->sys->cd_pwd_vars, "PWD", new_pwd, cmd->sys);
+	pwd_var = find_env_var(cmd->sys->export_list, "PWD");
 	if (pwd_var)
 		update_env_var(pwd_var, new_pwd, cmd->sys);
 	else
-		add_env_var_exported(&cmd->sys->env_list, "PWD", new_pwd, cmd->sys);
+		add_env_var_exported(&cmd->sys->export_list, "PWD", new_pwd, cmd->sys);
 }
