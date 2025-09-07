@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/09/06 14:06:26 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/07 15:24:07 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,25 @@ t_sys	*init_system(char **env)
 	return (sys);
 }
 
+void	close_all_fd(void)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
+	}
+}
+
 int	cleanup_and_exit(t_sys *sys, struct termios *orig_termios)
 {
 	int	exit_status;
 
 	gc_carbonize(&(sys->env_gc));
 	exit_status = sys->exit_status;
+	close_all_fd();
 	free(sys);
 	reset_signals(orig_termios);
 	clear_history();

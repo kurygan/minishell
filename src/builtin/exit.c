@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:30:00 by emetel            #+#    #+#             */
-/*   Updated: 2025/09/06 15:23:07 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/07 15:22:13 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	handle_numeric_error(t_cmd_segment *cmd, char *arg)
 {
 	ft_printf("exit: %s: numeric argument required\n", arg);
 	cmd->sys->exit_status = 2;
+	close_all_fd();
 	exit(cmd->sys->exit_status);
 }
 
@@ -56,7 +57,10 @@ static int	get_exit_arg_index(t_cmd_segment *cmd)
 static int	validate_exit_args(t_cmd_segment *cmd, int arg_index)
 {
 	if (!cmd->args[arg_index])
+	{
+		close_all_fd();
 		exit(cmd->sys->exit_status);
+	}
 	if (!is_numeric(cmd->args[arg_index]))
 		handle_numeric_error(cmd, cmd->args[arg_index]);
 	if (cmd->args[arg_index + 1])
@@ -74,9 +78,12 @@ void	exec_exit(t_cmd_segment *cmd)
 	bool		error;
 	int			arg_index;
 
-	// ft_putendl_fd("exit", 2);
+	ft_putendl_fd("exit", 2);
 	if (!cmd->args || !cmd->args[0])
+	{
+		close_all_fd();
 		exit(cmd->sys->exit_status);
+	}
 	arg_index = get_exit_arg_index(cmd);
 	if (validate_exit_args(cmd, arg_index))
 		return ;
@@ -85,5 +92,6 @@ void	exec_exit(t_cmd_segment *cmd)
 	if (error)
 		handle_numeric_error(cmd, cmd->args[arg_index]);
 	cmd->sys->exit_status = (int)(exit_code & 0xFF);
+	close_all_fd();
 	exit(cmd->sys->exit_status);
 }

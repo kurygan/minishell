@@ -6,7 +6,7 @@
 /*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:52:13 by mkettab           #+#    #+#             */
-/*   Updated: 2025/09/06 15:02:34 by emetel           ###   ########.fr       */
+/*   Updated: 2025/09/07 15:11:43 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,5 +323,6 @@ bool				double_pipe_check(t_type *token);
 bool				pipe_and_redir_check(t_type *token);
 t_sys				*init_system(char **env);
 int					cleanup_and_exit(t_sys *sys, struct termios *orig_termios);
+void				close_all_fd(void);
 
 #endif
