@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkettab <mkettab@student.42mulhouse.fr>    +#+  +:+       +#+        */
+/*   By: emetel <emetel@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:50:26 by mkettab           #+#    #+#             */
-/*   Updated: 2025/08/30 15:16:35 by mkettab          ###   ########.fr       */
+/*   Updated: 2025/09/07 18:24:44 by emetel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ static bool	process_command(t_sys *sys)
 
 	while (1)
 	{
-		handle_signal_status(sys);
 		line = readline("[petitcoquillage]$ ");
 		if (!line)
 		{
 			printf("exit\n");
+			handle_signal_status(sys);
 			return (sys->exit_status);
 		}
+		handle_signal_status(sys);
 		add_history(line);
 		if (handle_unclosed_quotes(line, sys))
 			continue ;
