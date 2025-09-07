@@ -22,7 +22,8 @@ static char	*extract_quoted_part(char *line, int *i, char quote, t_sys *sys)
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
 	result = gc_substr(line, start, *i - start + 1, &sys->garbage);
-	(*i)++;
+	if (line[*i])
+		(*i)++;
 	return (result);
 }
 
@@ -50,7 +51,7 @@ char	*extract_quoted_arg(char *line, int *i, char quote, t_sys *sys)
 	char	*suffix;
 
 	quoted_part = extract_quoted_part(line, i, quote, sys);
-	if (line[*i] != ' ' && line[*i] != '\t')
+	if (line[*i] && line[*i] != ' ' && line[*i] != '\t')
 	{
 		suffix = extract_unquoted_suffix(line, i, sys);
 		if (suffix)
